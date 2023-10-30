@@ -10,3 +10,5 @@ const { verifyToken } = require("../extern/verifyToken.js");
 router.put("/follow", verifyToken, RequestController.followProfile);
 // Route to handle an unfollow request
 router.put("/unfollow", verifyToken, RequestController.unFollowProfile);
+
+module.exports = router;

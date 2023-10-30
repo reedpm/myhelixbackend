@@ -1,5 +1,5 @@
 // Import error handle function
-import { handleError } from "../extern/error";
+const { handleError } = require("../extern/error");
 // Import the user schema
 const User = require("../models/user");
 const bcrypt = require("bcrypt");

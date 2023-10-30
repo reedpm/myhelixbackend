@@ -1,6 +1,6 @@
 // This is to verify if the token's id matches with the user id for any update methods
 const jwt = require("jsonwebtoken");
-import { handleError } from "./error";
+const {handleError} = require("./error.js");
 
 // THIS IS THE SECRET KEY FOR TOKENIZING OUR WEB TOKEN STRING PAYLOAD
 // UPON DEPLOYING THE APP, PLEASE STORE THIS IN AN .ENV FILE
@@ -8,7 +8,7 @@ import { handleError } from "./error";
 const key = "myhelix";
 
 // Function to verify that the token's id matches user id
-export const verifyToken = (req, res, next) => {
+exports.verifyToken = (req, res, next) => {
     // Grab the token from the session
     const token = req.cookies.access_token;
     // If token exists

@@ -1,5 +1,5 @@
 // Import modules
-const { handleError } = require("../extern/error");
+// const { handleError } = require("../extern/error");
 // Import profile since requests are mainly made from each profile
 const Profile = require("../models/profile.js");
 
