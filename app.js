@@ -33,6 +33,10 @@ function connectToDatabase(){
     })
 }
 
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+  })
+
 // Create the server and listen for any connections
 app.listen(port, () =>{
     connectToDatabase(); // Here we call the connect to database function
