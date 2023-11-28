@@ -1,9 +1,34 @@
 // const mongoose = require("mongoose");
-// const Profile = require("../models/profile");
+const Profile = require("../models/profile");
+const User = require("../models/user");
 // const Tag_notification = require("../models/tag_notification");
-// const User = require("../models/user");
+// 
 // const Request = require("../models/request");
 // const Conversation = require("../models/conversations");
+
+
+/**
+ * Given: Profile ID
+ * Returns: Profile object if it exists
+ */
+exports.getProfile = async (req, res) => {
+    try{
+        // Retrieve the profile with the passed in profile ID
+        const profile = await Profile.findById(req.params.id, (err, data) => {
+            // If we receive an error, send back an error message
+            if(err){
+                res.status(403).send({data: err});
+            }
+            // Else send back the data retreived
+            else{
+                res.status(200).send({data: data});
+            }
+        });
+    }
+    catch(err){
+        next(err);
+    }
+  };
 
 // mongoose.Promise = Promise;
 
@@ -13,20 +38,7 @@
 //   res.send(tNotifications);
 // };
 
-// /**
-//  * Given: pid
-//  * Returns: Profile object if it exists
-//  */
-// exports.getProfile = (req, res) => {
-//   const proid = req.params["proid"];
-//   Profile.findById(proid, function (err, data) {
-//     if (err) {
-//       res.status(404).send({ data: err });
-//     } else {
-//       res.status(200).send({ data: data });
-//     }
-//   });
-// };
+
 
 // exports.getProfessional = (req, res) => {
 //   Profile.find({ type: "PROFESSIONAL" }, function (err, docs) {
