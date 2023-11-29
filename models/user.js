@@ -23,9 +23,8 @@ const userSchema = new mongoose.Schema({
     },
     blocked: [
         { 
-            type: String, 
+            type: mongoose.Schema.Types.ObjectID, 
             ref: "User", 
-            required: false 
         }
     ],
 },  { collection: 'Users' });

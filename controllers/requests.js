@@ -22,13 +22,16 @@ exports.followProfile = async (req, res, next) => {
         // Push the current profile to followers list of the profile to be followed if 
         // currently not following
         if(!profileToBeFollowed.followers.includes(req.params.personalID)){
+            // If the current profile is not already following the profile to be followed, we add
+            // an incoming request to the recipient profile
             await profileToBeFollowed.updateOne({
-                $push: {followers: req.params.personalID}
+                $push: {incomingRequests: {request: 0, profileID: req.params.personalID}}
             });
+            
 
-            // Make sure we update the following list of the current profile as well
+            // Make sure that we also add an outgoing request to the current profile
             await currentProfile.updateOne({
-                $push: { followers: req.params.id }
+                $push: {outgoingRequests: {request: 0, profileID: req.params.personalID}}
             });
         }
         else{
@@ -51,7 +54,7 @@ exports.unFollowProfile = async (req, res, next) => {
         // Current Profile
         const currentProfile = await Profile.findOne(req.params.personalID);
 
-        // Push the current profile to followers list of the profile to be followed if 
+        // Pull the current profile from the followers list of the profile to unfollow if 
         // currently not following
         if(!currentProfile.following.includes(req.params.id)){
             await profileBeingFollowed.updateOne({

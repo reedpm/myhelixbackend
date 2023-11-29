@@ -10,7 +10,7 @@ const postSchema = new mongoose.Schema({
         required: true,
     },
     createdBy: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Profile",
         required: true
     },
@@ -19,47 +19,23 @@ const postSchema = new mongoose.Schema({
         required: true,
         max: 200
     },
-    imagesBase64: {
-        type: [String],
+    createDate: {
+        type: Date,
+        required: true
     },
-    likes: {
-        type: Array,
-        default: []
-    },
-    numLikes: {
-        type: Number,
-        default: 0
-    },
-    childPosts: {
-        type: Array,
-        default: []
-    },
-    visibility: {
+    category: {
         type: String,
+        ref: "Pages",
         required: false
     },
-    resharedBy: {
-        type: Array,
-        required: true,
-        default: []
-    },
+    likes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Profile"
+        }
+    ],
+    likeCount: Number,
     /** Convenience vars */
-
-    // Reshare
-    originPost: {
-        type: ObjectID,
-        required: false
-    },
-
-    // Comments
-    immediateParentPost: {
-        type: ObjectID,
-        required: false
-    },
-    rootParentPost: {
-        type: ObjectID,
-        required: false
-    }
 }, {collection: "Posts"});
 
 module.exports = mongoose.model("Posts", postSchema);

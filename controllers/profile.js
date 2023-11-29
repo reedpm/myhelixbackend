@@ -1,4 +1,4 @@
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const Profile = require("../models/profile");
 const User = require("../models/user");
 // const Tag_notification = require("../models/tag_notification");
@@ -14,7 +14,7 @@ const User = require("../models/user");
 exports.getProfile = async (req, res) => {
     try{
         // Retrieve the profile with the passed in profile ID
-        const profile = await Profile.findById(req.params.id, (err, data) => {
+        await Profile.findById(req.params.id, (err, data) => {
             // If we receive an error, send back an error message
             if(err){
                 res.status(403).send({data: err});
@@ -28,7 +28,8 @@ exports.getProfile = async (req, res) => {
     catch(err){
         next(err);
     }
-  };
+};
+// 
 
 // mongoose.Promise = Promise;
 
@@ -36,47 +37,6 @@ exports.getProfile = async (req, res) => {
 // exports.getAllTagNotifications = async (req, res) => {
 //   const tNotifications = await Tag_notification.find();
 //   res.send(tNotifications);
-// };
-
-
-
-// exports.getProfessional = (req, res) => {
-//   Profile.find({ type: "PROFESSIONAL" }, function (err, docs) {
-//     if (err) {
-//       res.status(404).send({ data: err });
-//     } else {
-//       res.status(200).send({ data: docs });
-//     }
-//   })
-// }
-
-// exports.getPersonal = (req, res) => {
-//   Profile.find({ type: "PERSONAL" }, function (err, docs) {
-//     if (err) {
-//       res.status(404).send({ data: err });
-//     } else {
-//       res.status(200).send({ data: docs });
-//     }
-//   })
-// }
-
-// /*
-//  take displayedNamed and return 
-//  corresponding ProfileID
-//  */
-// exports.getProfileID = (req, res) => {
-//   const inputDisplayedName = req.params["displayedName"];
-//   Profile.find({ displayedName: inputDisplayedName }, function (err, docs) {
-//     if (err) {
-//       res.status(404).send({ data: err });
-//     } else {
-//       if (docs.length > 0 && docs[0]._id !== undefined) {       
-//         res.status(200).send({found: docs[0]._id});
-//       } else {
-//         res.status(200).send({ found: "" });
-//       }
-//     }
-//   });
 // };
 
 // /*

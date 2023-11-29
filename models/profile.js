@@ -29,65 +29,46 @@ const profileSchema = new mongoose.Schema({
     },
     followers: [
       {
-        type: String,
+        type: mongoose.Schema.Types.ObjectID,
         ref: "Profile",
-        required: false
       },
     ],
     following: [
       {
-        type: String,
+        type: mongoose.Schema.Types.ObjectID,
         ref: "Profile",
-        required: false
       }
     ],
     incomingRequests: [
       {
-        index: {
-          type: Number,
-          required: false
-        },
-        friendRequest: {
-          type: Number,
-          required: false
-        },
-        dmRequest: {
-          type: Number,
-          required: false
-        },
-        profileID: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: false
-        },
+        request: Number,
+        profileID: mongoose.Schema.Types.ObjectID
       },
     ],
     outgoingRequests: [
       {
-        index: {
-          type: Number,
-          required: false
-        },
-        friendRequest: {
-          type: Number,
-          required: false
-        },
-        dmRequest: {
-          type: Number,
-          required: false
-        },
-        profileID: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: false
-        },
+        request: Number,
+        profileID: mongoose.Schema.Types.ObjectID
       },
     ],
     conversations: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Profile",
-      required: false,
-    }
-  ],
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Conversations",
+      }
+    ],
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Posts"
+      }
+    ],
+    pages: [
+      {
+        type: String,
+        ref: "Pages"
+      }
+    ]
 }, {collection: "Profiles"});
 
 module.exports = mongoose.model("Profile", profileSchema);

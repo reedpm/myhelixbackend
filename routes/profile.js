@@ -1,9 +1,19 @@
+// Route to create a post or get info regarding a post
+const express = require("express");
+const router = express.Router(); // Initialize router
+
+// Import the post controller
+const ProfileController = require("../controllers/profile.js");
+
+// Pass in a profile ID and get the entire Profile Document back in a json
+router.get("/getProfile/:proid", ProfileController.getProfile);
+
 // var express = require("express");
 // var router = express.Router();
 // const ProfileController = require("../controllers/profile");
 
 // router.get("/getAllTagNotifications", ProfileController.getAllTagNotifications);
-// router.get("/getProfile/:proid", ProfileController.getProfile);
+
 // router.get("/getNumFollowers/:proid", ProfileController.getNumFollowers);
 // router.get("/getNumFollowing/:proid", ProfileController.getNumFollowing);
 // router.get("/getAllFollowers/:proid", ProfileController.getAllFollowers);
@@ -46,4 +56,5 @@
 // router.patch("/updateUnreadCount", ProfileController.updateUnreadCount);
 // router.get("/getUnreadMessageCount/:proid", ProfileController.getUnreadMessageCount);
 
-// module.exports = router;
+// Export router for use in app.js
+module.exports = router;

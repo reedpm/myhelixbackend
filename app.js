@@ -10,9 +10,11 @@ const user = require("./routes/user.js");
 const signup = require("./routes/signup.js");
 const signin = require("./routes/signin.js");
 const requests = require("./routes/requests.js");
+const profile = require("./routes/profile.js");
+const posts = require("./routes/posts.js");
 
 // Configure the app
-const app = express()
+const app = express();
 // Configure the port (Default if env file is not found is 3000)
 const port = process.env.PORT || 3000;
 
@@ -54,3 +56,5 @@ app.use("/api/user", user);
 app.use("/api/signup", signup);
 app.use("/api/signin", signin);
 app.use("/api/requests", requests);
+app.use("/api/profile", profile);
+app.use("/api/posts", posts);

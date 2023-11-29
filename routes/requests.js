@@ -7,8 +7,8 @@ const RequestController = require("../controllers/requests.js");
 const { verifyToken } = require("../extern/verifyToken.js");
 
 // Route to handle follow request
-router.put("/follow", verifyToken, RequestController.followProfile);
+router.put("/follow/:id/:personalID", verifyToken, RequestController.followProfile);
 // Route to handle an unfollow request
-router.put("/unfollow", verifyToken, RequestController.unFollowProfile);
+router.put("/unfollow/:id/:personalID", verifyToken, RequestController.unFollowProfile);
 
 module.exports = router;
