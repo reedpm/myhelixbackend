@@ -38,7 +38,7 @@ router.put("/:email", verifyToken, UserController.update);
 // Route get request to user controller
 
 /**
- * @swagger
+ * @openapi
  * /api/user/getUser/{email}:
  *   get:
  *     summary: Retrieves the User doc from the given email

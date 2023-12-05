@@ -15,7 +15,7 @@ const posts = require("./routes/posts.js");
 
 // For API Documentation, we utilize SWAGGER modules
 const swaggerUI = require('swagger-ui-express');
-const swaggerSpec = require('./swagger/swagger.js');
+const swaggerSpec = require('./swagger.js');
 
 // Configure the app
 const app = express();
@@ -50,6 +50,7 @@ app.listen(port, () =>{
 // parse cookies 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 // Routes
 app.use("/api/user", user);

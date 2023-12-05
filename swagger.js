@@ -2,7 +2,7 @@ const swaggerJsDoc = require('swagger-jsdoc');
 
 // This file is only used to create and build the API documentation for better readablity
 const swaggerDefinition = {
-    openapi: '3.0.0',
+    openapi: '3.1.0',
     info: {
         title: 'My Helix REST API',
         version: '1.0.0',
@@ -10,17 +10,15 @@ const swaggerDefinition = {
     },
     servers:[
         {
-            url: "localhost:3000",
+            url: "http://localhost:3000",
             description: 'Development Server'
         }
     ],
 };
 
 const options = {
-    swaggerDefinition,
-    apis: ["../routes/*.js",
-            "../models/*.js"
-        ]
+    definition: swaggerDefinition,
+    apis: ['./routes/*.js', './models/*.js']
 }
 
 const swaggerSpec = swaggerJsDoc(options);
