@@ -11,6 +11,8 @@ const SignUpController = require("../controllers/signup.js");
  * /api/signup:
  *   post:
  *     summary: Retrieves the User doc from the given email
+ *     tags:
+ *       - Signup
  *     requestBody:
  *       description: This JSON object should only include the password and the email to sign up and create a new User
  *       required: true

@@ -11,6 +11,8 @@ const SignInController = require("../controllers/signin.js");
  * /api/signin:
  *   post:
  *     summary: Finds the user given email and password, verifies it, and returns a token containing user information to log the user in
+ *     tags:
+ *       - Signin
  *     requestBody:
  *       description: This JSON object should only include the password and the email to sign in a User
  *       required: true

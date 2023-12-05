@@ -19,6 +19,8 @@ const { verifyToken } = require("../extern/verifyToken.js");
  *           type: string
  *         required: true
  *         description: The email of the User that we want to find
+ *     tags:
+ *       - User
  *     requestBody:
  *       content:
  *         application/json:
@@ -38,13 +40,15 @@ router.put("/:email", verifyToken, UserController.update);
 // Route get request to user controller
 
 /**
- * @openapi
+ * @swagger
  * /api/user/getUser/{email}:
  *   get:
  *     summary: Retrieves the User doc from the given email
  *     responses:
  *       200:
  *         description: Successfully found and returned the new User doc
+ *     tags:
+ *       - User
  *     parameters:
  *       - in: path
  *         name: email
@@ -69,6 +73,8 @@ router.get("/getUser/:email", UserController.getUser);
  *           type: string
  *         required: true
  *         description: The email of the User that we want to find
+ *     tags:
+ *       - User
  *     responses:
  *       '200':
  *         description: Successfully deleted the User from the database

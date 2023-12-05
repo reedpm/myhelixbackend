@@ -11,6 +11,8 @@ const ProfileController = require("../controllers/profile.js");
  * /api/profile/getProfile/{proid}:
  *   get:
  *     summary: Retrieves the Profile doc from the given profile ID
+ *     tags:
+ *       - Profile
  *     parameters:
  *       - in: path
  *         name: proid

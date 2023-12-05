@@ -13,6 +13,8 @@ const { verifyToken } = require("../extern/verifyToken.js");
  * /api/requests/follow/{id}/{profileID}:
  *   put:
  *     summary: Places a Follow request to the profile's incoming requests array
+ *     tags:
+ *       - Requests
  *     parameters:
  *       - in: path
  *         name: id
@@ -38,6 +40,8 @@ router.put("/follow/:id/:profileID", verifyToken, RequestController.followProfil
  * /api/requests/unfollow/{id}/{profileID}:
  *   put:
  *     summary: Unfollows a specific profile
+ *     tags:
+ *       - Requests
  *     parameters:
  *       - in: path
  *         name: id

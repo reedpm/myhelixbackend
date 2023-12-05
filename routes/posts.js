@@ -12,6 +12,8 @@ const PostController = require("../controllers/posts.js");
  * /api/posts/createPost/:
  *   post:
  *     summary: Creates a post
+ *     tags:
+ *       - Post
  *     requestBody:
  *       description: This JSON object should include all the necessary components to create a post
  *       required: true
@@ -45,6 +47,8 @@ router.post("/createPost/", PostController.createPost);
  * /api/posts/delete/{postid}:
  *   delete:
  *     summary: Deletes a post
+ *     tags:
+ *       - Post
  *     parameters:
  *       - in: path
  *         name: postid
@@ -65,6 +69,8 @@ router.delete("/delete/:postid", PostController.deletePost);
  * /api/posts/like/{postid}/{currentid}:
  *   post:
  *     summary: Likes a post (Adds to the like array and increments the like count of a post)
+ *     tags:
+ *       - Post
  *     parameters:
  *       - in: path
  *         name: postid
@@ -91,6 +97,8 @@ router.post("/like/:postid/:currentid", PostController.likePost);
  * /api/posts/unlike/{postid}/{currentid}:
  *   post:
  *     summary: Unlikes a post (Removes a profile from the like array and decrements the like count of a post)
+ *     tags:
+ *       - Post
  *     parameters:
  *       - in: path
  *         name: postid
