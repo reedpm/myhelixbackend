@@ -17,6 +17,7 @@ exports.signup = async (req, res, next) => {
         // Encrypt the password provided in the request
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
+        let bio1, bio2;
         // End of password encryption
 
         // Create new user
@@ -30,6 +31,20 @@ exports.signup = async (req, res, next) => {
         // Wait for the new user to be saved in the database
         await newUser.save();
 
+        // Make sure that the bios exist before making our profile
+        if(req.body.bio1){
+            bio1 = req.body.bio1;
+        }
+        else{
+            bio1 = "";
+        }
+        if(req.body.bio1){
+            bio2 = req.body.bio2;
+        }
+        else{
+            bio2 = "";
+        }
+
         // Create personal profiles
         const personalProfile = new Profile(
             {
@@ -37,10 +52,11 @@ exports.signup = async (req, res, next) => {
                 type: "PERSONAL",
                 user: newUser.email,
                 displayName: req.body.displayName,
-                //profileImage: req.body.profileImage,
-                bio: req.body.bio1
+                profileImage: "",
+                bio: bio1
             }
         );
+        await personalProfile.save();
         // Create public profile
         const publicProfile = new Profile(
             {
@@ -48,14 +64,17 @@ exports.signup = async (req, res, next) => {
                 type: "PUBLIC",
                 user: newUser.email,
                 displayName: req.body.displayName,
-                //profileImage: req.body.profileImage,
-                bio: req.body.bio2
+                profileImage: "",
+                bio: bio2
             }
         );
+        await publicProfile.save();
 
         // Set the newly created profiles as the user's profiles
         newUser.personalProfile = personalProfile._id;
         newUser.publicProfile = publicProfile._id;
+        // Wait for the new user to be saved in the database
+        await newUser.save();
 
         // Once we've created a new user, we want that user to stay logged in
         // The solution is for the backend server to send a cookie back to the client

@@ -8,7 +8,7 @@ const User = require("../models/user");
  */
 exports.getUser = async (req, res, next) => {
   try{
-    const user = await User.findByEmail(req.params.email);
+    const user = await User.find({email: req.params.email});
     res.status(200).json(user);
   }
   catch(err){

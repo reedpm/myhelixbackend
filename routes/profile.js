@@ -31,7 +31,6 @@ router.get("/getProfile/:profileID", ProfileController.getProfile);
 
 
 
-
 // THESE ARE SUGGESTIONS OF API CALLS PULLED FROM THE ORIGINAL APP
 
 // router.get("/getAllTagNotifications", ProfileController.getAllTagNotifications);

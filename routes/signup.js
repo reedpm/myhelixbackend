@@ -25,9 +25,12 @@ const SignUpController = require("../controllers/signup.js");
  *                 type: string
  *               password:
  *                 type: string
+ *               displayName:
+ *                 type: string
  *             required:
  *               - email
  *               - password
+ *               - displayName
  *     responses:
  *       '200':
  *         description: Successfully created a new User doc
