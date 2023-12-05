@@ -14,7 +14,7 @@ const User = require("../models/user");
 exports.getProfile = async (req, res) => {
     try{
         // Retrieve the profile with the passed in profile ID
-        await Profile.findById(req.params.id, (err, data) => {
+        await Profile.findById(req.params.profileID, (err, data) => {
             // If we receive an error, send back an error message
             if(err){
                 res.status(403).send({data: err});

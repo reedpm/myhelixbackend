@@ -1,9 +1,30 @@
+/**
+ * Comment is for swagger documentation / defining the conversation schema
+ * It's worth noting the conversation is basically a direct message thread
+ * @swagger 
+ * components:
+ *   schemas:
+ *     Conversations:
+ *       type: object
+ *       required:
+ *         - _id
+ *         - conversators
+ *         - messages
+ *       properties:
+ *         _id:
+ *           type: object
+ *           description: The MongoDB ID of the conversation
+ *         conversators:
+ *           type: array
+ *           description: The list of users involved in the conversation
+ *         messages:
+ *           type: array
+ *           description: The messages within a single conversation
+ */
+
 // This is the Conversation schema -> Direct Messages
 const mongoose = require("mongoose");
 
-// Here we are creating the schema for individual posts in our database
-// we hope that the field names are pretty self explanatory, but they will be elaborated on 
-// in the documentation
 const conversationSchema = new mongoose.Schema({
     _id: {
         type: mongoose.Schema.Types.ObjectId,

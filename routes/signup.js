@@ -6,6 +6,30 @@ const router = express.Router();    // Initialize router
 const SignUpController = require("../controllers/signup.js");
 
 // Because this is used to create a new user, we need to use the POST method
+/**
+ * @swagger
+ * /api/signup:
+ *   post:
+ *     summary: Retrieves the User doc from the given email
+ *     requestBody:
+ *       description: This JSON object should only include the password and the email to sign up and create a new User
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       '200':
+ *         description: Successfully created a new User doc
+ */
 router.post("", SignUpController.signup);
 
 // Export router for use in app.js

@@ -4,8 +4,8 @@
 const Profile = require("../models/profile.js");
 
 // PARAMS
-// personalID: the current personal ID of the client making the request
-// id: the id of the personal profile being followed or unfollowed
+// profileID: the current profile ID of the client making the request
+// id: the id of the profile profile being followed or unfollowed
 
 
 /**
@@ -17,21 +17,21 @@ exports.followProfile = async (req, res, next) => {
         // Find profile to be followed
         const profileToBeFollowed = await Profile.findOne(req.params.id);
         // Current Profile
-        const currentProfile = await Profile.findOne(req.params.personalID);
+        const currentProfile = await Profile.findOne(req.params.profileID);
 
         // Push the current profile to followers list of the profile to be followed if 
         // currently not following
-        if(!profileToBeFollowed.followers.includes(req.params.personalID)){
+        if(!profileToBeFollowed.followers.includes(req.params.profileID)){
             // If the current profile is not already following the profile to be followed, we add
             // an incoming request to the recipient profile
             await profileToBeFollowed.updateOne({
-                $push: {incomingRequests: {request: 0, profileID: req.params.personalID}}
+                $push: {incomingRequests: {request: 0, profileID: req.params.profileID}}
             });
             
 
             // Make sure that we also add an outgoing request to the current profile
             await currentProfile.updateOne({
-                $push: {outgoingRequests: {request: 0, profileID: req.params.personalID}}
+                $push: {outgoingRequests: {request: 0, profileID: req.params.profileID}}
             });
         }
         else{
@@ -52,7 +52,7 @@ exports.unFollowProfile = async (req, res, next) => {
         // Find profile to be followed
         const profileBeingFollowed = await Profile.findOne(req.params.id);
         // Current Profile
-        const currentProfile = await Profile.findOne(req.params.personalID);
+        const currentProfile = await Profile.findOne(req.params.profileID);
 
         // Pull the current profile from the followers list of the profile to unfollow if 
         // currently not following
@@ -63,7 +63,7 @@ exports.unFollowProfile = async (req, res, next) => {
 
             // Make sure we update the following list of the current profile as well
             await profileBeingFollowed.updateOne({
-                $pull: { followers: req.params.personalID }
+                $pull: { followers: req.params.profileID }
             });
         }
         else{
@@ -74,3 +74,6 @@ exports.unFollowProfile = async (req, res, next) => {
         next(err);
     }
 }
+
+
+// Code to Conversations/Messaging requests should go here

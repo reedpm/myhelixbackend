@@ -6,11 +6,31 @@ const router = express.Router(); // Initialize router
 const ProfileController = require("../controllers/profile.js");
 
 // Pass in a profile ID and get the entire Profile Document back in a json
-router.get("/getProfile/:proid", ProfileController.getProfile);
+/**
+ * @swagger
+ * /api/profile/getProfile/{proid}:
+ *   get:
+ *     summary: Retrieves the Profile doc from the given profile ID
+ *     parameters:
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the profile to find
+ *     responses:
+ *       '200':
+ *         description: Successfully found and returned the Profile doc
+ */
+router.get("/getProfile/:profileID", ProfileController.getProfile);
 
-// var express = require("express");
-// var router = express.Router();
-// const ProfileController = require("../controllers/profile");
+
+
+
+
+
+
+// THESE ARE SUGGESTIONS OF API CALLS PULLED FROM THE ORIGINAL APP
 
 // router.get("/getAllTagNotifications", ProfileController.getAllTagNotifications);
 

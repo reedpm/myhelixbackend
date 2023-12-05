@@ -1,3 +1,32 @@
+/**
+ * Comment is for swagger documentation / defining the User schema
+ * 
+ * @swagger 
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           description: The user-provided email that was used to create an account
+ *         password:
+ *           type: string
+ *           description: The respective hashed password
+ *         personalProfile:
+ *           type: object
+ *           description: The object ID of the personal Profile linked to this user
+ *         publicProfile:
+ *           type: object
+ *           description: The object ID of the public Profile linked to this user
+ *         blocked:
+ *           type: array
+ *           description: An array of user IDs that have been blocked (Any blocks to a profile, regardless of whether it is personal or public, will lead to the entire user being blocked)
+ */
+
 const mongoose = require("mongoose");
 
 // Here we are creating the schema for user information in our database

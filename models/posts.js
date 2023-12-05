@@ -1,3 +1,27 @@
+/**
+ * Comment is for swagger documentation / defining the posts schema
+ * 
+ * @swagger 
+ * components:
+ *   schemas:
+ *     Posts:
+ *       type: object
+ *       required:
+ *         - _id
+ *         - createdBy
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The name/category of a page
+ *         topPosts:
+ *           type: array
+ *           description: An array of the top posts in relation to the page
+ *         recentPosts:
+ *           type: array
+ *           description: An array of the most recent posts in relation to the page
+ */
+
+
 // This is the post schema
 const mongoose = require("mongoose");
 

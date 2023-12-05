@@ -13,6 +13,10 @@ const requests = require("./routes/requests.js");
 const profile = require("./routes/profile.js");
 const posts = require("./routes/posts.js");
 
+// For API Documentation, we utilize SWAGGER modules
+const swaggerUI = require('swagger-ui-express');
+const swaggerSpec = require('./swagger/swagger.js');
+
 // Configure the app
 const app = express();
 // Configure the port (Default if env file is not found is 3000)
@@ -35,10 +39,6 @@ function connectToDatabase(){
     })
 }
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-  })
-
 // Create the server and listen for any connections
 app.listen(port, () =>{
     connectToDatabase(); // Here we call the connect to database function
@@ -58,3 +58,6 @@ app.use("/api/signin", signin);
 app.use("/api/requests", requests);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
+
+// Route to swagger API docs
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec, { explorer: true }));

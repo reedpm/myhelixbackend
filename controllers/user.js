@@ -21,6 +21,7 @@ exports.getUser = async (req, res, next) => {
  * Returns: Updated user information
  */
 exports.update = async (req, res, next) => {
+  // We ensure that the email passed in the path matches the email passed by the verification token
   if(req.params.email === req.user.email){
     try{
       // Here we are finding user by email, and updating its contents with the provided body from the request

@@ -1,3 +1,26 @@
+/**
+ * Comment is for swagger documentation / defining the page schema
+ * 
+ * @swagger 
+ * components:
+ *   schemas:
+ *     Pages:
+ *       type: object
+ *       required:
+ *         - name
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The name/category of a page
+ *         topPosts:
+ *           type: array
+ *           description: An array of the top posts in relation to the page
+ *         recentPosts:
+ *           type: array
+ *           description: An array of the most recent posts in relation to the page
+ */
+
+
 const mongoose = require("mongoose");
 
 // Here we are creating the schema for profiles in our database
