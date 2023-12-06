@@ -1,6 +1,7 @@
 // Controller responsible for creating posts or getting posts
 const mongoose = require("mongoose");
 const Post = require("../models/posts.js");
+const Profile = require("../models/profile.js");
 
 /**
  * Given: JSON body
@@ -18,10 +19,22 @@ exports.createPost = async (req, res, next) => {
                 _id: new mongoose.Types.ObjectId(),
                 createdBy: req.body.profileID,
                 postBody: req.body.content,
-                createDate: new Date(myDate.toISOString()),
-                category: req.body.category
+                createDate: new Date(),
+                category: req.body.category,
+                likeCount: 0
             }
         );
+        
+        // Save the new DB object into the collection
+        await newPost.save();
+
+        // Get the profile that just created the post
+        const profile = Profile.findById(req.body.profileID);
+
+        // Update the profile's post list
+        await profile.updateOne({
+            $push: {posts: newPost._id}
+        });
         
         // Send the new post back to the user
         res.status(200).json(newPost);

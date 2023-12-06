@@ -56,7 +56,9 @@ exports.signup = async (req, res, next) => {
                 bio: bio1
             }
         );
+        // Save the newly created profile into the collection
         await personalProfile.save();
+
         // Create public profile
         const publicProfile = new Profile(
             {
@@ -68,6 +70,7 @@ exports.signup = async (req, res, next) => {
                 bio: bio2
             }
         );
+        // Save the newly created profile into the collection
         await publicProfile.save();
 
         // Set the newly created profiles as the user's profiles

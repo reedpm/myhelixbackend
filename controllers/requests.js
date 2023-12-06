@@ -15,9 +15,9 @@ const Profile = require("../models/profile.js");
 exports.followProfile = async (req, res, next) => {
     try{
         // Find profile to be followed
-        const profileToBeFollowed = await Profile.findOne(req.params.id);
+        const profileToBeFollowed = await Profile.findById(req.params.id);
         // Current Profile
-        const currentProfile = await Profile.findOne(req.params.profileID);
+        const currentProfile = await Profile.findById(req.params.profileID);
 
         // Push the current profile to followers list of the profile to be followed if 
         // currently not following
