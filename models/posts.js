@@ -35,7 +35,7 @@ const postSchema = new mongoose.Schema({
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Profile",
+        ref: "Profiles",
         required: true
     },
     postBody: {
@@ -55,7 +55,7 @@ const postSchema = new mongoose.Schema({
     likes: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Profile"
+            ref: "Profiles"
         }
     ],
     likeCount: Number,

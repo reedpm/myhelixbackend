@@ -1,6 +1,6 @@
 // Import the user schema
 const { handleError } = require("../extern/error");
-const User = require("../models/user");
+const User = require("../models/user.js");
 
 /**
  * Given: user's email
@@ -8,7 +8,7 @@ const User = require("../models/user");
  */
 exports.getUser = async (req, res, next) => {
   try{
-    const user = await User.find({email: req.params.email});
+    const user = await User.findOne({email: req.params.email});
     res.status(200).json(user);
   }
   catch(err){

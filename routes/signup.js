@@ -10,7 +10,7 @@ const SignUpController = require("../controllers/signup.js");
  * @swagger
  * /api/signup:
  *   post:
- *     summary: Retrieves the User doc from the given email
+ *     summary: Signs up a new user
  *     tags:
  *       - Signup
  *     requestBody:

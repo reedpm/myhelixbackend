@@ -42,21 +42,21 @@ const userSchema = new mongoose.Schema({
     },
     personalProfile: {
         type: mongoose.Schema.Types.ObjectID,
-        ref: "Profile",
+        ref: "Profiles",
         required: false,
     },
     publicProfile: {
         type: mongoose.Schema.Types.ObjectID,
-        ref: "Profile",
+        ref: "Profiles",
         required: false,
     },
     blocked: [
         { 
             type: mongoose.Schema.Types.ObjectID, 
-            ref: "User", 
+            ref: "Users", 
         }
     ],
 },  { collection: 'Users' });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Users", userSchema);
 // Structure of User schema will be outlined in the Documentation

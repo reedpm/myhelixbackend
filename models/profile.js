@@ -63,10 +63,11 @@ const profileSchema = new mongoose.Schema({
     type: {
       type: String,
       required: true,
+      enum: ['PERSONAL', 'PUBLIC']
     },
     user: {
       type: String,
-      ref: "User",
+      ref: "Users",
       required: true,
     },
     displayName: {
@@ -84,25 +85,25 @@ const profileSchema = new mongoose.Schema({
     followers: [
       {
         type: mongoose.Schema.Types.ObjectID,
-        ref: "Profile",
-      },
+        ref: "Profiles"
+      }
     ],
     following: [
       {
         type: mongoose.Schema.Types.ObjectID,
-        ref: "Profile",
+        ref: "Profiles"
       }
     ],
     incomingRequests: [
       {
-        request: Number,
-        profileID: mongoose.Schema.Types.ObjectID
-      },
+        type: mongoose.Schema.Types.ObjectID,
+        ref: 'Requests'
+      }
     ],
     outgoingRequests: [
       {
-        request: Number,
-        profileID: mongoose.Schema.Types.ObjectID
+        type: mongoose.Schema.Types.ObjectID,
+        ref: 'Requests'
       },
     ],
     conversations: [
@@ -125,5 +126,5 @@ const profileSchema = new mongoose.Schema({
     ]
 }, {collection: "Profiles"});
 
-module.exports = mongoose.model("Profile", profileSchema);
+module.exports = mongoose.model("Profiles", profileSchema);
 // Structure of Schema is further outlined in the Documentation

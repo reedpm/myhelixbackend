@@ -33,17 +33,23 @@ const conversationSchema = new mongoose.Schema({
     conversators:[
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Profile",
+            ref: "Profiles",
             required: true
         }
     ],
     messages: [
         {
-            message: String,
-            date: Date,
+            message: {
+                type: String,
+                required: true
+            },
+            date: {
+              type: Date,
+              required: true  
+            },
             sender: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Profile",
+                ref: "Profiles",
                 required: true
             }
         }

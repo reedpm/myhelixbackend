@@ -37,8 +37,8 @@ const { verifyToken } = require("../extern/verifyToken.js");
  */
 router.put("/:email", verifyToken, UserController.update);
 
-// Route get request to user controller
 
+// Route get request to user controller
 /**
  * @swagger
  * /api/user/getUser/{email}:
@@ -59,8 +59,8 @@ router.put("/:email", verifyToken, UserController.update);
  */
 router.get("/getUser/:email", UserController.getUser);
 
-// Route to delete user
 
+// Route to delete user
 /**
  * @swagger
  * /api/user/delete/{email}:
