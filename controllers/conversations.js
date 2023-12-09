@@ -19,6 +19,7 @@ exports.sendMessage = async (req, res, next) => {
 
         // Push the message into the conversation msgs array
         convo.messages.push(message);
+        await convo.save();
         
         // Send the new post back to the user
         res.status(200).send("Message sent");
