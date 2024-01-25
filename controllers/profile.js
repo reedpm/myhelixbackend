@@ -11,21 +11,32 @@ const User = require("../models/user");
  * Given: Profile ID
  * Returns: Profile object if it exists
  */
-exports.getProfile = async (req, res) => {
+exports.getProfile = async (req, res, next) => {
     try{
+        // old deprecated code 
         // Retrieve the profile with the passed in profile ID
-        await Profile.findById(req.params.profileID, (err, data) => {
-            // If we receive an error, send back an error message
-            if(err){
-                res.status(403).send({data: err});
-            }
-            // Else send back the data retreived
-            else{
-                res.status(200).send({data: data});
-            }
+        // await Profile.findById(req.params.profileID, (err, data) => {
+        //     // If we receive an error, send back an error message
+        //     if(err){
+        //         res.status(403).send({data: err});
+        //     }
+        //     // Else send back the data retreived
+        //     else{
+        //         res.status(200).send({data: data});
+        //     }
+        // });
+        Profile.findById(req.params.profileID).exec()
+        .then(data => {
+            // If data is found, send it back
+            res.status(200).send({ data: data });
+        })
+        .catch(err => {
+            // If an error occurs, send an error response
+            res.status(403).send({ data: err.message });
         });
     }
     catch(err){
+        console.log("error");
         next(err);
     }
 };
