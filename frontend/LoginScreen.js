@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { dbURI } from './App';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -10,7 +11,7 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/signin', {
+      const response = await fetch(dbURI + 'signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
