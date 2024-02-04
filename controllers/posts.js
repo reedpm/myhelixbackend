@@ -111,3 +111,25 @@ exports.unlikePost = async (req, res, next) => {
         next(err);
     }
 }
+
+/**
+ * Given: Profile ID
+ * Returns: All posts that created by user with given profile ID 
+ */
+exports.getPostsByCreatedBy = async (req, res, next) => {
+    try{
+        Post.find({ createdBy: req.params.profileID }).exec()
+        .then(data => {
+            // If data is found, send it back
+            res.status(200).send({ data: data });
+        })
+        .catch(err => {
+            // If an error occurs, send an error response
+            res.status(403).send({ data: err.message });
+        });
+    }
+    catch(err){
+        console.log("error");
+        next(err);
+    }
+};
