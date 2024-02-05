@@ -118,5 +118,25 @@ router.post("/like/:postid/:currentid", PostController.likePost);
  */
 router.post("/unlike/:postid/:currentid", PostController.unlikePost);
 
+/**
+ * @swagger
+ * /api/posts/getPostsByProfileID/{proid}:
+ *   get:
+ *     summary: Gets all posts that have been created by the given profile ID
+ *     tags:
+ *       - Post
+ *     parameters:
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the profile whose posts are to be retrieved
+ *     responses:
+ *       '200':
+ *         description: Successfully retrieved all posts made by the given a profile ID
+ */
+router.get("/getPostsByProfileID/:profileID", PostController.getPostsByCreatedBy);
+
 // Export router for use in app.js
 module.exports = router;
