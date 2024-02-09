@@ -4,14 +4,15 @@ import {View, Text, TextInput, StyleSheet,
 import {useNavigation} from '@react-navigation/native';
 import {dbURI} from './App';
 
-const LoginScreen = () => {
+const SignupScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const navigation = useNavigation();
 
-  const handleLogin = async () => {
+  const handleSignup = async () => {
     try {
-      const response = await fetch(dbURI + 'signin', {
+      const response = await fetch(dbURI + 'signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -19,18 +20,22 @@ const LoginScreen = () => {
         body: JSON.stringify({
           email: email,
           password: password,
+          displayName: displayName,
         }),
       });
 
       if (!response.ok) {
-        // Handle unsuccessful login
-        Alert.alert('Login Failed', 'Invalid email or password');
+        // Handle unsuccessful signup
+        Alert.alert(
+            'Signup Failed',
+            'An account is already registered with this email.',
+        );
         return;
       }
 
       const data = await response.json();
-      console.log('Login successful!', data);
 
+      // Navigate to the Profile screen upon successful signup
       navigation.navigate('Profile', {
         personalProfile: data.personalProfile,
         publicProfile: data.publicProfile,
@@ -42,6 +47,16 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.label}>Name:</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setDisplayName}
+        value={displayName}
+        placeholder="Enter your name"
+        keyboardType="default"
+        autoCapitalize="none"
+      />
+
       <Text style={styles.label}>Email:</Text>
       <TextInput
         style={styles.input}
@@ -61,8 +76,8 @@ const LoginScreen = () => {
         secureTextEntry
       />
 
-      <Pressable style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <Pressable style={styles.button} onPress={handleSignup}>
+        <Text style={styles.buttonText}>Signup</Text>
       </Pressable>
     </View>
   );
@@ -96,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default SignupScreen;

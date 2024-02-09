@@ -1,4 +1,3 @@
-// ProfileScreen.js
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import {
@@ -33,7 +32,7 @@ const ProfileScreen = ({route}) => {
   const handleEditPress = () => {
     if (editing) {
       // this code runs when the button is clicked to save profile information
-      
+
     }
     setEditing(!editing);
   };
