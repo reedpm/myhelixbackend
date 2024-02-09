@@ -4,6 +4,7 @@ const router = express.Router(); // Initialize router
 
 // Import the post controller
 const ProfileController = require("../controllers/profile.js");
+const { verifyToken } = require("../extern/verifyToken.js");
 
 // Pass in a profile ID and get the entire Profile Document back in a json
 /**
@@ -25,6 +26,45 @@ const ProfileController = require("../controllers/profile.js");
  *         description: Successfully found and returned the Profile doc
  */
 router.get("/getProfile/:profileID", ProfileController.getProfile);
+
+// Route to update profile information
+/**
+ * @swagger
+ * /api/profile/updateProfile/{email}/{proid}:
+ *   put:
+ *     summary: Updates the profile information
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The email of the user that the profile to update belongs to
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The profile id of the profile to be updated
+ *     tags:
+ *       - Profile
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               displayName:
+ *                 type: string
+ *               profileImage:
+ *                 type: string
+ *               bio:
+ *                  type: string
+ *     responses:
+ *       '200':
+ *         description: Successfully updated Profile with the data in the request body and returned the updated Profile doc
+ */
+router.put("/updateProfile/:email/:profileID", ProfileController.update);
 
 
 

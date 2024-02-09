@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Profile = require("../models/profile");
-const User = require("../models/user");
+
 // const Tag_notification = require("../models/tag_notification");
 // 
 // const Request = require("../models/request");
@@ -40,6 +40,37 @@ exports.getProfile = async (req, res, next) => {
         next(err);
     }
 };
+
+/**
+ * Given: profile's information
+ * Returns: Updated profile information
+ */
+exports.update = async (req, res, next) => {
+    // We ensure that the email passed in the path matches the email passed by the verification token
+    console.log(req.params);
+    console.log(req.body);
+    // if(req.params.email === req.profile.email){
+      try{
+        // Here we are finding user by email, and updating its contents with the provided body from the request
+        const updatedProfile = await Profile.findByIdAndUpdate(req.params.profileID, 
+          {
+            $set: req.body,
+          },
+          {
+            new: true, // This simply states that we return the user contents after the update has been completed
+          }
+        );
+  
+        res.status(200).json(updatedProfile);
+      }
+      catch(err){
+        next(err);
+      }
+    // }
+    // else{
+    //   return next(handleError(403, "Invalid Profile update request"));
+    // }
+  }
 // 
 
 // mongoose.Promise = Promise;
