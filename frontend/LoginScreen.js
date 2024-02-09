@@ -1,8 +1,9 @@
 // LoginScreen.js
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { dbURI } from './App';
+import React, {useState} from 'react';
+import {View, Text, TextInput, StyleSheet,
+  Alert, Pressable} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {dbURI} from './App';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -62,9 +63,9 @@ const LoginScreen = () => {
         secureTextEntry
       />
 
-      <Button title="Login" onPress={handleLogin} />
-
-      {/* Add additional UI components or navigation logic as needed */}
+      <Pressable style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Login</Text>
+      </Pressable>
     </View>
   );
 };
@@ -85,6 +86,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 10,
+  },
+  button: {
+    backgroundColor: 'dodgerblue',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 

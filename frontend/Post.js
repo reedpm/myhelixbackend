@@ -1,8 +1,9 @@
 // Post.js
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
+import PropTypes from 'prop-types';
 
-const Post = ({ post }) => {
+const Post = ({post}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.body}>{post.postBody}</Text>
@@ -35,5 +36,14 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
 });
+
+Post.propTypes = {
+  post: PropTypes.shape({
+    postBody: PropTypes.string,
+    createdBy: PropTypes.string,
+    createDate: PropTypes.string,
+    category: PropTypes.string,
+  }).isRequired,
+};
 
 export default Post;
