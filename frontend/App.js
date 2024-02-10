@@ -1,10 +1,10 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './LoginScreen';
-import ProfileScreen from './ProfileScreen';
-import HomeScreen from './HomeScreen';
-import SignupScreen from './SignupScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import HomeScreen from './screens/HomeScreen';
+import SignupScreen from './screens/SignupScreen';
 const Stack = createStackNavigator();
 
 export const dbURI = 'http://localhost:3000/api/';

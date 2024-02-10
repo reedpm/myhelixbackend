@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, StyleSheet,
-  Alert, Pressable} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {dbURI} from './App';
+import React, { useState } from 'react';
+import {
+  View, Text, TextInput, StyleSheet,
+  Alert, Pressable
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { dbURI } from '../App';
 
 const SignupScreen = () => {
   const [email, setEmail] = useState('');
@@ -27,8 +29,8 @@ const SignupScreen = () => {
       if (!response.ok) {
         // Handle unsuccessful signup
         Alert.alert(
-            'Signup Failed',
-            'An account is already registered with this email.',
+          'Signup Failed',
+          'An account is already registered with this email.',
         );
         return;
       }

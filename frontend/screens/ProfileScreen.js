@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   Pressable,
@@ -9,15 +9,15 @@ import {
   View,
   Image,
 } from 'react-native';
-import {Divider} from '@rneui/themed';
-import {dbURI} from './App';
-import Post from './Post';
+import { Divider } from '@rneui/themed';
+import { dbURI } from '../App';
+import Post from '../components/Post';
 import * as ImagePicker from 'react-native-image-picker';
 
 
-const ProfileScreen = ({route}) => {
-  const {personalProfile, publicProfile} = route.params;
-  const [profileData, setProfileData] = useState({...null, type: 'PERSONAL'});
+const ProfileScreen = ({ route }) => {
+  const { personalProfile, publicProfile } = route.params;
+  const [profileData, setProfileData] = useState({ ...null, type: 'PERSONAL' });
   const [currentProfileID, setCurrentProfileID] = useState(personalProfile);
   const [editing, setEditing] = useState(false);
   const [newImage, setNewImage] = useState(null);
@@ -25,7 +25,7 @@ const ProfileScreen = ({route}) => {
 
   const changeCurrentProfileID = () => {
     setCurrentProfileID(currentProfileID === personalProfile ?
-        publicProfile : personalProfile);
+      publicProfile : personalProfile);
   };
 
 
@@ -59,7 +59,7 @@ const ProfileScreen = ({route}) => {
     const fetchProfileData = async () => {
       try {
         const response = await fetch(
-            dbURI + `profile/getProfile/${currentProfileID}`);
+          dbURI + `profile/getProfile/${currentProfileID}`);
         if (!response.ok) {
           console.error('Failed to fetch profile data');
           return;
@@ -69,7 +69,7 @@ const ProfileScreen = ({route}) => {
 
         // Fetch user posts
         const postsResponse = await fetch(
-            dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
+          dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
         if (!postsResponse.ok) {
           console.error('Failed to fetch posts data');
           return;
@@ -158,7 +158,7 @@ const ProfileScreen = ({route}) => {
                 uri: 'https://reactnative.dev/img/tiny_logo.png',
               }}
             /> */}
-            <Pressable style={{color: 'blue'}}onPress={handleImagePicker}>
+            <Pressable style={{ color: 'blue' }} onPress={handleImagePicker}>
               <Image
                 style={styles.image}
                 source={{
@@ -172,20 +172,20 @@ const ProfileScreen = ({route}) => {
               {/* <Text style={styles.label}>User: {profileData?.user}</Text> */}
 
               {editing ? (
-                  <TextInput
-                    style={styles.label}
-                    value={profileData?.displayName}
-                    placeholder="Name"
-                    onChangeText={(text) =>
-                      setProfileData({...profileData, displayName: text})
-                    }
-                  />
-            ) : (
+                <TextInput
+                  style={styles.label}
+                  value={profileData?.displayName}
+                  placeholder="Name"
+                  onChangeText={(text) =>
+                    setProfileData({ ...profileData, displayName: text })
+                  }
+                />
+              ) : (
                 <View style={styles.row}>
                   <Text style={styles.label}>{profileData?.displayName}</Text>
                 </View>
 
-            )}
+              )}
               {editing ? (
                 <View style={styles.row}>
                   <TextInput
@@ -193,16 +193,16 @@ const ProfileScreen = ({route}) => {
                     value={profileData?.bio}
                     placeholder="Bio"
                     onChangeText={(text) =>
-                      setProfileData({...profileData, bio: text})
+                      setProfileData({ ...profileData, bio: text })
                     }
                   />
                 </View>
-            ) : (
+              ) : (
                 <View style={styles.row}>
                   <Text style={styles.label}>{profileData?.bio}</Text>
                 </View>
 
-            )}
+              )}
             </View>
 
           </View>
@@ -220,7 +220,7 @@ const ProfileScreen = ({route}) => {
           <FlatList
             data={profileData.posts}
             keyExtractor={(item) => item._id}
-            renderItem={({item}) => <Post post={item} />}
+            renderItem={({ item }) => <Post post={item} />}
           />
 
           <View style={styles.buttonContainer}>

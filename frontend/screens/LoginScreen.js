@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet,
   Alert, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {dbURI} from './App';
+import {dbURI} from '../App';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
