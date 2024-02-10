@@ -99,11 +99,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 10,
+    borderRadius: 10,
   },
   button: {
-    backgroundColor: 'dodgerblue',
+    backgroundColor: '#344497',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   buttonText: {
     color: 'white',

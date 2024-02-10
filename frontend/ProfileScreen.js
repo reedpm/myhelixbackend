@@ -127,7 +127,7 @@ const ProfileScreen = ({route}) => {
       // cd5c5c, 9D7F95
       backgroundColor: profileData.type === 'PERSONAL' ? '#344497' : '#cd5c5c',
       marginTop: 10,
-      borderRadius: 5,
+      borderRadius: 10,
     },
     buttonText: {
       color: 'white',
@@ -175,6 +175,7 @@ const ProfileScreen = ({route}) => {
                   <TextInput
                     style={styles.label}
                     value={profileData?.displayName}
+                    placeholder="Name"
                     onChangeText={(text) =>
                       setProfileData({...profileData, displayName: text})
                     }
@@ -190,6 +191,7 @@ const ProfileScreen = ({route}) => {
                   <TextInput
                     style={styles.label}
                     value={profileData?.bio}
+                    placeholder="Bio"
                     onChangeText={(text) =>
                       setProfileData({...profileData, bio: text})
                     }
