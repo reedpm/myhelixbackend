@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Pressable,
@@ -9,15 +9,15 @@ import {
   View,
   Image,
 } from 'react-native';
-import { Divider } from '@rneui/themed';
-import { dbURI } from '../App';
+import {Divider} from '@rneui/themed';
+import {dbURI} from '../App';
 import Post from '../components/Post';
 import * as ImagePicker from 'react-native-image-picker';
 
 
-const ProfileScreen = ({ route }) => {
-  const { personalProfile, publicProfile } = route.params;
-  const [profileData, setProfileData] = useState({ ...null, type: 'PERSONAL' });
+const ProfileScreen = ({route}) => {
+  const {personalProfile, publicProfile} = route.params;
+  const [profileData, setProfileData] = useState({...null, type: 'PERSONAL'});
   const [currentProfileID, setCurrentProfileID] = useState(personalProfile);
   const [editing, setEditing] = useState(false);
   const [newImage, setNewImage] = useState(null);
@@ -158,7 +158,7 @@ const ProfileScreen = ({ route }) => {
                 uri: 'https://reactnative.dev/img/tiny_logo.png',
               }}
             /> */}
-            <Pressable style={{ color: 'blue' }} onPress={handleImagePicker}>
+            <Pressable style={{color: 'blue'}} onPress={handleImagePicker}>
               <Image
                 style={styles.image}
                 source={{
@@ -177,7 +177,7 @@ const ProfileScreen = ({ route }) => {
                   value={profileData?.displayName}
                   placeholder="Name"
                   onChangeText={(text) =>
-                    setProfileData({ ...profileData, displayName: text })
+                    setProfileData({...profileData, displayName: text})
                   }
                 />
               ) : (
@@ -193,7 +193,7 @@ const ProfileScreen = ({ route }) => {
                     value={profileData?.bio}
                     placeholder="Bio"
                     onChangeText={(text) =>
-                      setProfileData({ ...profileData, bio: text })
+                      setProfileData({...profileData, bio: text})
                     }
                   />
                 </View>
@@ -220,7 +220,7 @@ const ProfileScreen = ({ route }) => {
           <FlatList
             data={profileData.posts}
             keyExtractor={(item) => item._id}
-            renderItem={({ item }) => <Post post={item} />}
+            renderItem={({item}) => <Post post={item} />}
           />
 
           <View style={styles.buttonContainer}>
