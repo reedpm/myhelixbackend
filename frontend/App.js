@@ -5,6 +5,7 @@ import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import HomeScreen from './screens/HomeScreen';
 import SignupScreen from './screens/SignupScreen';
+import AppTabs from './screens/AppTabs';
 const Stack = createStackNavigator();
 
 export const dbURI = 'http://localhost:3000/api/';
@@ -16,7 +17,8 @@ const App = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+        <Stack.Screen name="AppTabs" component={AppTabs} />
         {/* Add other screens and navigation options as needed */}
       </Stack.Navigator>
     </NavigationContainer>
