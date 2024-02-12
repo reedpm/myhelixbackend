@@ -31,13 +31,16 @@ const LoginScreen = () => {
       const data = await response.json();
       console.log('Login successful!', data);
 
-      navigation.navigate('Profile', {
-        personalProfile: data.personalProfile,
-        publicProfile: data.publicProfile,
-      });
-    } catch (error) {
-      console.error('Error during login:', error);
-    }
+        navigation.navigate('AppTabs', {
+          screen: 'Profile',
+          params: {
+            personalProfile: data.personalProfile,
+            publicProfile: data.publicProfile,
+          },
+        });
+      } catch (error) {
+        console.error('Error during login:', error);
+      }
   };
 
   return (

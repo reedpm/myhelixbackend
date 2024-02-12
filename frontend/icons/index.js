@@ -1,0 +1,10 @@
+export { default as BellFilled } from "./BellFilled";
+export { default as BellOutline } from "./BellOutline";
+export { default as FriendFilled } from "./FriendFilled";
+export { default as FriendsOutline } from "./FriendsOutline";
+export { default as HomeFilled } from "./HomeFilled";
+export { default as HomeOutline } from "./HomeOutline";
+export { default as MailFilled } from "./MailFilled";
+export { default as MailOutline } from "./MailOutline";
+export { default as PlusFilled } from "./PlusFilled";
+export { default as PlusOutline } from "./PlusOutline";
