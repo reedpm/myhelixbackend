@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-import ConnectionsRequestList from './ConnectionsRequestList';
-import ConnectionsList from './ConnectionsList';
+import ConnectionsRequestList from '../components/ConnectionsRequestList';
+import ConnectionsList from '../components/ConnectionsList';
 
 const ConnectionsScreen = () => {
 
