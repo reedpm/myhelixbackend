@@ -2,13 +2,16 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen';
-import ProfileScreen from './screens/ProfileScreen';
 import HomeScreen from './screens/HomeScreen';
 import SignupScreen from './screens/SignupScreen';
 import AppTabs from './screens/AppTabs';
 const Stack = createStackNavigator();
 
 export const dbURI = 'http://localhost:3000/api/';
+export const UI_COLOR = {
+  PERSONAL: '#344497',
+  PUBLIC: '#9D7F95',
+};
 
 const App = () => {
   return (

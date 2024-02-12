@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 import {Divider} from '@rneui/themed';
-import {dbURI} from '../App';
+import {dbURI, UI_COLOR} from '../App';
 import Post from '../components/Post';
 import * as ImagePicker from 'react-native-image-picker';
 
@@ -59,7 +59,7 @@ const ProfileScreen = ({route}) => {
     const fetchProfileData = async () => {
       try {
         const response = await fetch(
-          dbURI + `profile/getProfile/${currentProfileID}`);
+            dbURI + `profile/getProfile/${currentProfileID}`);
         if (!response.ok) {
           console.error('Failed to fetch profile data');
           return;
@@ -69,7 +69,7 @@ const ProfileScreen = ({route}) => {
 
         // Fetch user posts
         const postsResponse = await fetch(
-          dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
+            dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
         if (!postsResponse.ok) {
           console.error('Failed to fetch posts data');
           return;
@@ -125,7 +125,7 @@ const ProfileScreen = ({route}) => {
     },
     button: {
       // cd5c5c, 9D7F95
-      backgroundColor: profileData.type === 'PERSONAL' ? '#344497' : '#cd5c5c',
+      backgroundColor: UI_COLOR[profileData.type],
       marginTop: 10,
       borderRadius: 10,
     },
