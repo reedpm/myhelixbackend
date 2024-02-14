@@ -5,7 +5,7 @@ const express = require("express");
 const router = express.Router(); // Initialize router
 
 // Import the conversation controller
-const conversationController = require("../backend/controllers/conversations.js");
+const conversationController = require("../controllers/conversations.js");
 
 // Use a post method to create a new conversation
 /**

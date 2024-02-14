@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();    // Initialize router
 
 // Import modules
-const UserController = require("../backend/controllers/user.js");
-const { verifyToken } = require("../backend/extern/verifyToken.js");
+const UserController = require("../controllers/user.js");
+const { verifyToken } = require("../extern/verifyToken.js");
 
 // Route to update the user information
 /**

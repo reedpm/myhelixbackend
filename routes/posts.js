@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router(); // Initialize router
 
 // Import the post controller
-const PostController = require("../backend/controllers/posts.js");
+const PostController = require("../controllers/posts.js");
 
 // Use a post method to create the post given the profile ID
 

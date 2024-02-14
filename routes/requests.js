@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();    // Initialize router
 
 // Import the modules
-const RequestController = require("../backend/controllers/requests.js");
-const { verifyToken } = require("../backend/extern/verifyToken.js");
+const RequestController = require("../controllers/requests.js");
+const { verifyToken } = require("../extern/verifyToken.js");
 
 
 /* ========================================================

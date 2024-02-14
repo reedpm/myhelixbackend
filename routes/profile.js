@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router(); // Initialize router
 
 // Import the post controller
-const ProfileController = require("../backend/controllers/profile.js");
-const { verifyToken } = require("../backend/extern/verifyToken.js");
+const ProfileController = require("../controllers/profile.js");
+const { verifyToken } = require("../extern/verifyToken.js");
 
 // Pass in a profile ID and get the entire Profile Document back in a json
 /**

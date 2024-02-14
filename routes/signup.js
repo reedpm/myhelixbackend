@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();    // Initialize router
 
 // Import the signup controller
-const SignUpController = require("../backend/controllers/signup.js");
+const SignUpController = require("../controllers/signup.js");
 
 // Because this is used to create a new user, we need to use the POST method
 /**

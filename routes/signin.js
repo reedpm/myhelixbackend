@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();    // Initialize router
 
 // Import the signin controller
-const SignInController = require("../backend/controllers/signin.js");
+const SignInController = require("../controllers/signin.js");
 
 // Use a post method to find the user
 /**
