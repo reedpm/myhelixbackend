@@ -21,10 +21,10 @@ const Connection = ({ user, onEmailPress, onFaceTimePress }) => {
       </View>
       <View style={styles.icons}>
         <TouchableOpacity onPress={onEmailPress}>
-          <Icon name="envelope" size={24} color="black" />
+          <Icon name="envelope" size={24}  />
         </TouchableOpacity>
         <TouchableOpacity onPress={onFaceTimePress}>
-          <Icon name="video-camera" size={24} color="black" />
+          <Icon name="video-camera" size={24}  />
         </TouchableOpacity>
       </View>
     </View>

@@ -21,10 +21,10 @@ const ConnectionsRequest = ({ user, onAccept, onDelete }) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={onAccept}>
-          <Text>Accept</Text>
+          <Text>accept</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={onDelete}>
-          <Text>Delete</Text>
+          <Text>delete</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -54,17 +54,19 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   button: {
+    marginLeft: 10,
     padding: 10,
     borderRadius: 8,
-    minWidth: 80,
+    minWidth: 120,
+    minHeight: 20,
     alignItems: 'center',
     marginLeft: 20,
   },
   acceptButton: {
-    backgroundColor: 'green',
+    backgroundColor: '#9D7F95',
   },
   deleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#d3d3d3',
   },
   profilePic: {
     width: 50,
