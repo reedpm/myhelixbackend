@@ -28,11 +28,34 @@ const ProfileScreen = ({route}) => {
       publicProfile : personalProfile);
   };
 
+  const updateProfile = async () => {
+    const response = await fetch(dbURI + 'profile/updateProfile/' +
+                    profileData.user + '/' + currentProfileID + '',
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        displayName: profileData.displayName,
+        profileImage: profileData.profileImage,
+        bio: profileData.bio,
+      }),
+    });
+
+    if (!response.ok) {
+      // Handle unsuccessful profile update
+      Alert.alert(
+          'Profile update failed',
+      );
+      return;
+    }
+  };
 
   const handleEditPress = () => {
     if (editing) {
       // this code runs when the button is clicked to save profile information
-
+      updateProfile();
     }
     setEditing(!editing);
   };
@@ -80,6 +103,7 @@ const ProfileScreen = ({route}) => {
         // Update profileData state with posts
         setProfileData({
           ...data.data,
+          profileImage: 'https://reactnative.dev/img/tiny_logo.png',
           posts: postsData.data,
         });
       } catch (error) {
