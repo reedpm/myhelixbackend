@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {colors} from '../styles';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 50,
   },
   button: {
-    backgroundColor: '#344497',
+    backgroundColor: colors.blue,
     padding: 10,
     borderRadius: 10,
   },

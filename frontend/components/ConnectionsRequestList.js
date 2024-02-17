@@ -1,9 +1,9 @@
 // UsersList.js
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import ConnectionsRequest from './ConnectionRequest';
 
-const ConnectionsRequestList = ({ users }) => {
+const ConnectionsRequestList = ({users}) => {
   const handleAccept = (userId) => {
     console.log('Accept clicked for user:', userId);
     // Implement accept logic
@@ -18,7 +18,7 @@ const ConnectionsRequestList = ({ users }) => {
     <FlatList
       data={users}
       keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
+      renderItem={({item}) => (
         <ConnectionsRequest
           user={item}
           onAccept={() => handleAccept(item.id)}

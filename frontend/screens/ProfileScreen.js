@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import {
   FlatList,
@@ -10,29 +9,62 @@ import {
   Image,
 } from 'react-native';
 import {Divider} from '@rneui/themed';
-import {dbURI} from '../App';
 import Post from '../components/Post';
 import * as ImagePicker from 'react-native-image-picker';
+import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 
 
-const ProfileScreen = ({route}) => {
-  const {personalProfile, publicProfile} = route.params;
-  const [profileData, setProfileData] = useState({...null, type: 'PERSONAL'});
-  const [currentProfileID, setCurrentProfileID] = useState(personalProfile);
+const ProfileScreen = () => {
   const [editing, setEditing] = useState(false);
   const [newImage, setNewImage] = useState(null);
+  const [posts, setPosts] = useState(null);
+  const {
+    currentProfileID,
+    setCurrentProfileID,
+    currentProfileData,
+    setCurrentProfileData,
+    userData,
+    UIColor,
+    setUIColor,
+  } = useGlobalContext();
 
 
   const changeCurrentProfileID = () => {
-    setCurrentProfileID(currentProfileID === personalProfile ?
-      publicProfile : personalProfile);
+    setCurrentProfileID(
+      currentProfileID === userData.personalProfile ?
+      userData.publicProfile : userData.personalProfile,
+    );
+    setUIColor(UI_COLOR[currentProfileData.type]);
   };
 
+  const updateProfile = async () => {
+    const response = await fetch(dbURI + 'profile/updateProfile/' +
+                    userData.email + '/' + currentProfileID + '',
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        displayName: currentProfileData.displayName,
+        profileImage: currentProfileData.profileImage,
+        bio: currentProfileData.bio,
+      }),
+    });
+
+    if (!response.ok) {
+      // Handle unsuccessful profile update
+      Alert.alert(
+          'Profile update failed',
+      );
+      return;
+    }
+  };
 
   const handleEditPress = () => {
     if (editing) {
       // this code runs when the button is clicked to save profile information
-
+      updateProfile();
     }
     setEditing(!editing);
   };
@@ -56,38 +88,26 @@ const ProfileScreen = ({route}) => {
 
   useEffect(() => {
     // Fetch profile data using the personalProfile route
-    const fetchProfileData = async () => {
+    const fetchPosts = async () => {
       try {
-        const response = await fetch(
-          dbURI + `profile/getProfile/${currentProfileID}`);
-        if (!response.ok) {
-          console.error('Failed to fetch profile data');
-          return;
-        }
-
-        const data = await response.json();
-
         // Fetch user posts
         const postsResponse = await fetch(
-          dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
+            dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
         if (!postsResponse.ok) {
-          console.error('Failed to fetch posts data');
+          console.error('Failed to fetch posts');
           return;
         }
 
         const postsData = await postsResponse.json();
 
         // Update profileData state with posts
-        setProfileData({
-          ...data.data,
-          posts: postsData.data,
-        });
+        setPosts(postsData.data);
       } catch (error) {
-        console.error('Error during profile data fetch:', error);
+        console.error('Error during posts fetch:', error);
       }
     };
 
-    fetchProfileData();
+    fetchPosts();
   }, [currentProfileID]);
 
   const styles = StyleSheet.create({
@@ -125,7 +145,7 @@ const ProfileScreen = ({route}) => {
     },
     button: {
       // cd5c5c, 9D7F95
-      backgroundColor: profileData.type === 'PERSONAL' ? '#344497' : '#cd5c5c',
+      backgroundColor: UIColor,
       marginTop: 10,
       borderRadius: 10,
     },
@@ -149,7 +169,7 @@ const ProfileScreen = ({route}) => {
 
   return (
     <View style={styles.container}>
-      {profileData ? (
+      {currentProfileData ? (
         <>
           <View style={styles.row}>
             {/* <Image
@@ -166,23 +186,23 @@ const ProfileScreen = ({route}) => {
                 }}
               />
             </Pressable>
-            {/* <Text style={styles.title}>{profileData?.type}</Text> */}
+            {/* <Text style={styles.title}>{currentProfileData?.type}</Text> */}
 
             <View style={styles.column}>
-              {/* <Text style={styles.label}>User: {profileData?.user}</Text> */}
+              {/* <Text style={styles.label}>User: {currentProfileData?.user}</Text> */}
 
               {editing ? (
                 <TextInput
                   style={styles.label}
-                  value={profileData?.displayName}
+                  value={currentProfileData?.displayName}
                   placeholder="Name"
                   onChangeText={(text) =>
-                    setProfileData({...profileData, displayName: text})
+                    setCurrentProfileData({...currentProfileData, displayName: text})
                   }
                 />
               ) : (
                 <View style={styles.row}>
-                  <Text style={styles.label}>{profileData?.displayName}</Text>
+                  <Text style={styles.label}>{currentProfileData?.displayName}</Text>
                 </View>
 
               )}
@@ -190,16 +210,16 @@ const ProfileScreen = ({route}) => {
                 <View style={styles.row}>
                   <TextInput
                     style={styles.label}
-                    value={profileData?.bio}
+                    value={currentProfileData?.bio}
                     placeholder="Bio"
                     onChangeText={(text) =>
-                      setProfileData({...profileData, bio: text})
+                      setCurrentProfileData({...currentProfileData, bio: text})
                     }
                   />
                 </View>
               ) : (
                 <View style={styles.row}>
-                  <Text style={styles.label}>{profileData?.bio}</Text>
+                  <Text style={styles.label}>{currentProfileData?.bio}</Text>
                 </View>
 
               )}
@@ -218,7 +238,7 @@ const ProfileScreen = ({route}) => {
 
 
           <FlatList
-            data={profileData.posts}
+            data={posts}
             keyExtractor={(item) => item._id}
             renderItem={({item}) => <Post post={item} />}
           />
@@ -237,13 +257,5 @@ const ProfileScreen = ({route}) => {
   );
 };
 
-ProfileScreen.propTypes = {
-  route: PropTypes.shape({
-    params: PropTypes.shape({
-      personalProfile: PropTypes.string,
-      publicProfile: PropTypes.string,
-    }),
-  }).isRequired,
-};
 
 export default ProfileScreen;

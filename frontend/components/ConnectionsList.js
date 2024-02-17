@@ -1,8 +1,8 @@
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import Connection from './Connection';
 
-const ConnectionsList = ({ users }) => {
+const ConnectionsList = ({users}) => {
   const handleEmailPress = (userId) => {
     console.log('Email Icon pressed for user:', userId);
     // Implement email logic
@@ -17,7 +17,7 @@ const ConnectionsList = ({ users }) => {
     <FlatList
       data={users}
       keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
+      renderItem={({item}) => (
         <Connection
           user={item}
           onEmailPress={() => handleEmailPress(item.id)}

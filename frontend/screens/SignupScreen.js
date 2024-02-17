@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View, Text, TextInput, StyleSheet,
-  Alert, Pressable
+  Alert, Pressable,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { dbURI } from '../App';
+import {useNavigation} from '@react-navigation/native';
+import {dbURI} from '../App';
+import {colors} from '../styles';
 
 const SignupScreen = () => {
   const [email, setEmail] = useState('');
@@ -29,8 +30,8 @@ const SignupScreen = () => {
       if (!response.ok) {
         // Handle unsuccessful signup
         Alert.alert(
-          'Signup Failed',
-          'An account is already registered with this email.',
+            'Signup Failed',
+            'An account is already registered with this email.',
         );
         return;
       }
@@ -100,14 +101,14 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: colors.gray,
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 10,
     borderRadius: 10,
   },
   button: {
-    backgroundColor: '#344497',
+    backgroundColor: colors.blue,
     padding: 10,
     borderRadius: 10,
   },
