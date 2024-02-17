@@ -7,7 +7,7 @@ export const useGlobalContext = () => useContext(GlobalContext);
 
 export const dbURI = 'http://localhost:3000/api/';
 export const UI_COLOR = {
-  PERSONAL: '#344497',
+  PERSONAL: colors.blue,
   PUBLIC: colors.red, // 9D7F95
 };
 
