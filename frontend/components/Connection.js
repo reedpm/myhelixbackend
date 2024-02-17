@@ -16,7 +16,9 @@ const Connection = ({user, onEmailPress, onFaceTimePress}) => {
       <View style={styles.userContainer}>
         <View style={[styles.profilePic, {backgroundColor}]}>
           {imageSource &&
-           <Image source={user.profilePic} style={styles.profilePic} />}
+           <Image
+             source={user.profilePic}
+             style={styles.profilePic} />}
         </View>
         <Text style={styles.name}>{user.name}</Text>
       </View>

@@ -2,12 +2,15 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet,
   Alert, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {dbURI} from '../App';
+import {useGlobalContext, dbURI} from '../GlobalContext';
+import {colors} from '../styles';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
+  const {setUserData, setCurrentProfileID} = useGlobalContext();
+
 
   const handleLogin = async () => {
     try {
@@ -23,20 +26,23 @@ const LoginScreen = () => {
       });
 
       if (!response.ok) {
+        console.log('response', response);
         // Handle unsuccessful login
         Alert.alert('Login Failed', 'Invalid email or password');
         return;
       }
 
       const data = await response.json();
+      console.log('data in login', data);
       console.log('Login successful!', data);
+
+      // Update global state with user data
+      setUserData({...data});
+      setCurrentProfileID(data.personalProfile);
+
 
       navigation.navigate('AppTabs', {
         screen: 'Profile',
-        params: {
-          personalProfile: data.personalProfile,
-          publicProfile: data.publicProfile,
-        },
       });
     } catch (error) {
       console.error('Error during login:', error);
@@ -83,14 +89,14 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: colors.gray,
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 10,
     borderRadius: 10,
   },
   button: {
-    backgroundColor: '#344497',
+    backgroundColor: colors.blue,
     padding: 10,
     borderRadius: 10,
   },
