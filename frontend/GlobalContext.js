@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useState, useEffect} from 'react';
-import { colors } from './styles';
+import {colors} from './styles';
 
 const GlobalContext = createContext();
 

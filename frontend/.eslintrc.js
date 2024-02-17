@@ -20,6 +20,11 @@ module.exports = {
       },
     },
   ],
+  'ignorePatterns': [
+    'web-build/',
+    'dist/',
+    // Add more patterns if needed
+  ],
   'parserOptions': {
     'ecmaVersion': 'latest',
     'sourceType': 'module',

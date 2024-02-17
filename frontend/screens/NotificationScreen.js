@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
 } from 'react-native';
-import { Divider } from '@rneui/themed';
+import {Divider} from '@rneui/themed';
 
-const NotificationItem = ({ notification }) => {
+const NotificationItem = ({notification}) => {
   // Add more styling and functionality here as needed
   return (
     <View style={styles.notificationItem}>
@@ -23,7 +23,7 @@ const NotificationsScreen = () => {
     // Fetch notifications from the backend
     // Using a static array for now
     setNotifications([
-      { id: '1', text: 'john doe and 4 others liked your post' },
+      {id: '1', text: 'john doe and 4 others liked your post'},
       // ... other notifications
     ]);
     // Effect only runs once on component mount - empty array
@@ -49,7 +49,7 @@ const NotificationsScreen = () => {
       <FlatList
         data={notifications}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <NotificationItem notification={item} />}
+        renderItem={({item}) => <NotificationItem notification={item} />}
         ItemSeparatorComponent={() => <Divider />}
       />
     </View>

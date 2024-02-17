@@ -7,7 +7,19 @@
         "start": "npx expo start",
         "android": "npx expo start --android",
         "ios": "npx expo start --ios",
-        "web": "npx expo start --web"
+        "web": "npx expo start --web",
+        "lint": "eslint . --fix"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.js": [
+            "eslint --fix",
+            "git add"
+        ]
     },
     "dependencies": {
         "@expo/metro-runtime": "~3.1.1",
@@ -30,7 +42,9 @@
         "@babel/core": "^7.20.0",
         "eslint": "^8.56.0",
         "eslint-config-google": "^0.14.0",
-        "eslint-plugin-react": "^7.33.2"
+        "eslint-plugin-react": "^7.33.2",
+        "husky": "^9.0.11",
+        "lint-staged": "^15.2.2"
     },
     "private": true
 }
