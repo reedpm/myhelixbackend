@@ -32,7 +32,7 @@ const ProfileScreen = () => {
   const changeCurrentProfileID = () => {
     setCurrentProfileID(
       currentProfileID === userData.personalProfile ?
-      userData.publicProfile : userData.personalProfile,
+      userData.publicProfiles[0] : userData.personalProfile,
     );
     setUIColor(UI_COLOR[currentProfileData.type]);
   };
