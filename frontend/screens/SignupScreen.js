@@ -38,13 +38,12 @@ const SignupScreen = () => {
 
       const data = await response.json();
 
+      setUserData({...data});
+      setCurrentProfileID(data.personalProfile);
+
       // Navigate to the Profile screen upon successful signup
       navigation.navigate('AppTabs', {
         screen: 'Profile',
-        params: {
-          personalProfile: data.personalProfile,
-          publicProfile: data.publicProfile,
-        },
       });
     } catch (error) {
       console.error('Error during login:', error);
