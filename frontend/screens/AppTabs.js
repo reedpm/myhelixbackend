@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
 import ProfileScreen from './ProfileScreen';
+import PostsScreen from './PostsScreen';
 import EmptyScreen from './EmptyScreen';
 import ConnectionsScreen from './ConnectionsScreen';
 import {HomeOutline, FriendsOutline, PlusOutline, BellOutline, MailOutline} from '../icons/index';
@@ -19,7 +20,7 @@ const AppTabs = () => {
         >
             <Tab.Screen 
                 name="Home" 
-                component={EmptyScreen}
+                component={PostsScreen}
                 options={{
                     tabBarShowLabel: false,
                     tabBarIcon: () => (
