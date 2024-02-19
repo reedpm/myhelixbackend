@@ -286,22 +286,22 @@ exports.update = async (req, res, next) => {
 //   });
 // };
 
-// exports.getIncomingRequests = (req, res) => {
-//   const { proid } = req.params;
-//   Profile.findById(proid, "incomingRequests")
-//     .populate({
-//       path: "incomingRequests",
-//       select: "",
-//       populate: { path: "requestee requester", select: "" },
-//     })
-//     .exec(function (err, docs) {
-//       if (err) {
-//         res.status(404).send({ data: err });
-//       } else {
-//         res.status(200).send({ data: docs });
-//       }
-//     });
-// };
+exports.getIncomingRequests = (req, res) => {
+  const { proid } = req.params;
+  Profile.findById(proid, "incomingRequests")
+    .populate({
+      path: "incomingRequests",
+      select: "",
+      populate: { path: "requestee requester", select: "" },
+    })
+    .exec(function (err, docs) {
+      if (err) {
+        res.status(404).send({ data: err });
+      } else {
+        res.status(200).send({ data: docs });
+      }
+    });
+};
 
 // exports.getOutgoingRequests = (req, res) => {
 //   const { proid } = req.params;

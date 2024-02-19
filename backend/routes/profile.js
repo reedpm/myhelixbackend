@@ -86,10 +86,10 @@ router.put("/updateProfile/:email/:profileID", ProfileController.update);
 // );
 // router.get("/isFollower/:follower/:followee", ProfileController.isFollower);
 // router.get("/getNumFriends/:proid", ProfileController.getNumFriends);
-// router.get(
-//   "/getIncomingRequests/:proid",
-//   ProfileController.getIncomingRequests
-// );
+router.get(
+  "/getIncomingRequests/:profileID",
+  ProfileController.getIncomingRequests
+);
 // router.get(
 //   "/getOutgoingRequests/:proid",
 //   ProfileController.getOutgoingRequests

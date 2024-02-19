@@ -1,21 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import ConnectionsRequestList from '../components/ConnectionsRequestList';
 import ConnectionsList from '../components/ConnectionsList';
+import {dbURI} from '../App';
+import axios from 'axios';
 
 const ConnectionsScreen = () => {
 
-  const users = [
-    { id: 1, name: 'John Doe', profilePic: null},
-    { id: 2, name: 'Jane Smith', profilePic: null},
-    // ... more users
-  ];
 
   const [activeTab, setActiveTab] = useState('tab1');
   const [query, setQuery] = useState('');
-  const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(users);
-  const [filteredRequestUsers, setFilteredRequestUsers] = useState(users);
+  const [connections, setConnections] = useState();
+  const [requests, setRequests] = useState();
+  const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(connections);
+  const [filteredRequestUsers, setFilteredRequestUsers] = useState(requests);
 
+  const getRequests = async() => {
+    try {
+      const response = await axios.get(''); // get request backend
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const getConnections = async() => {
+    try {
+      const response = await axios.get(''); // get request backend
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    const fetchData = async() => {
+      const data = await getRequests();
+      setRequests(data);
+    };
+    fetchData;
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async() => {
+      const data = await getConnections();
+      setConnections(data);
+    };
+    fetchData;
+  }, []);
 
   const renderContent = () => {
     if (activeTab === 'tab1') {
@@ -29,12 +63,12 @@ const ConnectionsScreen = () => {
     setQuery(text);
     const formattedQuery = text.toLowerCase();
     if (activeTab == 'tab1') {
-      const filteredData = users.filter(user => {
+      const filteredData = requests.filter(user => {
         return user.name.toLowerCase().includes(formattedQuery);
       });
       setFilteredRequestUsers(filteredData);
     } else {
-      const filteredData = users.filter(user => {
+      const filteredData = connections.filter(user => {
         return user.name.toLowerCase().includes(formattedQuery);
       });
       setFilteredConnectionUsers(filteredData);
