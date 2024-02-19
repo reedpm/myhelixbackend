@@ -59,6 +59,42 @@ router.put("/:email", verifyToken, UserController.update);
  */
 router.get("/getUser/:email", UserController.getUser);
 
+/**
+ * @swagger
+ * /api/user/addPublicProfile/{email}:
+ *   put:
+ *     summary: Creates a new public Profile for the User with the given email
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The email of the User that we want to add a public profile to
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       description: This JSON object should include the display name, profile picture, and bio of the new profile
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               displayName:
+ *                 type: string
+ *               profileImage:
+ *                 type: string
+ *               bio:
+ *                 type: string
+ *             required:
+ *               - displayName
+ *     responses:
+ *       '200':
+ *         description: Successfully created a new public Profile
+ */
+router.put("/addPublicProfile/:email", UserController.addPublicProfile);
+
 
 // Route to delete user
 /**

@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
+import React from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ProfileScreen from './ProfileScreen';
 import PostsScreen from './PostsScreen';
 import EmptyScreen from './EmptyScreen';
 import ConnectionsScreen from './ConnectionsScreen';
-import {HomeOutline, FriendsOutline, PlusOutline, BellOutline, MailOutline} from '../icons/index';
+import {
+  HomeOutline, FriendsOutline, PlusOutline, BellOutline, MailOutline,
+} from '../icons/index';
+
+import {useGlobalContext} from '../GlobalContext';
 
 const Tab = createBottomTabNavigator();
 
 const AppTabs = () => {
-    const [isPublicMode, setIsPublicMode] = useState(true);
+  const {UIColor} = useGlobalContext();
 
     return(
         <Tab.Navigator
@@ -70,6 +74,8 @@ const AppTabs = () => {
                 />
             </Tab.Navigator>
 
-    );
+  );
 };
+
+
 export default AppTabs;

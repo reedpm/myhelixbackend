@@ -18,8 +18,12 @@ module.exports = {
       'parserOptions': {
         'sourceType': 'script',
       },
-      
     },
+  ],
+  'ignorePatterns': [
+    'web-build/',
+    'dist/',
+    // Add more patterns if needed
   ],
   'parserOptions': {
     'ecmaVersion': 'latest',

@@ -1,6 +1,9 @@
 // Import the user schema
+const { useSyncExternalStore } = require("react");
+const mongoose = require("mongoose");
 const { handleError } = require("../extern/error");
 const User = require("../models/user.js");
+const Profile = require("../models/profile.js");
 
 /**
  * Given: user's email
@@ -42,6 +45,58 @@ exports.update = async (req, res, next) => {
   }
   else{
     return next(handleError(403, "Invalid User update request"));
+  }
+}
+
+/**
+ * Given: user's email
+ * Returns: New public profile info
+ */
+exports.addPublicProfile = async (req, res, next) => {
+  try{
+
+    const user = await User.findOne({email: req.params.email});
+    
+    let profileImage, bio;
+    if(req.body.profileImage){
+      profileImage = req.body.profileImage;
+    }
+    else{
+        profileImage = "";
+    }
+    if(req.body.bio){
+        bio = req.body.bio;
+    }
+    else{
+        bio = "";
+    }
+
+    // Create new public profile
+    const newPublicProfile = new Profile(
+        {
+            _id: new mongoose.Types.ObjectId(),
+            type: "PUBLIC",
+            user: user.email,
+            displayName: req.body.displayName,
+            profileImage: profileImage,
+            bio: bio
+        }
+    );
+    // Save the newly created profile into the collection
+    await newPublicProfile.save();
+
+    // Add the new public profile to the list of the user's public profiles
+    user.publicProfiles.push(newPublicProfile._id);
+
+    // Save the user with the new public profile in the list of profiles
+    await user.save();
+
+    res
+    .status(200)
+    .json(user);
+  }
+  catch(err){
+      next(err); 
   }
 }
 
