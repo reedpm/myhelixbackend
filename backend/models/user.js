@@ -19,9 +19,9 @@
  *         personalProfile:
  *           type: object
  *           description: The object ID of the personal Profile linked to this user
- *         publicProfile:
- *           type: object
- *           description: The object ID of the public Profile linked to this user
+ *         publicProfiles:
+ *           type: array
+ *           description: An array of object IDs of the public Profiles linked to this user
  *         blocked:
  *           type: array
  *           description: An array of user IDs that have been blocked (Any blocks to a profile, regardless of whether it is personal or public, will lead to the entire user being blocked)
@@ -45,11 +45,12 @@ const userSchema = new mongoose.Schema({
         ref: "Profiles",
         required: false,
     },
-    publicProfile: {
-        type: mongoose.Schema.Types.ObjectID,
-        ref: "Profiles",
-        required: false,
-    },
+    publicProfiles: [
+        {
+            type: mongoose.Schema.Types.ObjectID,
+            ref: "Profiles",
+        }
+    ],
     blocked: [
         { 
             type: mongoose.Schema.Types.ObjectID, 

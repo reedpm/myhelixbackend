@@ -1,30 +1,45 @@
 // UserItem.js
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 
 
 const getRandomColor = () => {
   const colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink'];
   return colors[Math.floor(Math.random() * colors.length)];
 };
-const ConnectionsRequest = ({ user, onAccept, onDelete }) => {
-  const imageSource = user.profilePic ? { uri: user.profilePic } : null;
+const ConnectionsRequest = ({user, onAccept, onDelete}) => {
+  const imageSource = user.profilePic ? {uri: user.profilePic} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
 
   return (
     <View style={styles.container}>
       <View style={styles.userContainer}>
-        <View style={[styles.profilePic, { backgroundColor }]}>
-          {imageSource && <Image source={user.profilePic} style={styles.profilePic} />}
+        <View style={[styles.profilePic, {backgroundColor}]}>
+          {
+            imageSource &&
+          <Image source={user.profilePic} style={styles.profilePic} />
+          }
         </View>
         <Text style={styles.name}>{user.name}</Text>
       </View>
       <View style={styles.buttonContainer}>
+<<<<<<< HEAD
         <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={onAccept}>
           <Text>accept</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={onDelete}>
           <Text>delete</Text>
+=======
+        <TouchableOpacity
+          style={[styles.button, styles.acceptButton]}
+          onPress={onAccept}>
+          <Text>Accept</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, styles.deleteButton]}
+          onPress={onDelete}>
+          <Text>Delete</Text>
+>>>>>>> a5c4e58b5b23000cb66853f1924c23ecf9c58acb
         </TouchableOpacity>
       </View>
     </View>

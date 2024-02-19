@@ -7,7 +7,6 @@ import axios from 'axios';
 
 const ConnectionsScreen = () => {
 
-
   const [activeTab, setActiveTab] = useState('tab1');
   const [query, setQuery] = useState('');
   const [connections, setConnections] = useState();
@@ -59,7 +58,7 @@ const ConnectionsScreen = () => {
     }
   };
 
-  const handleSearch = text => {
+  const handleSearch = (text) => {
     setQuery(text);
     const formattedQuery = text.toLowerCase();
     if (activeTab == 'tab1') {
@@ -78,31 +77,31 @@ const ConnectionsScreen = () => {
 
   return (
     <View>
-    <TextInput 
-        style={styles.searchBar} 
-        placeholder="Search Connections" 
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search Connections"
         value={query}
         onChangeText={handleSearch}
       />
-    <View style={styles.container}>
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
-          onPress={() => setActiveTab('tab1')}
-        >
-          <Text>requests</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'tab2' && styles.activeTab]}
-          onPress={() => setActiveTab('tab2')}
-        >
-          <Text>connections</Text>
-        </TouchableOpacity>
+      <View style={styles.container}>
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
+            onPress={() => setActiveTab('tab1')}
+          >
+            <Text>requests</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'tab2' && styles.activeTab]}
+            onPress={() => setActiveTab('tab2')}
+          >
+            <Text>connections</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.content}>
+          {renderContent()}
+        </View>
       </View>
-      <View style={styles.content}>
-        {renderContent()}
-      </View>
-    </View>
     </View>
   );
 };
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     borderColor: '#CCCCCC',
     borderWidth: 1,
     borderRadius: 5,
-    backgroundColor: '#e8e8e8'
+    backgroundColor: '#e8e8e8',
   },
 });
 

@@ -1,23 +1,26 @@
 // UserItem.js
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Importing FontAwesome icons
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const getRandomColor = () => {
-    const colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink'];
-    return colors[Math.floor(Math.random() * colors.length)];
+  const colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink'];
+  return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const Connection = ({ user, onEmailPress, onFaceTimePress }) => {
-  const imageSource = user.profilePic ? { uri: user.profilePic } : null;
+const Connection = ({user, onEmailPress, onFaceTimePress}) => {
+  const imageSource = user.profilePic ? {uri: user.profilePic} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
   return (
     <View style={styles.container}>
-        <View style={styles.userContainer}>
-      <View style={[styles.profilePic, { backgroundColor }]}>
-        {imageSource && <Image source={user.profilePic} style={styles.profilePic} />}
-      </View>
-      <Text style={styles.name}>{user.name}</Text>
+      <View style={styles.userContainer}>
+        <View style={[styles.profilePic, {backgroundColor}]}>
+          {imageSource &&
+           <Image
+             source={user.profilePic}
+             style={styles.profilePic} />}
+        </View>
+        <Text style={styles.name}>{user.name}</Text>
       </View>
       <View style={styles.icons}>
         <TouchableOpacity onPress={onEmailPress}>

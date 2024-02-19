@@ -75,7 +75,7 @@ exports.signup = async (req, res, next) => {
 
         // Set the newly created profiles as the user's profiles
         newUser.personalProfile = personalProfile._id;
-        newUser.publicProfile = publicProfile._id;
+        newUser.publicProfiles = [publicProfile._id];
         // Wait for the new user to be saved in the database
         await newUser.save();
 
