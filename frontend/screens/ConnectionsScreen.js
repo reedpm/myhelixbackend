@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import ConnectionsRequestList from '../components/ConnectionsRequestList';
 import ConnectionsList from '../components/ConnectionsList';
-import {dbURI} from '../App';
+import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 import axios from 'axios';
 
 const ConnectionsScreen = () => {
@@ -14,41 +14,78 @@ const ConnectionsScreen = () => {
   const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(connections);
   const [filteredRequestUsers, setFilteredRequestUsers] = useState(requests);
 
-  const getRequests = async() => {
-    try {
-      const response = await axios.get(''); // get request backend
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const {
+    currentProfileID,
+    setCurrentProfileID,
+    currentProfileData,
+    setCurrentProfileData,
+    userData,
+    UIColor,
+    setUIColor,
+  } = useGlobalContext();
 
-  const getConnections = async() => {
-    try {
-      const response = await axios.get(''); // get request backend
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // await fetch(
+  //   dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
+
+  // const getRequests = async() => {
+  //   try {
+  //     console.log("inside get requests");
+  //     const response = await fetch(dbURI + `profile/getIncomingRequests/${currentProfileID}`); // get request backend
+  //     console.log(response.data);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
+  // const getConnections = async() => {
+  //   try {
+  //     console.log("inside get connections");
+  //     const response = await fetch(dbURI + `profile/getAllFollowing/${currentProfileID}`); // get request backend
+  //     console.log(response.data);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
   useEffect(() => {
+    console.log("HERE1??");
     const fetchData = async() => {
-      const data = await getRequests();
-      setRequests(data);
+      try {
+        const data = await fetch(dbURI + `profile/getIncomingRequests/${currentProfileID}`);
+        console.log(data);
+
+        if (!data.ok) {
+          console.error('Failed to fetch connection requests');
+        }
+        const requestData = await data.json();
+        setRequests(requestData);
+      } catch (error) {
+        console.log('error message for request: ', error);
+      }
     };
-    fetchData;
-  }, []);
+    fetchData();
+  }, [currentProfileID]);
 
   useEffect(() => {
+    console.log("HERE2??");
     const fetchData = async() => {
-      const data = await getConnections();
-      setConnections(data);
+      try {
+        const data = await fetch(dbURI + `profile/getAllFollowing/${currentProfileID}`);
+        console.log("This is data 2 " + data);
+
+        if (!data.ok) {
+          console.error('Failed to fetch connections');
+        }
+        const connectionData = await data.json();
+        setConnections(connectionData);
+      } catch (error) {
+        console.log('error message: ', error);
+      }
     };
-    fetchData;
-  }, []);
+    fetchData();
+  }, [currentProfileID]);
 
   const renderContent = () => {
     if (activeTab === 'tab1') {

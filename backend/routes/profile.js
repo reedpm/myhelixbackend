@@ -78,7 +78,7 @@ router.put("/updateProfile/:email/:profileID", ProfileController.update);
 // router.get("/getNumFollowers/:proid", ProfileController.getNumFollowers);
 // router.get("/getNumFollowing/:proid", ProfileController.getNumFollowing);
 // router.get("/getAllFollowers/:proid", ProfileController.getAllFollowers);
-// router.get("/getAllFollowing/:proid", ProfileController.getAllFollowing);
+router.get("/getAllFollowing/:proid", ProfileController.getAllFollowing);
 // router.get("/getFollowInfo/:proid", ProfileController.getFollowInfo);
 // router.get(
 //   "/getPageOwnerProfiles/:proid",

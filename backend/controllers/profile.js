@@ -191,16 +191,24 @@ exports.update = async (req, res, next) => {
 //  * Given: pid
 //  * Returns: Array of uids of followees
 //  */
-// exports.getAllFollowing = (req, res) => {
-//   const proid = req.params["proid"];
-//   Profile.findById(proid, "following", function (err, data) {
-//     if (err) {
-//       res.status(404).send({ data: err });
-//     } else {
-//       res.status(200).send({ data: data });
-//     }
-//   });
-// };
+exports.getAllFollowing = (req, res) => {
+  try{
+    // });
+    Profile.findById(req.params.profileID).populate('following').exec()
+    .then(data => {
+        // If data is found, send it back
+        res.status(200).send({ data: data});
+    })
+    .catch(err => {
+        // If an error occurs, send an error response
+        res.status(403).send({ data: err.message });
+    });
+  }
+  catch(err){
+      console.log("error");
+      next(err);
+  }
+};
 
 // exports.getConversations = (req, res) => {
 //   const proid = req.params["proid"];
@@ -286,21 +294,24 @@ exports.update = async (req, res, next) => {
 //   });
 // };
 
-exports.getIncomingRequests = (req, res) => {
-  const { proid } = req.params;
-  Profile.findById(proid, "incomingRequests")
-    .populate({
-      path: "incomingRequests",
-      select: "",
-      populate: { path: "requestee requester", select: "" },
+
+exports.getIncomingRequests = (req, res, next) => {
+  try{
+    // });
+    Profile.findById(req.params.profileID).populate('incomingRequests').exec()
+    .then(data => {
+        // If data is found, send it back
+        res.status(200).send({ data: data});
     })
-    .exec(function (err, docs) {
-      if (err) {
-        res.status(404).send({ data: err });
-      } else {
-        res.status(200).send({ data: docs });
-      }
+    .catch(err => {
+        // If an error occurs, send an error response
+        res.status(403).send({ data: err.message });
     });
+}
+catch(err){
+    console.log("error");
+    next(err);
+}
 };
 
 // exports.getOutgoingRequests = (req, res) => {
