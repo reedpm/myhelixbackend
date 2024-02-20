@@ -197,7 +197,7 @@ exports.getAllFollowing = (req, res) => {
     Profile.findById(req.params.profileID).populate('following').exec()
     .then(data => {
         // If data is found, send it back
-        res.status(200).send({ data: data});
+        res.status(200).send({ data: data.following});
     })
     .catch(err => {
         // If an error occurs, send an error response
@@ -301,7 +301,7 @@ exports.getIncomingRequests = (req, res, next) => {
     Profile.findById(req.params.profileID).populate('incomingRequests').exec()
     .then(data => {
         // If data is found, send it back
-        res.status(200).send({ data: data});
+        res.status(200).send({ data: data.incomingRequests});
     })
     .catch(err => {
         // If an error occurs, send an error response

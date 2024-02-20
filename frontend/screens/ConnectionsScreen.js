@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native';
 import ConnectionsRequestList from '../components/ConnectionsRequestList';
 import ConnectionsList from '../components/ConnectionsList';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
-import axios from 'axios';
 
 const ConnectionsScreen = () => {
-
   const [activeTab, setActiveTab] = useState('tab1');
   const [query, setQuery] = useState('');
   const [connections, setConnections] = useState();
@@ -50,42 +48,45 @@ const ConnectionsScreen = () => {
   // }
 
   useEffect(() => {
-    console.log("HERE1??");
-    const fetchData = async() => {
+    console.log('HERE1??');
+    const fetchIncomingRequestData = async () => {
       try {
-        const data = await fetch(dbURI + `profile/getIncomingRequests/${currentProfileID}`);
-        console.log(data);
+        const response = await fetch(dbURI +
+          `profile/getIncomingRequests/${currentProfileID}`);
 
-        if (!data.ok) {
+        if (!response.ok) {
           console.error('Failed to fetch connection requests');
         }
-        const requestData = await data.json();
-        setRequests(requestData);
+        const requestData = await response.json();
+        console.log('request data', requestData.data);
+        setRequests(requestData.data);
       } catch (error) {
         console.log('error message for request: ', error);
       }
     };
-    fetchData();
-  }, [currentProfileID]);
+    fetchIncomingRequestData();
+  }, []);
 
   useEffect(() => {
-    console.log("HERE2??");
-    const fetchData = async() => {
+    console.log('HERE2??');
+    const fetchConnectionsData = async () => {
       try {
-        const data = await fetch(dbURI + `profile/getAllFollowing/${currentProfileID}`);
-        console.log("This is data 2 " + data);
+        const connectionsResponse = await fetch(dbURI +
+          `profile/getAllFollowing/${currentProfileID}`);
 
-        if (!data.ok) {
+        if (!connectionsResponse.ok) {
           console.error('Failed to fetch connections');
         }
-        const connectionData = await data.json();
+        console.log(connectionsResponse.status);
+        const connectionData = await connectionsResponse.json();
+        console.log('connection data ', connectionData);
         setConnections(connectionData);
       } catch (error) {
         console.log('error message: ', error);
       }
     };
-    fetchData();
-  }, [currentProfileID]);
+    fetchConnectionsData();
+  }, []);
 
   const renderContent = () => {
     if (activeTab === 'tab1') {
@@ -99,16 +100,15 @@ const ConnectionsScreen = () => {
     setQuery(text);
     const formattedQuery = text.toLowerCase();
     if (activeTab == 'tab1') {
-      const filteredData = requests.filter(user => {
+      const filteredData = requests.filter((user) => {
         return user.name.toLowerCase().includes(formattedQuery);
       });
       setFilteredRequestUsers(filteredData);
     } else {
-      const filteredData = connections.filter(user => {
+      const filteredData = connections.filter((user) => {
         return user.name.toLowerCase().includes(formattedQuery);
       });
       setFilteredConnectionUsers(filteredData);
-
     }
   };
 
