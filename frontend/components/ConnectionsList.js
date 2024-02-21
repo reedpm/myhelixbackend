@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet, ScrollView, View} from 'react-native';
 import Connection from './Connection';
 
 const ConnectionsList = ({users}) => {
@@ -14,25 +14,25 @@ const ConnectionsList = ({users}) => {
   };
 
   return (
+    <View style={{flex: 1, flexDirection: 'column'}}> 
     <FlatList
+      scrollEnabled={true}
       data={users}
-      // keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item._id.toString()}
       renderItem={({item}) => (
         <Connection
           user={item}
-          onEmailPress={() => handleEmailPress(item.id)}
-          onFaceTimePress={() => handleFaceTimePress(item.id)}
+          onEmailPress={() => handleEmailPress(item._id)}
+          onFaceTimePress={() => handleFaceTimePress(item._id)}
         />
       )}
-      style={styles.list}
     />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  list: {
-    flex: 1,
-  },
+
 });
 
 export default ConnectionsList;

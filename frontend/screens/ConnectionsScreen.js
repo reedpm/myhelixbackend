@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView} from 'react-native';
 import ConnectionsRequestList from '../components/ConnectionsRequestList';
 import ConnectionsList from '../components/ConnectionsList';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
@@ -32,7 +32,6 @@ const ConnectionsScreen = () => {
         if (!response.ok) {
           console.error('Failed to fetch connection requests');
         }
-        console.log('request data before json', response);
         const requestData = await response.json();
         setRequests(requestData.data);
         console.log('request data', requestData.data);
