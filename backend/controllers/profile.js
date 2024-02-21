@@ -309,7 +309,12 @@ exports.getIncomingRequests = async (req, res) => {
     })
     .exec()
     .then(data => {
-      res.status(200).send({ data: data.incomingRequests});
+      // If data is found, send it back
+      var requestProfiles = []
+      for (let i = 0; i < data.incomingRequests.length; i++) {
+        requestProfiles.push(data.incomingRequests[i].sender);
+      }
+      res.status(200).send({ data: requestProfiles});
   })
   .catch(err => {
       // If an error occurs, send an error response
