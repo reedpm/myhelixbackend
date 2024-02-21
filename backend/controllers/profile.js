@@ -198,6 +198,7 @@ exports.getAllFollowing = (req, res) => {
     Profile.findById(req.params.profileID).populate('following').exec()
     .then(data => {
         // If data is found, send it back
+        // console.log(data);
         res.status(200).send({ data: data.following});
     })
     .catch(err => {
@@ -298,9 +299,10 @@ exports.getAllFollowing = (req, res) => {
 exports.getIncomingRequests = async (req, res) => {
   try{
     // });
-    Profile.findById(req.params.profileID).populate('incomingRequests').exec()
+    Profile.findById(req.params.profileID).populate('incomingRequests.sender').exec()
     .then(data => {
       // If data is found, send it back
+      console.log(data);
       var requestProfiles = []
       for (let i = 0; i < data.incomingRequests.length; i++) {
         requestProfiles.push(data.incomingRequests[i].sender);
