@@ -8,7 +8,8 @@ const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 const ConnectionsRequest = ({user, onAccept, onDelete}) => {
-  const imageSource = user.profilePic ? {uri: user.profilePic} : null;
+  console.log("This is user data: " + user);
+  const imageSource = user.profileImage? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
 
   return (
@@ -17,10 +18,10 @@ const ConnectionsRequest = ({user, onAccept, onDelete}) => {
         <View style={[styles.profilePic, {backgroundColor}]}>
           {
             imageSource &&
-          <Image source={user.profilePic} style={styles.profilePic} />
+          <Image source={user.profileImage} style={styles.profilePic} />
           }
         </View>
-        <Text style={styles.name}>{user.name}</Text>
+        <Text style={styles.name}>{user.displayName}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={onAccept}>

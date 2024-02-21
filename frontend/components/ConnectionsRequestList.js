@@ -17,7 +17,7 @@ const ConnectionsRequestList = ({users}) => {
   return (
     <FlatList
       data={users}
-      keyExtractor={(item) => item.id.toString()}
+      // keyExtractor={(item) => item.id.toString()}
       renderItem={({item}) => (
         <ConnectionsRequest
           user={item}

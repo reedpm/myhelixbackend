@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Profile = require("../models/profile");
+const Requests = require("../models/requests");
 
 // const Tag_notification = require("../models/tag_notification");
 // 
@@ -294,23 +295,42 @@ exports.getAllFollowing = (req, res) => {
 //   });
 // };
 
+// exports.getIncomingRequests = async (req, res) => {
+//   try{
+//     // });
+//     Profile.findById(req.params.profileID).populate('incomingRequests').exec()
+//     .then(data => {
+//       // If data is found, send it back
+//       res.status(200).send({ data: data.incomingRequests});
+//   })
+//   .catch(err => {
+//       // If an error occurs, send an error response
+//       res.status(403).send({ data: err.message });
+//   });
+// }
+// catch(err){
+//     console.log("error");
+//     next(err);
+// }
+// };
 
-exports.getIncomingRequests = (req, res, next) => {
+exports.getIncomingRequests = async (req, res) => {
   try{
-    // });
-    Profile.findById(req.params.profileID).populate('incomingRequests').exec()
+    const requestId = await Profile.findById(req.params.profileID).populate('incomingRequests');
+    Requests.findById(requestId).populate('sender').exec()
     .then(data => {
-        // If data is found, send it back
-        res.status(200).send({ data: data.incomingRequests});
+      // If data is found, send it back
+      console.log("what is this data? : " + data);
+      res.status(200).send({ data: data});
     })
     .catch(err => {
         // If an error occurs, send an error response
         res.status(403).send({ data: err.message });
     });
-}
-catch(err){
+} catch(err){
     console.log("error");
     next(err);
+    res.status(403).send({ data: err.message });
 }
 };
 
@@ -659,4 +679,4 @@ catch(err){
 //       },
 //     ],
 //   });
-// };
+// }

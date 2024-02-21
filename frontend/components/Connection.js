@@ -9,7 +9,7 @@ const getRandomColor = () => {
 };
 
 const Connection = ({user, onEmailPress, onFaceTimePress}) => {
-  const imageSource = user.profilePic ? {uri: user.profilePic} : null;
+  const imageSource = user.profileImage ? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
   return (
     <View style={styles.container}>
@@ -17,10 +17,10 @@ const Connection = ({user, onEmailPress, onFaceTimePress}) => {
         <View style={[styles.profilePic, {backgroundColor}]}>
           {imageSource &&
            <Image
-             source={user.profilePic}
+             source={user.profileImage}
              style={styles.profilePic} />}
         </View>
-        <Text style={styles.name}>{user.name}</Text>
+        <Text style={styles.name}>{user.displayName}</Text>
       </View>
       <View style={styles.icons}>
         <TouchableOpacity onPress={onEmailPress}>

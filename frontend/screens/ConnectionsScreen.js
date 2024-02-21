@@ -22,31 +22,6 @@ const ConnectionsScreen = () => {
     setUIColor,
   } = useGlobalContext();
 
-  // await fetch(
-  //   dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
-
-  // const getRequests = async() => {
-  //   try {
-  //     console.log("inside get requests");
-  //     const response = await fetch(dbURI + `profile/getIncomingRequests/${currentProfileID}`); // get request backend
-  //     console.log(response.data);
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
-  // const getConnections = async() => {
-  //   try {
-  //     console.log("inside get connections");
-  //     const response = await fetch(dbURI + `profile/getAllFollowing/${currentProfileID}`); // get request backend
-  //     console.log(response.data);
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
   useEffect(() => {
     console.log('HERE1??');
     const fetchIncomingRequestData = async () => {
@@ -57,9 +32,10 @@ const ConnectionsScreen = () => {
         if (!response.ok) {
           console.error('Failed to fetch connection requests');
         }
+        console.log('request data before json', response);
         const requestData = await response.json();
-        console.log('request data', requestData.data);
         setRequests(requestData.data);
+        console.log('request data' + requestData.data);
       } catch (error) {
         console.log('error message for request: ', error);
       }
@@ -79,8 +55,8 @@ const ConnectionsScreen = () => {
         }
         console.log(connectionsResponse.status);
         const connectionData = await connectionsResponse.json();
-        console.log('connection data ', connectionData);
-        setConnections(connectionData);
+        setConnections(connectionData.data);
+        console.log('connections data ' + connectionData.data);
       } catch (error) {
         console.log('error message: ', error);
       }
@@ -90,9 +66,9 @@ const ConnectionsScreen = () => {
 
   const renderContent = () => {
     if (activeTab === 'tab1') {
-      return <View><Text style={styles.tabTitle}>Connection Requests</Text><ConnectionsRequestList users={filteredRequestUsers} /></View>;
+      return <View><Text style={styles.tabTitle}>Connection Requests</Text><ConnectionsRequestList users={requests} /></View>;
     } else if (activeTab === 'tab2') {
-      return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={filteredConnectionUsers} /></View>;
+      return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={connections} /></View>;
     }
   };
 
