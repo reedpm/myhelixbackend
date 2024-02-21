@@ -295,44 +295,49 @@ exports.getAllFollowing = (req, res) => {
 //   });
 // };
 
-// exports.getIncomingRequests = async (req, res) => {
-//   try{
-//     // });
-//     Profile.findById(req.params.profileID).populate('incomingRequests').exec()
-//     .then(data => {
-//       // If data is found, send it back
-//       res.status(200).send({ data: data.incomingRequests});
-//   })
-//   .catch(err => {
-//       // If an error occurs, send an error response
-//       res.status(403).send({ data: err.message });
-//   });
-// }
-// catch(err){
-//     console.log("error");
-//     next(err);
-// }
-// };
-
 exports.getIncomingRequests = async (req, res) => {
   try{
-    const requestId = await Profile.findById(req.params.profileID).populate('incomingRequests');
-    Requests.findById(requestId).populate('sender').exec()
+    // });
+    Profile.findById(req.params.profileID).populate('incomingRequests').exec()
     .then(data => {
       // If data is found, send it back
-      console.log("what is this data? : " + data);
-      res.status(200).send({ data: data});
-    })
-    .catch(err => {
-        // If an error occurs, send an error response
-        res.status(403).send({ data: err.message });
-    });
-} catch(err){
+      var requestProfiles = []
+      for (let i = 0; i < data.incomingRequests.length; i++) {
+        requestProfiles.push(data.incomingRequests[i].sender);
+      }
+      res.status(200).send({ data: requestProfiles});
+  })
+  .catch(err => {
+      // If an error occurs, send an error response
+      res.status(403).send({ data: err.message });
+  });
+}
+catch(err){
     console.log("error");
     next(err);
-    res.status(403).send({ data: err.message });
 }
 };
+
+// exports.getIncomingRequests = async (req, res) => {
+//   try{
+//     const requestId = await Profile.findById(req.params.profileID).populate('incomingRequests').exec();
+//     console.log("requestId", requestId);
+//     Requests.findById(requestId).populate('sender').exec()
+//     .then(data => {
+//       // If data is found, send it back
+//       console.log("what is this data? : " + data);
+//       res.status(200).send({ data: data});
+//     })
+//     .catch(err => {
+//         // If an error occurs, send an error response
+//         res.status(403).send({ data: err.message });
+//     });
+// } catch(err){
+//     console.log("error");
+//     next(err);
+//     res.status(403).send({ data: err.message });
+// }
+// };
 
 // exports.getOutgoingRequests = (req, res) => {
 //   const { proid } = req.params;

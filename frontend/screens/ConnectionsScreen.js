@@ -35,7 +35,7 @@ const ConnectionsScreen = () => {
         console.log('request data before json', response);
         const requestData = await response.json();
         setRequests(requestData.data);
-        console.log('request data' + requestData.data);
+        console.log('request data', requestData.data);
       } catch (error) {
         console.log('error message for request: ', error);
       }
