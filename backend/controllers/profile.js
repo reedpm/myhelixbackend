@@ -299,15 +299,17 @@ exports.getAllFollowing = (req, res) => {
 exports.getIncomingRequests = async (req, res) => {
   try{
     // });
-    Profile.findById(req.params.profileID).populate('incomingRequests.sender').exec()
-    .then(data => {
-      // If data is found, send it back
-      console.log(data);
-      var requestProfiles = []
-      for (let i = 0; i < data.incomingRequests.length; i++) {
-        requestProfiles.push(data.incomingRequests[i].sender);
+    Profile.findById(req.params.profileID)
+    .populate({
+      path: 'incomingRequests',
+      populate: {
+          path: 'sender',
+          model: 'Profiles'
       }
-      res.status(200).send({ data: requestProfiles});
+    })
+    .exec()
+    .then(data => {
+      res.status(200).send({ data: data.incomingRequests});
   })
   .catch(err => {
       // If an error occurs, send an error response
