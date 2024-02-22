@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet, ScrollView, View} from 'react-native';
+import {FlatList, StyleSheet, StatusBar} from 'react-native';
 import Connection from './Connection';
 
 const ConnectionsList = ({users}) => {
@@ -14,9 +14,8 @@ const ConnectionsList = ({users}) => {
   };
 
   return (
-    <View style={{flex: 1, flexDirection: 'column'}}> 
     <FlatList
-      scrollEnabled={true}
+      nestedScrollEnabled={true}
       data={users}
       keyExtractor={(item) => item._id.toString()}
       renderItem={({item}) => (
@@ -27,12 +26,25 @@ const ConnectionsList = ({users}) => {
         />
       )}
     />
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+  },
+  scrollView: {
+    height: '20%',
+    width: '80%',
+    margin: 20,
+    alignSelf: 'center',
+    padding: 20,
+    borderWidth: 5,
+    borderRadius: 5,
+    borderColor: 'black',
+    backgroundColor: 'lightblue'
+  },
 });
 
 export default ConnectionsList;

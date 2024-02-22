@@ -1,4 +1,3 @@
-// UsersList.js
 import React from 'react';
 import {FlatList, StyleSheet, ScrollView} from 'react-native';
 import ConnectionsRequest from './ConnectionRequest';

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, FlatList, SafeAreaView, Item} from 'react-native';
 import ConnectionsRequestList from '../components/ConnectionsRequestList';
+import Connection from '../components/Connection';
 import ConnectionsList from '../components/ConnectionsList';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 
@@ -11,6 +12,16 @@ const ConnectionsScreen = () => {
   const [requests, setRequests] = useState();
   const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(connections);
   const [filteredRequestUsers, setFilteredRequestUsers] = useState(requests);
+
+  const handleEmailPress = (userId) => {
+    console.log('Email Icon pressed for user:', userId);
+    // Implement email logic
+  };
+
+  const handleFaceTimePress = (userId) => {
+    console.log('FaceTime Icon pressed for user:', userId);
+    // Implement FaceTime logic
+  };
 
   const {
     currentProfileID,
@@ -65,7 +76,12 @@ const ConnectionsScreen = () => {
 
   const renderContent = () => {
     if (activeTab === 'tab1') {
-      return <View><Text style={styles.tabTitle}>Connection Requests</Text><ConnectionsRequestList users={requests} /></View>;
+      return (
+      <View>
+        <Text style={styles.tabTitle}>Connection Requests</Text>
+        <ConnectionsRequestList users={requests} />
+      </View>
+      );
     } else if (activeTab === 'tab2') {
       return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={connections} /></View>;
     }
@@ -88,6 +104,7 @@ const ConnectionsScreen = () => {
   };
 
   return (
+    <ScrollView scrollEnabled={true}>
     <View>
       <TextInput
         style={styles.searchBar}
@@ -110,17 +127,22 @@ const ConnectionsScreen = () => {
             <Text>connections</Text>
           </TouchableOpacity>
         </View>
+        
         <View style={styles.content}>
           {renderContent()}
         </View>
       </View>
     </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  content: {
+    flexGrowth: 1,
+  },
   container: {
-    flex: 1,
+    flexGrowth: 1,
     padding: 30,
   },
   tabContainer: {
