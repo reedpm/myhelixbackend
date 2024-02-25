@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, StyleSheet, ScrollView} from 'react-native';
 import ConnectionsRequest from './ConnectionRequest';
 
-const ConnectionsRequestList = ({users}) => {
+const ConnectionsRequestList = ({users, buttonColor}) => {
   const handleAccept = (userId) => {
     console.log('Accept clicked for user:', userId);
     // Implement accept logic

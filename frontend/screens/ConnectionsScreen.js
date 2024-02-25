@@ -13,15 +13,6 @@ const ConnectionsScreen = () => {
   const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(connections);
   const [filteredRequestUsers, setFilteredRequestUsers] = useState(requests);
 
-  const handleEmailPress = (userId) => {
-    console.log('Email Icon pressed for user:', userId);
-    // Implement email logic
-  };
-
-  const handleFaceTimePress = (userId) => {
-    console.log('FaceTime Icon pressed for user:', userId);
-    // Implement FaceTime logic
-  };
 
   const {
     currentProfileID,
@@ -79,11 +70,11 @@ const ConnectionsScreen = () => {
       return (
       <View>
         <Text style={styles.tabTitle}>Connection Requests</Text>
-        <ConnectionsRequestList users={requests} />
+        <ConnectionsRequestList users={requests}/>
       </View>
       );
     } else if (activeTab === 'tab2') {
-      return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={connections} /></View>;
+      return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={connections}/></View>;
     }
   };
 
@@ -116,7 +107,7 @@ const ConnectionsScreen = () => {
         <View style={styles.tabContainer}>
           <TouchableOpacity
             style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
-            onPress={() => setActiveTab('tab1')}
+            onPress={() => {setActiveTab('tab1'); updateButtonColor()}}
           >
             <Text>requests</Text>
           </TouchableOpacity>
