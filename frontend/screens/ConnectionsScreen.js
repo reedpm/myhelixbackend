@@ -36,7 +36,7 @@ const ConnectionsScreen = () => {
         }
         const requestData = await response.json();
         setRequests(requestData.data);
-        console.log('request data', requestData.data);
+        setFilteredRequestUsers(requestData.data);
       } catch (error) {
         console.log('error message for request: ', error);
       }
@@ -57,7 +57,7 @@ const ConnectionsScreen = () => {
         console.log(connectionsResponse.status);
         const connectionData = await connectionsResponse.json();
         setConnections(connectionData.data);
-        console.log('connections data ' + connectionData.data);
+        setFilteredConnectionUsers(connectionData.data);
       } catch (error) {
         console.log('error message: ', error);
       }
@@ -70,11 +70,11 @@ const ConnectionsScreen = () => {
       return (
       <View>
         <Text style={styles.tabTitle}>Connection Requests</Text>
-        <ConnectionsRequestList users={requests}/>
+        <ConnectionsRequestList users={filteredRequestUsers}/>
       </View>
       );
     } else if (activeTab === 'tab2') {
-      return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={connections}/></View>;
+      return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={filteredConnectionUsers}/></View>;
     }
   };
 
@@ -83,12 +83,12 @@ const ConnectionsScreen = () => {
     const formattedQuery = text.toLowerCase();
     if (activeTab == 'tab1') {
       const filteredData = requests.filter((user) => {
-        return user.name.toLowerCase().includes(formattedQuery);
+        return user.displayName.toLowerCase().includes(formattedQuery);
       });
       setFilteredRequestUsers(filteredData);
     } else {
       const filteredData = connections.filter((user) => {
-        return user.name.toLowerCase().includes(formattedQuery);
+        return user.displayName.toLowerCase().includes(formattedQuery);
       });
       setFilteredConnectionUsers(filteredData);
     }

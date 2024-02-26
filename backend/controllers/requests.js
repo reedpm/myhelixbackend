@@ -82,7 +82,7 @@ exports.getPersonalRequests = async (req, res, next) => {
     
 }
 
-exports.followProfile = async (req, res, next) => { // private profile follow
+exports.followPrivateProfile = async (req, res, next) => { // private profile follow
     try{
         // Find profile to be followed
         const profileToBeFollowed = await Profile.findById(req.params.id);
