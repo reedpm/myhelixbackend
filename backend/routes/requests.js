@@ -35,7 +35,7 @@ const { verifyToken } = require("../extern/verifyToken.js");
  *       '200':
  *         description: Successfully sent a follow request to the profile being followed
  */
-router.post("/follow/:id/:profileID", RequestController.followProfile);
+router.post("/follow/:id/:profileID", RequestController.followPrivateProfile);
 
 // Route to unfollow 
 /**

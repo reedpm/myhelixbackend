@@ -6,6 +6,8 @@ const Conversation = require("../models/conversations.js");
 const mongoose = require("mongoose");
 
 
+
+
 /**
  * IMPORTANT NOTE: Public and Personal profiles should be homogenous.
  *                 That is, public profiles should not be able to 
@@ -21,7 +23,66 @@ const mongoose = require("mongoose");
  * Function: Adds the current user to the list of followers of the user being followed
  * 
  */
-exports.followProfile = async (req, res, next) => {
+
+// exports.fetchConnectionRequests = async(req)
+
+// exports.followPublicProfile = async (req, res, next) => {
+//     try {
+//         // Find profile to be followed
+//         const profileToBeFollowed = await Profile.findById(req.params.id);
+//         // Current Profile
+//         const currentProfile = await Profile.findById(req.params.profileID);
+
+//         if(profileToBeFollowed.type !== currentProfile.type || profileToBeFollowed.type === "PERSONAL") {
+//             return next(handleError(405, "Invalid profile types => No request sent"));
+//         }
+
+//         // Check to see if the profile that needs to be followed already has the sender profile id in its followers list
+//         // If currentProfile is not following the profile to be followed
+//         if(!profileToBeFollowed.followers.includes(currentProfile._id)){
+//             // Create a new request
+//             // const newFollowRequest = new Request(
+//             //     {
+//             //         _id: new mongoose.Types.ObjectId(),
+//             //         requestType: 'FOLLOW',
+//             //         sender: currentProfile._id,
+//             //         recipients: [profileToBeFollowed._id]
+//             //     }
+//             // );
+            
+//             // update follower list automatically if public profile
+//             profileToBeFollowed.followers.push(currentProfile._id);
+//             profileToBeFollowed.save();
+
+//             currentProfile.following.push(profileToBeFollowed._id);
+//             currentProfile.save();
+
+//             res.status(200).send("Successfully Followed");
+
+//             // await newFollowRequest.save();
+
+//             // // We add an incoming request to the recipient profile
+//             // profileToBeFollowed.incomingRequests.push(newFollowRequest);
+//             // await profileToBeFollowed.save();
+
+//             // // We also add the request to the outgoing requests of the current sender profile
+//             // currentProfile.outgoingRequests.push(newFollowRequest);
+//             // await currentProfile.save();
+//         }
+//         else{
+//             // Send back a Conflict response
+//             return next(handleError(403, "Error: Profile does not exist or no further action required"));
+//         }
+//     } catch(err){
+//         next(err);
+//     }
+// }
+
+exports.getPersonalRequests = async (req, res, next) => {
+    
+}
+
+exports.followPrivateProfile = async (req, res, next) => { // private profile follow
     try{
         // Find profile to be followed
         const profileToBeFollowed = await Profile.findById(req.params.id);
@@ -29,7 +90,7 @@ exports.followProfile = async (req, res, next) => {
         const currentProfile = await Profile.findById(req.params.profileID);
 
         // Before we do anything, double check that the types are the same and are PERSONAL PROFILES
-        if(profileToBeFollowed.type !== currentProfile.type){
+        if(profileToBeFollowed.type !== currentProfile.type || profileToBeFollowed.type === "PUBLIC"){
             return next(handleError(405, "Invalid profile types => No request sent"));
         }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet, StatusBar} from 'react-native';
 import Connection from './Connection';
 
 const ConnectionsList = ({users}) => {
@@ -15,23 +15,35 @@ const ConnectionsList = ({users}) => {
 
   return (
     <FlatList
+      nestedScrollEnabled={true}
       data={users}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item._id.toString()}
       renderItem={({item}) => (
         <Connection
           user={item}
-          onEmailPress={() => handleEmailPress(item.id)}
-          onFaceTimePress={() => handleFaceTimePress(item.id)}
+          onEmailPress={() => handleEmailPress(item._id)}
+          onFaceTimePress={() => handleFaceTimePress(item._id)}
         />
       )}
-      style={styles.list}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  list: {
+  container: {
     flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+  },
+  scrollView: {
+    height: '20%',
+    width: '80%',
+    margin: 20,
+    alignSelf: 'center',
+    padding: 20,
+    borderWidth: 5,
+    borderRadius: 5,
+    borderColor: 'black',
+    backgroundColor: 'lightblue'
   },
 });
 

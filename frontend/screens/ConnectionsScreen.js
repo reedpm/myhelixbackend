@@ -1,46 +1,101 @@
-import React, {useState} from 'react';
-import {
-  View, Text, TouchableOpacity, StyleSheet, TextInput,
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, FlatList, SafeAreaView, Item} from 'react-native';
 import ConnectionsRequestList from '../components/ConnectionsRequestList';
+import Connection from '../components/Connection';
 import ConnectionsList from '../components/ConnectionsList';
+import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 
 const ConnectionsScreen = () => {
-  const users = [
-    {id: 1, name: 'John Doe', profilePic: null},
-    {id: 2, name: 'Jane Smith', profilePic: null},
-    // ... more users
-  ];
-
   const [activeTab, setActiveTab] = useState('tab1');
   const [query, setQuery] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [connections, setConnections] = useState();
+  const [requests, setRequests] = useState();
+  const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(connections);
+  const [filteredRequestUsers, setFilteredRequestUsers] = useState(requests);
 
+
+  const {
+    currentProfileID,
+    setCurrentProfileID,
+    currentProfileData,
+    setCurrentProfileData,
+    userData,
+    UIColor,
+    setUIColor,
+  } = useGlobalContext();
+
+  useEffect(() => {
+    console.log('HERE1??');
+    const fetchIncomingRequestData = async () => {
+      try {
+        const response = await fetch(dbURI +
+          `profile/getIncomingRequests/${currentProfileID}`);
+
+        if (!response.ok) {
+          console.error('Failed to fetch connection requests');
+        }
+        const requestData = await response.json();
+        setRequests(requestData.data);
+        setFilteredRequestUsers(requestData.data);
+      } catch (error) {
+        console.log('error message for request: ', error);
+      }
+    };
+    fetchIncomingRequestData();
+  }, []);
+
+  useEffect(() => {
+    console.log('HERE2??');
+    const fetchConnectionsData = async () => {
+      try {
+        const connectionsResponse = await fetch(dbURI +
+          `profile/getAllFollowing/${currentProfileID}`);
+
+        if (!connectionsResponse.ok) {
+          console.error('Failed to fetch connections');
+        }
+        console.log(connectionsResponse.status);
+        const connectionData = await connectionsResponse.json();
+        setConnections(connectionData.data);
+        setFilteredConnectionUsers(connectionData.data);
+      } catch (error) {
+        console.log('error message: ', error);
+      }
+    };
+    fetchConnectionsData();
+  }, []);
 
   const renderContent = () => {
     if (activeTab === 'tab1') {
-      return <View>
+      return (
+      <View>
         <Text style={styles.tabTitle}>Connection Requests</Text>
-        <ConnectionsRequestList users={filteredUsers} />
-      </View>;
+        <ConnectionsRequestList users={filteredRequestUsers}/>
+      </View>
+      );
     } else if (activeTab === 'tab2') {
-      return <View>
-        <Text style={styles.tabTitle}>Your Connections</Text>
-        <ConnectionsList users={filteredUsers} />
-      </View>;
+      return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={filteredConnectionUsers}/></View>;
     }
   };
 
   const handleSearch = (text) => {
     setQuery(text);
     const formattedQuery = text.toLowerCase();
-    const filteredData = users.filter((user) => {
-      return user.name.toLowerCase().includes(formattedQuery);
-    });
-    setFilteredUsers(filteredData);
+    if (activeTab == 'tab1') {
+      const filteredData = requests.filter((user) => {
+        return user.displayName.toLowerCase().includes(formattedQuery);
+      });
+      setFilteredRequestUsers(filteredData);
+    } else {
+      const filteredData = connections.filter((user) => {
+        return user.displayName.toLowerCase().includes(formattedQuery);
+      });
+      setFilteredConnectionUsers(filteredData);
+    }
   };
 
   return (
+    <ScrollView scrollEnabled={true}>
     <View>
       <TextInput
         style={styles.searchBar}
@@ -52,7 +107,7 @@ const ConnectionsScreen = () => {
         <View style={styles.tabContainer}>
           <TouchableOpacity
             style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
-            onPress={() => setActiveTab('tab1')}
+            onPress={() => {setActiveTab('tab1'); updateButtonColor()}}
           >
             <Text>requests</Text>
           </TouchableOpacity>
@@ -63,17 +118,22 @@ const ConnectionsScreen = () => {
             <Text>connections</Text>
           </TouchableOpacity>
         </View>
+        
         <View style={styles.content}>
           {renderContent()}
         </View>
       </View>
     </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  content: {
+    flexGrowth: 1,
+  },
   container: {
-    flex: 1,
+    flexGrowth: 1,
     padding: 30,
   },
   tabContainer: {
@@ -82,12 +142,16 @@ const styles = StyleSheet.create({
   },
   tab: {
     padding: 10,
-    borderWidth: 1,
-    borderColor: 'grey',
     marginRight: 15,
+    width: 120, // Width of the button
+    height: 29, // Height of the button
+    backgroundColor: 'lightgray', // Background color of the button
+    justifyContent: 'center', // Centers the text inside the button
+    alignItems: 'center', // Aligns text to the center horizontally
+    borderRadius: 15, // Rounded edges
   },
   activeTab: {
-    backgroundColor: 'lightblue',
+    backgroundColor: 'gray',
   },
   tabTitle: {
     fontSize: 24,

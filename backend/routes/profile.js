@@ -68,8 +68,48 @@ router.put("/updateProfile/:email/:profileID", ProfileController.update);
 
 
 
+/**
+ * @swagger
+ * /api/profile/getIncomingRequests/{proid}:
+ *   get:
+ *     summary: Gets the ObjectIDs of the profiles that have sent a request to the given profile
+ *     tags:
+ *       - Profile
+ *     parameters:
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The profile id of the profile whose incoming requests we want
+ *     responses:
+ *       '200':
+ *         description: Successfully gets all ObjectIDs of profiles that have sent a request to the given profile
+ */
+router.get(
+  "/getIncomingRequests/:profileID",
+  ProfileController.getIncomingRequests
+);
 
-
+/**
+ * @swagger
+ * /api/profile/getAllFollowing/{proid}:
+ *   get:
+ *     summary: Gets the ObjectIDs of the profiles that the given profile is following
+ *     tags:
+ *       - Profile
+ *     parameters:
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The profile id of the profile whose following we want to get
+ *     responses:
+ *       '200':
+ *         description: Successfully gets all ObjectIDs of profiles that the given profile is following
+ */
+router.get("/getAllFollowing/:profileID", ProfileController.getAllFollowing);
 
 // THESE ARE SUGGESTIONS OF API CALLS PULLED FROM THE ORIGINAL APP
 
@@ -78,7 +118,7 @@ router.put("/updateProfile/:email/:profileID", ProfileController.update);
 // router.get("/getNumFollowers/:proid", ProfileController.getNumFollowers);
 // router.get("/getNumFollowing/:proid", ProfileController.getNumFollowing);
 // router.get("/getAllFollowers/:proid", ProfileController.getAllFollowers);
-// router.get("/getAllFollowing/:proid", ProfileController.getAllFollowing);
+
 // router.get("/getFollowInfo/:proid", ProfileController.getFollowInfo);
 // router.get(
 //   "/getPageOwnerProfiles/:proid",
@@ -86,10 +126,7 @@ router.put("/updateProfile/:email/:profileID", ProfileController.update);
 // );
 // router.get("/isFollower/:follower/:followee", ProfileController.isFollower);
 // router.get("/getNumFriends/:proid", ProfileController.getNumFriends);
-// router.get(
-//   "/getIncomingRequests/:proid",
-//   ProfileController.getIncomingRequests
-// );
+
 // router.get(
 //   "/getOutgoingRequests/:proid",
 //   ProfileController.getOutgoingRequests
