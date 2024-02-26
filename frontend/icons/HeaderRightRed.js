@@ -2,8 +2,9 @@ import * as React from "react";
 const SvgHeaderRightRed = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={157}
-    height={60}
+    width="100%"
+    preserveAspectRatio="none"
+    height={40}
     fill="none"
     {...props}
   >

@@ -2,19 +2,17 @@ import * as React from "react";
 const SvgHeaderLeftBlue = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={157}
-    height={60}
     fill="none"
     {...props}
   >
     <path
-      fill="url(#header_left_blue_svg__a)"
+      fill="url(#headerLeftBlue_svg__a)"
       d="M121.085 20c0 11.046 8.04 20 17.957 20S157 31.046 157 20s-8.04-20-17.958-20-17.957 8.954-17.957 20"
     />
-    <path fill="url(#header_left_blue_svg__b)" d="M138.529 0H0v40h138.529z" />
+    <path fill="url(#headerLeftBlue_svg__b)" d="M138.529 0H0v40h138.529z" />
     <defs>
       <linearGradient
-        id="header_left_blue_svg__a"
+        id="headerLeftBlue_svg__a"
         x1={358.307}
         x2={0}
         y1={19.429}
@@ -25,7 +23,7 @@ const SvgHeaderLeftBlue = (props) => (
         <stop offset={1} stopColor="#334397" />
       </linearGradient>
       <linearGradient
-        id="header_left_blue_svg__b"
+        id="headerLeftBlue_svg__b"
         x1={358.307}
         x2={0}
         y1={19.429}
