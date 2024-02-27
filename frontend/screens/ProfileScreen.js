@@ -80,7 +80,10 @@ const ProfileScreen = () => {
       if (response.didCancel || response.error) {
         console.error('Image picker error:', response.error);
       } else {
-        setNewImage(response.uri);
+        if (response.assets) {
+          setNewImage(response.assets[0].uri);
+          console.log(response.assets[0].uri);
+        }
       }
     });
   };
@@ -172,24 +175,26 @@ const ProfileScreen = () => {
       {currentProfileData ? (
         <>
           <View style={styles.row}>
-            {/* <Image
-              style={styles.image}
-              source={{
-                uri: 'https://reactnative.dev/img/tiny_logo.png',
-              }}
-            /> */}
-            <Pressable style={{color: 'blue'}} onPress={handleImagePicker}>
+            {editing ? (
+              <Pressable onPress={handleImagePicker}>
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: newImage || (currentProfileData.profileImage ?? 'https://reactnative.dev/img/tiny_logo.png'),
+                  }}
+                />
+              </Pressable>
+            ) : (
               <Image
                 style={styles.image}
                 source={{
-                  uri: newImage || 'https://reactnative.dev/img/tiny_logo.png',
+                  uri: currentProfileData.profileImage ?? 'https://reactnative.dev/img/tiny_logo.png',
                 }}
               />
-            </Pressable>
-            {/* <Text style={styles.title}>{currentProfileData?.type}</Text> */}
+            )}
+
 
             <View style={styles.column}>
-              {/* <Text style={styles.label}>User: {currentProfileData?.user}</Text> */}
 
               {editing ? (
                 <TextInput
