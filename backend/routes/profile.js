@@ -111,6 +111,26 @@ router.get(
  */
 router.get("/getAllFollowing/:profileID", ProfileController.getAllFollowing);
 
+/**
+ * @swagger
+ * /api/profile/getAllFollowers/{proid}:
+ *   get:
+ *     summary: Gets the ObjectIDs of the profiles that the given profile is following
+ *     tags:
+ *       - Profile
+ *     parameters:
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The profile id of the profile the followers we want to get
+ *     responses:
+ *       '200':
+ *         description: Successfully gets all ObjectIDs of profiles that the given profile is following
+ */
+router.get("/getAllFollowers/:profileID", ProfileController.getAllFollowers);
+
 // THESE ARE SUGGESTIONS OF API CALLS PULLED FROM THE ORIGINAL APP
 
 // router.get("/getAllTagNotifications", ProfileController.getAllTagNotifications);

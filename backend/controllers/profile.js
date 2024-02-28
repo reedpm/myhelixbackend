@@ -212,6 +212,30 @@ exports.getAllFollowing = (req, res) => {
   }
 };
 
+// /**
+//  * Given: pid
+//  * Returns: Array of uids of followees
+//  */
+exports.getAllFollowers = (req, res) => {
+  try{
+    // });
+    Profile.findById(req.params.profileID).populate('followers').exec()
+    .then(data => {
+        // If data is found, send it back
+        // console.log(data);
+        res.status(200).send({ data: data.followers});
+    })
+    .catch(err => {
+        // If an error occurs, send an error response
+        res.status(403).send({ data: err.message });
+    });
+  }
+  catch(err){
+      console.log("error");
+      next(err);
+  }
+};
+
 // exports.getConversations = (req, res) => {
 //   const proid = req.params["proid"];
 //   Profile.findById(proid, "conversations", function (err, data) {
