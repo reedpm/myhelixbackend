@@ -12,9 +12,12 @@ import {Divider} from '@rneui/themed';
 import Post from '../components/Post';
 import * as ImagePicker from 'react-native-image-picker';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
+import {fonts} from '../styles';
+import {customFonts} from '../CustomFonts';
 
 
 const ProfileScreen = () => {
+  customFonts();
   const [editing, setEditing] = useState(false);
   const [newImage, setNewImage] = useState(null);
   const [posts, setPosts] = useState(null);
@@ -74,6 +77,12 @@ const ProfileScreen = () => {
     const options = {
       mediaType: 'photo',
       quality: 1,
+      title: 'Select profile picture',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      noData: true, // Exclude Base64 data
     };
 
     ImagePicker.launchImageLibrary(options, (response) => {
@@ -81,8 +90,10 @@ const ProfileScreen = () => {
         console.error('Image picker error:', response.error);
       } else {
         if (response.assets) {
+          console.log(response);
           setNewImage(response.assets[0].uri);
           console.log(response.assets[0].uri);
+          console.log(response.assets[0].uri.split(';base64,')[0]);
         }
       }
     });
@@ -124,12 +135,14 @@ const ProfileScreen = () => {
       marginTop: 20,
     },
     title: {
+      fontFamily: fonts.bold,
       fontSize: 24,
       fontWeight: 'bold',
       marginBottom: 16,
       marginTop: 16,
     },
     label: {
+      fontFamily: fonts.regular,
       fontSize: 16,
       marginBottom: 8,
       marginRight: 10,
@@ -153,6 +166,7 @@ const ProfileScreen = () => {
       borderRadius: 10,
     },
     buttonText: {
+      fontFamily: fonts.regular,
       color: 'white',
       fontSize: 16,
       margin: 10,
@@ -198,7 +212,7 @@ const ProfileScreen = () => {
 
               {editing ? (
                 <TextInput
-                  style={styles.label}
+                  style={styles.title}
                   value={currentProfileData?.displayName}
                   placeholder="Name"
                   onChangeText={(text) =>
@@ -207,7 +221,7 @@ const ProfileScreen = () => {
                 />
               ) : (
                 <View style={styles.row}>
-                  <Text style={styles.label}>{currentProfileData?.displayName}</Text>
+                  <Text style={styles.title}>{currentProfileData?.displayName}</Text>
                 </View>
 
               )}

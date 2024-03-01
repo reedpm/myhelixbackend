@@ -2,8 +2,11 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
+import { customFonts } from '../CustomFonts';
+import { fonts } from '../styles';
 
 const Post = ({post}) => {
+  customFonts();
   return (
     <View style={styles.container}>
       <Text style={styles.body}>{post.postBody}</Text>
@@ -26,14 +29,17 @@ const styles = StyleSheet.create({
   body: {
     fontSize: 16,
     marginBottom: 8,
+    fontFamily: fonts.regular,
   },
   createdBy: {
     fontSize: 14,
     color: 'gray',
+    fontFamily: fonts.regular,
   },
   date: {
     fontSize: 14,
     color: 'gray',
+    fontFamily: fonts.regular,
   },
 });
 
