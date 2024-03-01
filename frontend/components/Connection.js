@@ -2,6 +2,8 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { customFonts } from '../CustomFonts';
+import { fonts } from '../styles';
 
 const getRandomColor = () => {
   const colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink'];
@@ -9,6 +11,7 @@ const getRandomColor = () => {
 };
 
 const Connection = ({user, onEmailPress, onFaceTimePress}) => {
+  customFonts();
   const imageSource = user.profileImage ? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
   return (
@@ -52,6 +55,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 12,
     marginLeft: 10,
+    fontFamily: fonts.regular,
   },
   icons: {
     flexDirection: 'row',

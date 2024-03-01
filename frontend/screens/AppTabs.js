@@ -1,6 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import ProfileScreen from './ProfileScreen';
+import NewPostScreen from './NewPostScreen';
 import EmptyScreen from './EmptyScreen';
 import ConnectionsScreen from './ConnectionsScreen';
 import {
@@ -8,6 +8,8 @@ import {
 } from '../icons/index';
 
 import {useGlobalContext} from '../GlobalContext';
+import NotificationsScreen from './NotificationScreen';
+import ProfileScreen from './ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +26,7 @@ const AppTabs = () => {
     >
       <Tab.Screen
         name="Feed"
-        component={EmptyScreen}
+        component={ProfileScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
@@ -33,7 +35,7 @@ const AppTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Friends"
+        name="Connections"
         component={ConnectionsScreen}
         options={{
           tabBarShowLabel: false,
@@ -43,8 +45,8 @@ const AppTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="New Post"
+        component={NewPostScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
@@ -54,7 +56,7 @@ const AppTabs = () => {
       />
       <Tab.Screen
         name="Notifications"
-        component={EmptyScreen}
+        component={NotificationsScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (

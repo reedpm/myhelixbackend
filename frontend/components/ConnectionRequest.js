@@ -1,12 +1,15 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
+import {useGlobalContext} from '../GlobalContext';
+import { fonts } from '../styles';
+import { customFonts } from '../CustomFonts';
 
 const getRandomColor = () => {
   const colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink'];
   return colors[Math.floor(Math.random() * colors.length)];
 };
 const ConnectionsRequest = ({user, onAccept, onDelete}) => {
+  customFonts();
   const {UIColor} = useGlobalContext();
   let acceptButtonStyle;
   let acceptTextStyle;
@@ -62,6 +65,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 12,
     marginLeft: 10,
+    fontFamily: fonts.regular,
   },
   buttonContainer: {
     flexDirection: 'row',

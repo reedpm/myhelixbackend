@@ -4,6 +4,8 @@ import ConnectionsRequestList from '../components/ConnectionsRequestList';
 import Connection from '../components/Connection';
 import ConnectionsList from '../components/ConnectionsList';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
+import {customFonts} from '../CustomFonts';
+import {fonts} from '../styles';
 
 const ConnectionsScreen = () => {
   const [activeTab, setActiveTab] = useState('tab1');
@@ -12,7 +14,7 @@ const ConnectionsScreen = () => {
   const [requests, setRequests] = useState();
   const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(connections);
   const [filteredRequestUsers, setFilteredRequestUsers] = useState(requests);
-
+  customFonts();
 
   const {
     currentProfileID,
@@ -68,10 +70,10 @@ const ConnectionsScreen = () => {
   const renderContent = () => {
     if (activeTab === 'tab1') {
       return (
-      <View>
-        <Text style={styles.tabTitle}>Connection Requests</Text>
-        <ConnectionsRequestList users={filteredRequestUsers}/>
-      </View>
+        <View>
+          <Text style={styles.tabTitle}>Connection Requests</Text>
+          <ConnectionsRequestList users={filteredRequestUsers}/>
+        </View>
       );
     } else if (activeTab === 'tab2') {
       return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={filteredConnectionUsers}/></View>;
@@ -96,34 +98,36 @@ const ConnectionsScreen = () => {
 
   return (
     <ScrollView scrollEnabled={true}>
-    <View>
-      <TextInput
-        style={styles.searchBar}
-        placeholder="Search Connections"
-        value={query}
-        onChangeText={handleSearch}
-      />
-      <View style={styles.container}>
-        <View style={styles.tabContainer}>
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
-            onPress={() => {setActiveTab('tab1'); updateButtonColor()}}
-          >
-            <Text>requests</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'tab2' && styles.activeTab]}
-            onPress={() => setActiveTab('tab2')}
-          >
-            <Text>connections</Text>
-          </TouchableOpacity>
-        </View>
-        
-        <View style={styles.content}>
-          {renderContent()}
+      <View>
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search Connections"
+          value={query}
+          onChangeText={handleSearch}
+        />
+        <View style={styles.container}>
+          <View style={styles.tabContainer}>
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
+              onPress={() => {
+                setActiveTab('tab1'); updateButtonColor();
+              }}
+            >
+              <Text>requests</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'tab2' && styles.activeTab]}
+              onPress={() => setActiveTab('tab2')}
+            >
+              <Text>connections</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.content}>
+            {renderContent()}
+          </View>
         </View>
       </View>
-    </View>
     </ScrollView>
   );
 };
@@ -155,6 +159,7 @@ const styles = StyleSheet.create({
   },
   tabTitle: {
     fontSize: 24,
+    fontFamily: fonts.regular,
     fontWeight: 'bold',
 
   },

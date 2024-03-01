@@ -3,9 +3,12 @@ import {View, Text, TextInput, StyleSheet,
   Alert, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useGlobalContext, dbURI} from '../GlobalContext';
-import {colors} from '../styles';
+import {colors, fonts} from '../styles';
+import {customFonts} from '../CustomFonts';
+
 
 const LoginScreen = () => {
+  customFonts();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
@@ -33,8 +36,6 @@ const LoginScreen = () => {
       }
 
       const data = await response.json();
-      console.log('data in login', data);
-      console.log('Login successful!', data);
 
       // Update global state with user data
       setUserData({...data});
@@ -85,6 +86,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
+    fontFamily: fonts.regular,
     marginBottom: 8,
   },
   input: {
@@ -103,6 +105,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
+    fontFamily: fonts.regular,
   },
 });
 

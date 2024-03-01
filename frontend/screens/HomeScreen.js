@@ -1,11 +1,12 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {colors} from '../styles';
+import {colors, fonts} from '../styles';
+import {customFonts} from '../CustomFonts';
 
 const HomeScreen = () => {
+  customFonts();
   const navigation = useNavigation();
-
   const handleSignup = async () => {
     navigation.navigate('Signup');
   };
@@ -13,6 +14,7 @@ const HomeScreen = () => {
   const handleLogin = async () => {
     navigation.navigate('Login');
   };
+
 
   return (
     <View style={styles.container}>
@@ -44,6 +46,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
+    fontFamily: fonts.regular,
   },
 });
 

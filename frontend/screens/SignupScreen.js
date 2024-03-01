@@ -5,13 +5,16 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {dbURI} from '../App';
-import {colors} from '../styles';
+import {colors, fonts} from '../styles';
+import {customFonts} from '../CustomFonts';
+
 
 const SignupScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const navigation = useNavigation();
+  customFonts();
 
   const handleSignup = async () => {
     try {
@@ -96,6 +99,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
+    fontFamily: fonts.regular,
     marginBottom: 8,
   },
   input: {
@@ -114,6 +118,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
+    fontFamily: fonts.regular,
   },
 });
 

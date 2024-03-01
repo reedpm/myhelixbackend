@@ -11,3 +11,9 @@ export const colors = {
   darkOrange: '#BB7C43',
   lightGray: '#B4B4B4',
 };
+
+
+export const fonts = {
+  regular: 'LeagueSpartan-Regular',
+  bold: 'LeageSpartan-Bold',
+};
