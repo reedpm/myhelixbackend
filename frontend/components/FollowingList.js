@@ -1,22 +1,17 @@
 import React from 'react';
 import {FlatList, StyleSheet, StatusBar} from 'react-native';
-import Connection from './Connection';
+import Following from './Following';
 
-const ConnectionsList = ({users}) => {
-  const handleEmailPress = (userId) => {
-    console.log('Email Icon pressed for user:', userId);
-    // Implement email logic
-  };
+const FollowingList = ({users}) => {
 
   return (
     <FlatList
       nestedScrollEnabled={true}
       data={users}
-      keyExtractor={(item) => item._id.toString()}
+      keyExtractor={(item) => item._id}
       renderItem={({item}) => (
-        <Connection
+        <Following
           user={item}
-          onEmailPress={() => handleEmailPress(item._id)}
         />
       )}
     />
@@ -41,4 +36,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConnectionsList;
+export default FollowingList;

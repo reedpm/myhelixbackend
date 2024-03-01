@@ -1,27 +1,16 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import {useGlobalContext} from '../GlobalContext';
-import { fonts } from '../styles';
-import { customFonts } from '../CustomFonts';
+import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 
 const getRandomColor = () => {
   const colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink'];
   return colors[Math.floor(Math.random() * colors.length)];
 };
-const ConnectionsRequest = ({user, onAccept, onDelete}) => {
-  customFonts();
+const Following = ({user}) => {
   const {UIColor} = useGlobalContext();
-  let acceptButtonStyle;
-  let acceptTextStyle;
-  if (UIColor === '#344497') {
-    acceptButtonStyle = styles.acceptButtonPrivate;
-    acceptTextStyle = styles.privateButtonText;
-  } else {
-    acceptButtonStyle = styles.acceptButtonPublic;
-    acceptTextStyle = styles.publicButtonText;
-  }
+
   console.log("This is user data: " + user);
-  const imageSource = user.sender.profileImage? {uri: user.sender.profileImage} : null;
+  const imageSource = user.profileImage? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
 
   return (
@@ -30,19 +19,19 @@ const ConnectionsRequest = ({user, onAccept, onDelete}) => {
         <View style={[styles.profilePic, {backgroundColor}]}>
           {
             imageSource &&
-          <Image source={user.sender.profileImage} style={styles.profilePic} />
+          <Image source={user.profileImage} style={styles.profilePic} />
           }
         </View>
-        <Text style={styles.name}>{user.sender.displayName}</Text>
+        <Text style={styles.name}>{user.displayName}</Text>
       </View>
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, acceptButtonStyle]} onPress={onAccept}>
           <Text style={acceptTextStyle}>accept</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={onDelete}>
           <Text>delete</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -65,7 +54,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 12,
     marginLeft: 10,
-    fontFamily: fonts.regular,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -103,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConnectionsRequest;
+export default Following;

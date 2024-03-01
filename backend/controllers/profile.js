@@ -74,6 +74,49 @@ exports.update = async (req, res, next) => {
   }
 // 
 
+/**
+ * Given: Profile ID
+ * Returns: List of all Personal profiles
+ */
+exports.getAllPrivateProfiles = async (req, res, next) => {
+  try{
+    const personalProfiles = await Profile.find({ type: 'PERSONAL' });
+    console.log("###  all private users: " + personalProfiles);
+    res.status(200).send({ data: personalProfiles});
+      // Profile.find({type: 'PERSONAL'}).exec()
+      // .then(data => {
+      //   // If data is found, send it back
+      //   console.log("### data: " + data);
+      //   res.status(200).send({ data: data });
+      // })
+      // .catch(err => {
+      //   // If an error occurs, send an error response
+      //   res.status(403).send({ data: err.message });
+      // });
+  }
+  catch(err){
+      console.log("error");
+      next(err);
+  }
+};
+
+/**
+ * Given: Profile ID
+ * Returns: Profile object if it exists
+ */
+exports.getAllPublicProfiles = async (req, res, next) => {
+  try{
+    const publicProfiles = await Profile.find({ type: 'PUBLIC' });
+    console.log("###  all public users: " + publicProfiles);
+    res.status(200).send({ data: publicProfiles});
+  }
+  catch(err){
+      console.log("error");
+      next(err);
+  }
+};
+
+
 // mongoose.Promise = Promise;
 
 // // get all tagNotifications
@@ -212,6 +255,30 @@ exports.getAllFollowing = (req, res) => {
   }
 };
 
+// /**
+//  * Given: pid
+//  * Returns: Array of uids of followees
+//  */
+exports.getAllFollowers = (req, res) => {
+  try{
+    // });
+    Profile.findById(req.params.profileID).populate('followers').exec()
+    .then(data => {
+        // If data is found, send it back
+        // console.log(data);
+        res.status(200).send({ data: data.followers});
+    })
+    .catch(err => {
+        // If an error occurs, send an error response
+        res.status(403).send({ data: err.message });
+    });
+  }
+  catch(err){
+      console.log("error");
+      next(err);
+  }
+};
+
 // exports.getConversations = (req, res) => {
 //   const proid = req.params["proid"];
 //   Profile.findById(proid, "conversations", function (err, data) {
@@ -309,12 +376,15 @@ exports.getIncomingRequests = async (req, res) => {
     })
     .exec()
     .then(data => {
+      console.log("### " + data);
       // If data is found, send it back
       var requestProfiles = []
       for (let i = 0; i < data.incomingRequests.length; i++) {
-        requestProfiles.push(data.incomingRequests[i].sender);
+        requestProfiles.push({sender: data.incomingRequests[i].sender, requestId: data.incomingRequests[i]._id});
+        console.log("$$$" + requestProfiles[i]);
       }
       res.status(200).send({ data: requestProfiles});
+      console.log("*** " + requestProfiles);
   })
   .catch(err => {
       // If an error occurs, send an error response

@@ -27,6 +27,48 @@ const { verifyToken } = require("../extern/verifyToken.js");
  */
 router.get("/getProfile/:profileID", ProfileController.getProfile);
 
+// get back the entire Profile Document back in a json
+/**
+ * @swagger
+ * /api/profile/getAllPrivateProfiles:
+ *   get:
+ *     summary: Retrieves the Profile doc from the given profile ID
+ *     tags:
+ *       - Profile
+ *     parameters:
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the profile to find
+ *     responses:
+ *       '200':
+ *         description: Successfully found and returned the Profile doc
+ */
+router.get("/getAllPrivateProfiles", ProfileController.getAllPrivateProfiles);
+
+// get back the entire Profile Document back in a json
+/**
+ * @swagger
+ * /api/profile/getAllPublicProfiles:
+ *   get:
+ *     summary: Retrieves the Profile doc from the given profile ID
+ *     tags:
+ *       - Profile
+ *     parameters:
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the profile to find
+ *     responses:
+ *       '200':
+ *         description: Successfully found and returned the Profile doc
+ */
+router.get("/getAllPublicProfiles", ProfileController.getAllPublicProfiles);
+
 // Route to update profile information
 /**
  * @swagger
@@ -110,6 +152,26 @@ router.get(
  *         description: Successfully gets all ObjectIDs of profiles that the given profile is following
  */
 router.get("/getAllFollowing/:profileID", ProfileController.getAllFollowing);
+
+/**
+ * @swagger
+ * /api/profile/getAllFollowers/{proid}:
+ *   get:
+ *     summary: Gets the ObjectIDs of the profiles that the given profile is following
+ *     tags:
+ *       - Profile
+ *     parameters:
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The profile id of the profile the followers we want to get
+ *     responses:
+ *       '200':
+ *         description: Successfully gets all ObjectIDs of profiles that the given profile is following
+ */
+router.get("/getAllFollowers/:profileID", ProfileController.getAllFollowers);
 
 // THESE ARE SUGGESTIONS OF API CALLS PULLED FROM THE ORIGINAL APP
 

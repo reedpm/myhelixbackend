@@ -164,9 +164,9 @@ exports.unFollowProfile = async (req, res, next) => {
 /**
  * Given: a value of 0 or 1
  * Given: Request ID
- * Function: Responds to a follow request (ACCEPT/REJECT)
+ * Function: Responds to a private follow request (ACCEPT/REJECT)
  */
-exports.respondToFollow = async (req, res, next) => {
+exports.respondToRequest = async (req, res, next) => { // request will be bi-directional --> follo
     try{
         // Here we are retrieving the response as an integer -> make sure it is a number
         const responseValue = parseInt(req.params.response);
@@ -180,6 +180,71 @@ exports.respondToFollow = async (req, res, next) => {
 
         // Get the profile responding to the request
         const recipient = await Profile.findById(request.recipients[0]);
+
+        // Make sure the profile that is handling the request is indeed the recipient
+        if(recipient._id.toString() !== req.params.profileID){
+            return next(handleError(401, "Error: Profile Authorization invalid"));
+        }
+
+        // Get the profile of the original sender of the request
+        const originalSender = await Profile.findById(request.sender);
+        
+        /**
+         * 0 = Reject follow request
+         * 1 = Accept follow request
+         */
+        // Accept the request
+        if(responseValue){
+            // Push the sender of the request to the followers list
+            recipient.followers.push(originalSender._id);
+            recipient.following.push(originalSender._id);
+            await recipient.save();
+
+            // Push the receiver of the request to sender's following list
+            originalSender.following.push(recipient._id);
+            originalSender.followers.push(recipient._id);
+            await originalSender.save();
+        }
+
+        // Remove the outgoing request
+        originalSender.outgoingRequests.pull(request._id);
+        await originalSender.save();
+        // Remove the incoming request
+        recipient.incomingRequests.pull(request._id);
+        await recipient.save();
+
+
+        // Delete the request from the database
+        await Request.findByIdAndDelete(request._id);
+
+        res.status(200).send("Successfully handled follow request");
+    }
+    catch(err){
+        next(err);
+    }
+}
+
+/**
+ * Given: a value of 0 or 1
+ * Given: Request ID
+ * Function: Responds to a follow request (ACCEPT/REJECT)
+ */
+exports.respondToFollow = async (req, res, next) => {
+    try{
+        // Here we are retrieving the response as an integer -> make sure it is a number
+        const responseValue = parseInt(req.params.response);
+        // If it's not a number handle error
+        if(isNaN(responseValue)){
+            return next(handleError(403, "Error: Response Value requires an integer"));
+        }
+
+        // Get the original request via the request id from the parameters
+        const request = await Request.findById(req.params.reqID);
+        // console.log("### here request: " + request);
+
+        // Get the profile responding to the request
+        const recipient = await Profile.findById(request.recipients[0]);
+        // console.log("### here recipient: " + recipient);
 
         // Make sure the profile that is handling the request is indeed the recipient
         if(recipient._id.toString() !== req.params.profileID){

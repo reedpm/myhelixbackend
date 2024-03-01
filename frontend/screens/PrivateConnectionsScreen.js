@@ -1,19 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, FlatList, SafeAreaView, Item} from 'react-native';
-import PublicConnectionsScreen from './PublicConnectionsScreen';
-import PrivateConnectionsScreen from './PrivateConnectionsScreen';
+import ConnectionsRequestList from '../components/ConnectionsRequestList';
+import ConnectionsList from '../components/ConnectionsList';
+import SearchUserList from '../components/SearchUserList';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
-import {customFonts} from '../CustomFonts';
-import {fonts} from '../styles';
 
-const ConnectionsScreen = () => {
-  const [activeTab, setActiveTab] = useState('tab1');
+const PrivateConnectionsScreen = () => {
+  const [activeTab, setActiveTab] = useState('neither');
   const [query, setQuery] = useState('');
   const [connections, setConnections] = useState();
   const [requests, setRequests] = useState();
   const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(connections);
   const [filteredRequestUsers, setFilteredRequestUsers] = useState(requests);
-  customFonts();
+  const [privateUsers, setPrivateUsers] = useState('');
+  const [filteredPrivateUsers, setFilteredPrivateUsers] = useState(privateUsers);
+
 
   const {
     currentProfileID,
@@ -24,6 +25,25 @@ const ConnectionsScreen = () => {
     UIColor,
     setUIColor,
   } = useGlobalContext();
+
+  useEffect(() => {
+    const fetchAllPrivateUsers = async() => {
+        try {
+            const response  = await fetch(dbURI + `profile/getAllPrivateProfiles`);
+
+            if (!response.ok) {
+                console.error('Failed to fetch conenction requests');
+            }
+            console.log("SUCCESS??");
+            const allPrivateUser = await response.json();
+            setPrivateUsers(allPrivateUser.data);
+            setFilteredPrivateUsers(allPrivateUser.data);
+        } catch (error) {
+            console.log('error message for all user: ', error);
+        }
+    };
+    fetchAllPrivateUsers();
+  }, []);
 
   useEffect(() => {
     console.log('HERE1??');
@@ -38,6 +58,7 @@ const ConnectionsScreen = () => {
         const requestData = await response.json();
         setRequests(requestData.data);
         setFilteredRequestUsers(requestData.data);
+        // console.log("### this is response data: " + reque)
       } catch (error) {
         console.log('error message for request: ', error);
       }
@@ -69,13 +90,17 @@ const ConnectionsScreen = () => {
   const renderContent = () => {
     if (activeTab === 'tab1') {
       return (
-        <View>
-          <Text style={styles.tabTitle}>Connection Requests</Text>
-          <ConnectionsRequestList users={filteredRequestUsers}/>
-        </View>
+      <View>
+        <Text style={styles.tabTitle}>Connection Requests</Text>
+        <ConnectionsRequestList users={filteredRequestUsers}/>
+      </View>
       );
     } else if (activeTab === 'tab2') {
       return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={filteredConnectionUsers}/></View>;
+    } else {
+        // show all tabs 
+        console.log("NEITHER TAB??");
+        return <View><SearchUserList users={filteredPrivateUsers} /></View>
     }
   };
 
@@ -87,47 +112,50 @@ const ConnectionsScreen = () => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
       setFilteredRequestUsers(filteredData);
-    } else {
+    } else if (activeTab == 'tab2'){
       const filteredData = connections.filter((user) => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
       setFilteredConnectionUsers(filteredData);
+    } else {
+      console.log(" in here");
+      const filteredData = privateUsers.filter((user) => {
+        return user.displayName.toLowerCase().includes(formattedQuery);
+      });
+      setFilteredPrivateUsers(filteredData);
     }
   };
 
   return (
-    <ScrollView scrollEnabled={true}>
-      <View>
-        <TextInput
-          style={styles.searchBar}
-          placeholder="Search Connections"
-          value={query}
-          onChangeText={handleSearch}
-        />
-        <View style={styles.container}>
-          <View style={styles.tabContainer}>
-            <TouchableOpacity
-              style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
-              onPress={() => {
-                setActiveTab('tab1'); updateButtonColor();
-              }}
-            >
-              <Text>requests</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.tab, activeTab === 'tab2' && styles.activeTab]}
-              onPress={() => setActiveTab('tab2')}
-            >
-              <Text>connections</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.content}>
-            {renderContent()}
-          </View>
+    <View>
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search Connections"
+        value={query}
+        onChangeText={handleSearch}
+      />
+      <View style={styles.container}>
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
+            onPress={() => {setActiveTab('tab1')}}
+          >
+            <Text>requests</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'tab2' && styles.activeTab]}
+            onPress={() => setActiveTab('tab2')}
+          >
+            <Text>connections</Text>
+          </TouchableOpacity>
         </View>
+        <ScrollView nestedScrollEnabled={true}>
+        <View style={styles.content}>
+          {renderContent()}
+        </View>
+        </ScrollView>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -158,7 +186,6 @@ const styles = StyleSheet.create({
   },
   tabTitle: {
     fontSize: 24,
-    fontFamily: fonts.regular,
     fontWeight: 'bold',
 
   },
@@ -174,4 +201,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConnectionsScreen;
+export default PrivateConnectionsScreen;
