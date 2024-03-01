@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, FlatList, SafeAreaView, Item} from 'react-native';
 import ConnectionsRequestList from '../components/ConnectionsRequestList';
-import Connection from '../components/Connection';
 import ConnectionsList from '../components/ConnectionsList';
 import SearchUserList from '../components/SearchUserList';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 
 const PrivateConnectionsScreen = () => {
-  const [activeTab, setActiveTab] = useState('');
+  const [activeTab, setActiveTab] = useState('neither');
   const [query, setQuery] = useState('');
   const [connections, setConnections] = useState();
   const [requests, setRequests] = useState();
@@ -38,7 +37,7 @@ const PrivateConnectionsScreen = () => {
             console.log("SUCCESS??");
             const allPrivateUser = await response.json();
             setPrivateUsers(allPrivateUser.data);
-            setFilteredPrivateUsers(allPrivateUser);
+            setFilteredPrivateUsers(allPrivateUser.data);
         } catch (error) {
             console.log('error message for all user: ', error);
         }
@@ -101,7 +100,7 @@ const PrivateConnectionsScreen = () => {
     } else {
         // show all tabs 
         console.log("NEITHER TAB??");
-        return <View><SearchUserList users={privateUsers} /></View>
+        return <View><SearchUserList users={filteredPrivateUsers} /></View>
     }
   };
 
@@ -119,7 +118,8 @@ const PrivateConnectionsScreen = () => {
       });
       setFilteredConnectionUsers(filteredData);
     } else {
-      const filteredData = connections.filter((user) => {
+      console.log(" in here");
+      const filteredData = privateUsers.filter((user) => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
       setFilteredPrivateUsers(filteredData);

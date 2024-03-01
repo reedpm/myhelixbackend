@@ -2,25 +2,19 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, FlatList, SafeAreaView, Item} from 'react-native';
 import FollowerList from '../components/FollowerList';
 import FollowingList from '../components/FollowingList';
+import SearchUserList from '../components/SearchUserList';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 
 const PublicConnectionsScreen = () => {
-    // const users = [
-    //     {
-    //         displayName: 'Shirley Su',
-    //         profileImage: '',
-    //     },
-    //     {
-    //         displayName: 'Guadalupe',
-    //         profileImage: '',
-    //     },
-    // ]
-  const [activeTab, setActiveTab] = useState('tab1');
+  const [activeTab, setActiveTab] = useState('neither');
   const [query, setQuery] = useState('');
   const [following, setFollowing] = useState();
   const [followers, setFollowers] = useState();
+  const [publicUsers, setPublicUsers] = useState();
   const [filteredFollowing, setFilteredFollowing] = useState(following);
   const [filteredFollowers, setFilteredFollowers] = useState(followers);
+  const [filteredPublicUsers, setFilteredPublicUsers] = useState(publicUsers);
+
 
 
   const {
@@ -32,6 +26,25 @@ const PublicConnectionsScreen = () => {
     UIColor,
     setUIColor,
   } = useGlobalContext();
+
+  useEffect(() => {
+    const fetchAllPublicUsers = async() => {
+        try {
+            const response  = await fetch(dbURI + `profile/getAllPublicProfiles`);
+
+            if (!response.ok) {
+                console.error('Failed to fetch conenction requests');
+            }
+            console.log("SUCCESS??");
+            const allPublicUser = await response.json();
+            setPublicUsers(allPublicUser.data);
+            setFilteredPublicUsers(allPublicUser.data);
+        } catch (error) {
+            console.log('error message for all user: ', error);
+        }
+    };
+    fetchAllPublicUsers();
+  }, []);
 
 
   useEffect(() => {
@@ -85,6 +98,10 @@ const PublicConnectionsScreen = () => {
       );
     } else if (activeTab === 'tab2') {
       return <View><Text style={styles.tabTitle}>Followers</Text><FollowerList users={filteredFollowers}/></View>;
+    } else {
+        // show all tabs 
+        console.log("NEITHER TAB??");
+        return <View><SearchUserList users={filteredPublicUsers} /></View>
     }
   };
 
@@ -96,11 +113,16 @@ const PublicConnectionsScreen = () => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
       setFilteredFollowing(filteredData);
-    } else {
+    } else if (activeTab == 'tab2') {
       const filteredData = followers.filter((user) => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
       setFilteredFollowers(filteredData);
+    } else {
+      const filteredData = publicUsers.filter((user) => {
+        return user.displayName.toLowerCase().includes(formattedQuery);
+      });
+      setFilteredPublicUsers(filteredData);
     }
   };
 

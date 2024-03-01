@@ -76,7 +76,7 @@ exports.update = async (req, res, next) => {
 
 /**
  * Given: Profile ID
- * Returns: Profile object if it exists
+ * Returns: List of all Personal profiles
  */
 exports.getAllPrivateProfiles = async (req, res, next) => {
   try{
@@ -93,6 +93,22 @@ exports.getAllPrivateProfiles = async (req, res, next) => {
       //   // If an error occurs, send an error response
       //   res.status(403).send({ data: err.message });
       // });
+  }
+  catch(err){
+      console.log("error");
+      next(err);
+  }
+};
+
+/**
+ * Given: Profile ID
+ * Returns: Profile object if it exists
+ */
+exports.getAllPublicProfiles = async (req, res, next) => {
+  try{
+    const publicProfiles = await Profile.find({ type: 'PUBLIC' });
+    console.log("###  all public users: " + publicProfiles);
+    res.status(200).send({ data: publicProfiles});
   }
   catch(err){
       console.log("error");
