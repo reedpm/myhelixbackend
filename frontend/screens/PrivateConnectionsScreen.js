@@ -3,15 +3,18 @@ import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, FlatLis
 import ConnectionsRequestList from '../components/ConnectionsRequestList';
 import Connection from '../components/Connection';
 import ConnectionsList from '../components/ConnectionsList';
+import SearchUserList from '../components/SearchUserList';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 
 const PrivateConnectionsScreen = () => {
-  const [activeTab, setActiveTab] = useState('tab1');
+  const [activeTab, setActiveTab] = useState('');
   const [query, setQuery] = useState('');
   const [connections, setConnections] = useState();
   const [requests, setRequests] = useState();
   const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(connections);
   const [filteredRequestUsers, setFilteredRequestUsers] = useState(requests);
+  const [privateUsers, setPrivateUsers] = useState('');
+  const [filteredPrivateUsers, setFilteredPrivateUsers] = useState(privateUsers);
 
 
   const {
@@ -23,6 +26,25 @@ const PrivateConnectionsScreen = () => {
     UIColor,
     setUIColor,
   } = useGlobalContext();
+
+  useEffect(() => {
+    const fetchAllPrivateUsers = async() => {
+        try {
+            const response  = await fetch(dbURI + `profile/getAllPrivateProfiles`);
+
+            if (!response.ok) {
+                console.error('Failed to fetch conenction requests');
+            }
+            console.log("SUCCESS??");
+            const allPrivateUser = await response.json();
+            setPrivateUsers(allPrivateUser.data);
+            setFilteredPrivateUsers(allPrivateUser);
+        } catch (error) {
+            console.log('error message for all user: ', error);
+        }
+    };
+    fetchAllPrivateUsers();
+  }, []);
 
   useEffect(() => {
     console.log('HERE1??');
@@ -37,6 +59,7 @@ const PrivateConnectionsScreen = () => {
         const requestData = await response.json();
         setRequests(requestData.data);
         setFilteredRequestUsers(requestData.data);
+        // console.log("### this is response data: " + reque)
       } catch (error) {
         console.log('error message for request: ', error);
       }
@@ -75,6 +98,10 @@ const PrivateConnectionsScreen = () => {
       );
     } else if (activeTab === 'tab2') {
       return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={filteredConnectionUsers}/></View>;
+    } else {
+        // show all tabs 
+        console.log("NEITHER TAB??");
+        return <View><SearchUserList users={privateUsers} /></View>
     }
   };
 
@@ -86,16 +113,20 @@ const PrivateConnectionsScreen = () => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
       setFilteredRequestUsers(filteredData);
-    } else {
+    } else if (activeTab == 'tab2'){
       const filteredData = connections.filter((user) => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
       setFilteredConnectionUsers(filteredData);
+    } else {
+      const filteredData = connections.filter((user) => {
+        return user.displayName.toLowerCase().includes(formattedQuery);
+      });
+      setFilteredPrivateUsers(filteredData);
     }
   };
 
   return (
-    <ScrollView scrollEnabled={true}>
     <View>
       <TextInput
         style={styles.searchBar}
@@ -118,13 +149,13 @@ const PrivateConnectionsScreen = () => {
             <Text>connections</Text>
           </TouchableOpacity>
         </View>
-        
+        <ScrollView nestedScrollEnabled={true}>
         <View style={styles.content}>
           {renderContent()}
         </View>
+        </ScrollView>
       </View>
     </View>
-    </ScrollView>
   );
 };
 

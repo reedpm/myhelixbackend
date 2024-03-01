@@ -16,18 +16,10 @@ const ConnectionsScreen = () => {
     setUIColor,
   } = useGlobalContext();
 
-  // const changeCurrentProfileID = () => {
-  //   setCurrentProfileID(
-  //     currentProfileID === userData.personalProfile ?
-  //     userData.publicProfiles[0] : userData.personalProfile,
-  //   );
-  //   setUIColor(UI_COLOR[currentProfileData.type]);
-  // };
-
   return (
-    <View>
-      {currentProfileID === userData.personalProfile ? <PrivateConnectionsScreen /> : <PublicConnectionsScreen />}
-    </View>
+    <ScrollView>
+      {currentProfileID === userData.personalProfile ? <PrivateConnectionsScreen />: <PublicConnectionsScreen />}
+    </ScrollView>
   );
 };
 
