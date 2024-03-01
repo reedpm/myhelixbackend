@@ -27,6 +27,27 @@ const { verifyToken } = require("../extern/verifyToken.js");
  */
 router.get("/getProfile/:profileID", ProfileController.getProfile);
 
+// get back the entire Profile Document back in a json
+/**
+ * @swagger
+ * /api/profile/getAllPrivateProfiles:
+ *   get:
+ *     summary: Retrieves the Profile doc from the given profile ID
+ *     tags:
+ *       - Profile
+ *     parameters:
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the profile to find
+ *     responses:
+ *       '200':
+ *         description: Successfully found and returned the Profile doc
+ */
+router.get("/getAllPrivateProfiles", ProfileController.getAllPrivateProfiles);
+
 // Route to update profile information
 /**
  * @swagger

@@ -8,7 +8,7 @@ const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const Connection = ({user, onEmailPress}) => {
+const SearchUser = ({user}) => {
   console.log("### user profile: " + user.profileImage);
   const imageSource = user.profileImage ? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
@@ -22,11 +22,6 @@ const Connection = ({user, onEmailPress}) => {
              style={styles.profilePic} />}
         </View>
         <Text style={styles.name}>{user.displayName}</Text>
-      </View>
-      <View style={styles.icons}>
-        <TouchableOpacity onPress={onEmailPress}>
-          <Icon name="envelope" size={24}  />
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -64,4 +59,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Connection;
+export default SearchUser;

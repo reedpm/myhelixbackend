@@ -8,11 +8,6 @@ const ConnectionsList = ({users}) => {
     // Implement email logic
   };
 
-  const handleFaceTimePress = (userId) => {
-    console.log('FaceTime Icon pressed for user:', userId);
-    // Implement FaceTime logic
-  };
-
   return (
     <FlatList
       nestedScrollEnabled={true}
@@ -22,7 +17,6 @@ const ConnectionsList = ({users}) => {
         <Connection
           user={item}
           onEmailPress={() => handleEmailPress(item._id)}
-          onFaceTimePress={() => handleFaceTimePress(item._id)}
         />
       )}
     />

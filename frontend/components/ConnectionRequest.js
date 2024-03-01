@@ -18,7 +18,7 @@ const ConnectionsRequest = ({user, onAccept, onDelete}) => {
     acceptTextStyle = styles.publicButtonText;
   }
   console.log("This is user data: " + user);
-  const imageSource = user.profileImage? {uri: user.profileImage} : null;
+  const imageSource = user.sender.profileImage? {uri: user.sender.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
 
   return (
@@ -27,10 +27,10 @@ const ConnectionsRequest = ({user, onAccept, onDelete}) => {
         <View style={[styles.profilePic, {backgroundColor}]}>
           {
             imageSource &&
-          <Image source={user.profileImage} style={styles.profilePic} />
+          <Image source={user.sender.profileImage} style={styles.profilePic} />
           }
         </View>
-        <Text style={styles.name}>{user.displayName}</Text>
+        <Text style={styles.name}>{user.sender.displayName}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, acceptButtonStyle]} onPress={onAccept}>
