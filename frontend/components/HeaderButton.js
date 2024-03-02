@@ -40,10 +40,9 @@ const HeaderButton = ( props ) => {
     });
   }
 
-  // const leftBar = require("../assets/navbar/headerLeftBlue.svg");
-  // const rightBar = require("../assets/navbar/headerRightRed.svg");
-  // const backgroundHeader = require("../assets/navbar/rightAndLeftHeader.svg");
-  // const barWidth = 300;
+  const leftBar = require("../assets/left_toggle.png");
+  const rightBar = require("../assets/right_toggle.png");
+  const barWidth = 300;
 
   return (
     <View
@@ -57,12 +56,14 @@ const HeaderButton = ( props ) => {
       <TouchableOpacity
         onPress={handlePrivateClick}
         style= {{
-          // width: '100%',
-          height: 20,
+          width: '50%',
+          resizeMode:"contain",
+          // height: 20,
         }}
         >
         {/* <HeaderLeftBlue/> */}
-        <img src="../assets/navbar/stretchedHeaderLeftBlue.svg" width="100%" resizeMode="contain" maxHeight="60"/>
+        {/* <img src="../assets/navbar/stretchedHeaderLeftBlue.svg" width="100%" resizeMode="contain" maxHeight="60"/> */}
+        <img src="../assets/leftToggle.png" resizeMode="contain"  height="60"/>
         {/* <Image source={leftBar} styles={styles.toggle}/> */}
       </TouchableOpacity>
       
@@ -83,12 +84,13 @@ const HeaderButton = ( props ) => {
       <TouchableOpacity
         onPress={handlePublicClick}
         style= {{
-          resizeMode:"stretch"
+          width: '50%',
+          resizeMode:"contain"
         }}
         >
         {/* <HeaderRightRed/> */}
-        <img src="../assets/navbar/stretchedHeaderRightRed.svg" width="100%" resizeMode="contain" styles={styles.toggle}/>
-        {/* <Image source={rightBar} styles={styles.toggle}/> */}
+        <img src="../assets/rightToggle.png" resizeMode="contain"  height="60"/>
+        {/* <Image source={rightBar} width="100%" styles={styles.toggle}/> */}
 
       </TouchableOpacity>
         
@@ -106,8 +108,9 @@ const styles = StyleSheet.create({
   },
   toggle: {
     flex: 1,
-    width: '100%',
+    width: 400,
     maxHeight: 60,
+    resizeMode: 'stretch',
   }
 });
 
