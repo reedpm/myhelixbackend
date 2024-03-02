@@ -6,7 +6,11 @@ import HomeScreen from './screens/HomeScreen';
 import SignupScreen from './screens/SignupScreen';
 import AppTabs from './screens/AppTabs';
 import ConnectionsScreen from './screens/ConnectionsScreen';
+import PostPreviewScreen from './screens/PostPreviewScreen';
 import {GlobalProvider} from './GlobalContext';
+import NewPostScreen from './screens/NewPostScreen';
+
+
 const Stack = createStackNavigator();
 
 function getHeaderTitle(route) {
@@ -45,6 +49,9 @@ const App = () => {
             headerTitle: getHeaderTitle(route),
           })}
           />
+          <Stack.Screen name="Connection" component={ConnectionsScreen} />
+          <Stack.Screen name="NewPost" component={NewPostScreen} />
+          <Stack.Screen name="PostPreview" component={PostPreviewScreen} />
           {/* Add other screens and navigation options as needed */}
         </Stack.Navigator>
       </GlobalProvider>

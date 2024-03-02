@@ -2,17 +2,14 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { customFonts } from '../CustomFonts';
-import { fonts } from '../styles';
 
 const getRandomColor = () => {
   const colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink'];
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const Connection = ({user, onEmailPress}) => {
+const SearchUser = ({user}) => {
   console.log("### user profile: " + user.profileImage);
-  customFonts();
   const imageSource = user.profileImage ? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
   return (
@@ -25,11 +22,6 @@ const Connection = ({user, onEmailPress}) => {
              style={styles.profilePic} />}
         </View>
         <Text style={styles.name}>{user.displayName}</Text>
-      </View>
-      <View style={styles.icons}>
-        <TouchableOpacity onPress={onEmailPress}>
-          <Icon name="envelope" size={24}  />
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -53,7 +45,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 12,
     marginLeft: 10,
-    fontFamily: fonts.regular,
   },
   icons: {
     flexDirection: 'row',
@@ -68,4 +59,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Connection;
+export default SearchUser;

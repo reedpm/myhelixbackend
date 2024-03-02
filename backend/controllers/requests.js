@@ -6,6 +6,8 @@ const Conversation = require("../models/conversations.js");
 const mongoose = require("mongoose");
 
 
+
+
 /**
  * IMPORTANT NOTE: Public and Personal profiles should be homogenous.
  *                 That is, public profiles should not be able to 
@@ -21,7 +23,66 @@ const mongoose = require("mongoose");
  * Function: Adds the current user to the list of followers of the user being followed
  * 
  */
-exports.followProfile = async (req, res, next) => {
+
+// exports.fetchConnectionRequests = async(req)
+
+// exports.followPublicProfile = async (req, res, next) => {
+//     try {
+//         // Find profile to be followed
+//         const profileToBeFollowed = await Profile.findById(req.params.id);
+//         // Current Profile
+//         const currentProfile = await Profile.findById(req.params.profileID);
+
+//         if(profileToBeFollowed.type !== currentProfile.type || profileToBeFollowed.type === "PERSONAL") {
+//             return next(handleError(405, "Invalid profile types => No request sent"));
+//         }
+
+//         // Check to see if the profile that needs to be followed already has the sender profile id in its followers list
+//         // If currentProfile is not following the profile to be followed
+//         if(!profileToBeFollowed.followers.includes(currentProfile._id)){
+//             // Create a new request
+//             // const newFollowRequest = new Request(
+//             //     {
+//             //         _id: new mongoose.Types.ObjectId(),
+//             //         requestType: 'FOLLOW',
+//             //         sender: currentProfile._id,
+//             //         recipients: [profileToBeFollowed._id]
+//             //     }
+//             // );
+            
+//             // update follower list automatically if public profile
+//             profileToBeFollowed.followers.push(currentProfile._id);
+//             profileToBeFollowed.save();
+
+//             currentProfile.following.push(profileToBeFollowed._id);
+//             currentProfile.save();
+
+//             res.status(200).send("Successfully Followed");
+
+//             // await newFollowRequest.save();
+
+//             // // We add an incoming request to the recipient profile
+//             // profileToBeFollowed.incomingRequests.push(newFollowRequest);
+//             // await profileToBeFollowed.save();
+
+//             // // We also add the request to the outgoing requests of the current sender profile
+//             // currentProfile.outgoingRequests.push(newFollowRequest);
+//             // await currentProfile.save();
+//         }
+//         else{
+//             // Send back a Conflict response
+//             return next(handleError(403, "Error: Profile does not exist or no further action required"));
+//         }
+//     } catch(err){
+//         next(err);
+//     }
+// }
+
+exports.getPersonalRequests = async (req, res, next) => {
+    
+}
+
+exports.followPrivateProfile = async (req, res, next) => { // private profile follow
     try{
         // Find profile to be followed
         const profileToBeFollowed = await Profile.findById(req.params.id);
@@ -29,7 +90,7 @@ exports.followProfile = async (req, res, next) => {
         const currentProfile = await Profile.findById(req.params.profileID);
 
         // Before we do anything, double check that the types are the same and are PERSONAL PROFILES
-        if(profileToBeFollowed.type !== currentProfile.type){
+        if(profileToBeFollowed.type !== currentProfile.type || profileToBeFollowed.type === "PUBLIC"){
             return next(handleError(405, "Invalid profile types => No request sent"));
         }
 
@@ -103,9 +164,9 @@ exports.unFollowProfile = async (req, res, next) => {
 /**
  * Given: a value of 0 or 1
  * Given: Request ID
- * Function: Responds to a follow request (ACCEPT/REJECT)
+ * Function: Responds to a private follow request (ACCEPT/REJECT)
  */
-exports.respondToFollow = async (req, res, next) => {
+exports.respondToRequest = async (req, res, next) => { // request will be bi-directional --> follo
     try{
         // Here we are retrieving the response as an integer -> make sure it is a number
         const responseValue = parseInt(req.params.response);
@@ -119,6 +180,71 @@ exports.respondToFollow = async (req, res, next) => {
 
         // Get the profile responding to the request
         const recipient = await Profile.findById(request.recipients[0]);
+
+        // Make sure the profile that is handling the request is indeed the recipient
+        if(recipient._id.toString() !== req.params.profileID){
+            return next(handleError(401, "Error: Profile Authorization invalid"));
+        }
+
+        // Get the profile of the original sender of the request
+        const originalSender = await Profile.findById(request.sender);
+        
+        /**
+         * 0 = Reject follow request
+         * 1 = Accept follow request
+         */
+        // Accept the request
+        if(responseValue){
+            // Push the sender of the request to the followers list
+            recipient.followers.push(originalSender._id);
+            recipient.following.push(originalSender._id);
+            await recipient.save();
+
+            // Push the receiver of the request to sender's following list
+            originalSender.following.push(recipient._id);
+            originalSender.followers.push(recipient._id);
+            await originalSender.save();
+        }
+
+        // Remove the outgoing request
+        originalSender.outgoingRequests.pull(request._id);
+        await originalSender.save();
+        // Remove the incoming request
+        recipient.incomingRequests.pull(request._id);
+        await recipient.save();
+
+
+        // Delete the request from the database
+        await Request.findByIdAndDelete(request._id);
+
+        res.status(200).send("Successfully handled follow request");
+    }
+    catch(err){
+        next(err);
+    }
+}
+
+/**
+ * Given: a value of 0 or 1
+ * Given: Request ID
+ * Function: Responds to a follow request (ACCEPT/REJECT)
+ */
+exports.respondToFollow = async (req, res, next) => {
+    try{
+        // Here we are retrieving the response as an integer -> make sure it is a number
+        const responseValue = parseInt(req.params.response);
+        // If it's not a number handle error
+        if(isNaN(responseValue)){
+            return next(handleError(403, "Error: Response Value requires an integer"));
+        }
+
+        // Get the original request via the request id from the parameters
+        const request = await Request.findById(req.params.reqID);
+        // console.log("### here request: " + request);
+
+        // Get the profile responding to the request
+        const recipient = await Profile.findById(request.recipients[0]);
+        // console.log("### here recipient: " + recipient);
 
         // Make sure the profile that is handling the request is indeed the recipient
         if(recipient._id.toString() !== req.params.profileID){

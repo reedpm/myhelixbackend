@@ -35,7 +35,7 @@ const { verifyToken } = require("../extern/verifyToken.js");
  *       '200':
  *         description: Successfully sent a follow request to the profile being followed
  */
-router.post("/follow/:id/:profileID", RequestController.followProfile);
+router.post("/follow/:id/:profileID", RequestController.followPrivateProfile);
 
 // Route to unfollow 
 /**
@@ -96,6 +96,39 @@ router.put("/unfollow/:id/:profileID", verifyToken, RequestController.unFollowPr
  *         description: Successfully handled the follow request
  */
 router.put("/handlefollow/:response/:reqID/:profileID", RequestController.respondToFollow);
+
+// Route to handle a follow request
+/**
+ * @swagger
+ * /api/requests/handlerequest/{response}/{reqID}/{profileID}:
+ *   put:
+ *     summary: Handles a follow request
+ *     tags:
+ *       - Requests
+ *     parameters:
+ *       - in: path
+ *         name: response
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: The response code of the profile's decision
+ *       - in: path
+ *         name: reqID
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the request
+ *       - in: path
+ *         name: profileID
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the profile that is handling the request (Also the recipient)
+ *     responses:
+ *       '200':
+ *         description: Successfully handled the follow request
+ */
+router.put("/handlerequest/:response/:reqID/:profileID", RequestController.respondToRequest);
 
 
 /* ========================================================

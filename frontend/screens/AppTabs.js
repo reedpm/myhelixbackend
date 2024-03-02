@@ -1,18 +1,17 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {
-  View, Text, TouchableOpacity
-} from 'react-native';
 import ProfileScreen from './ProfileScreen';
+import NewPostScreen from './NewPostScreen';
 import EmptyScreen from './EmptyScreen';
 import ConnectionsScreen from './ConnectionsScreen';
 import {
-  HomeOutline, FriendsOutline, PlusOutline, BellOutline, MailOutline, HeaderRightRed,
+  HomeOutline, FriendsOutline, PlusOutline, BellOutline, MailOutline,
 } from '../icons/index';
 
 import {useGlobalContext} from '../GlobalContext';
 import HeaderButton from '../components/HeaderButton';
-import { HeaderLeftBlue } from '../icons';
+import NotificationsScreen from './NotificationScreen';
+import ProfileScreen from './ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +29,7 @@ const AppTabs = () => {
     >
       <Tab.Screen
         name="Feed"
-        component={EmptyScreen}
+        component={ProfileScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
@@ -40,7 +39,7 @@ const AppTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Friends"
+        name="Connections"
         component={ConnectionsScreen}
         options={{
           tabBarShowLabel: false,
@@ -51,8 +50,8 @@ const AppTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="New Post"
+        component={NewPostScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
@@ -63,7 +62,7 @@ const AppTabs = () => {
       />
       <Tab.Screen
         name="Notifications"
-        component={EmptyScreen}
+        component={NotificationsScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
