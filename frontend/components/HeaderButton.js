@@ -40,9 +40,8 @@ const HeaderButton = ( props ) => {
     });
   }
 
-  const leftBar = require("../assets/left_toggle.png");
-  const rightBar = require("../assets/right_toggle.png");
-  const barWidth = 300;
+  // const leftBar = require("../assets/left_toggle.png");
+  // const rightBar = require("../assets/right_toggle.png");
 
   return (
     <View
@@ -63,7 +62,7 @@ const HeaderButton = ( props ) => {
         >
         {/* <HeaderLeftBlue/> */}
         {/* <img src="../assets/navbar/stretchedHeaderLeftBlue.svg" width="100%" resizeMode="contain" maxHeight="60"/> */}
-        <img src="../assets/leftToggle.png" resizeMode="contain"  height="60"/>
+        <img src="../assets/leftToggleSmallest.png" resizeMode="contain"  height="60"/>
         {/* <Image source={leftBar} styles={styles.toggle}/> */}
       </TouchableOpacity>
       
@@ -89,7 +88,7 @@ const HeaderButton = ( props ) => {
         }}
         >
         {/* <HeaderRightRed/> */}
-        <img src="../assets/rightToggle.png" resizeMode="contain"  height="60"/>
+        <img src="../assets/rightToggleSmallest.png" resizeMode="contain"  height="60"/>
         {/* <Image source={rightBar} width="100%" styles={styles.toggle}/> */}
 
       </TouchableOpacity>

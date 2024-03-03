@@ -1,4 +1,5 @@
 import React from 'react';
+import {Image} from 'react-native'; 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ProfileScreen from './ProfileScreen';
 import NewPostScreen from './NewPostScreen';
@@ -11,12 +12,22 @@ import {
 import {useGlobalContext} from '../GlobalContext';
 import HeaderButton from '../components/HeaderButton';
 import NotificationsScreen from './NotificationScreen';
-import ProfileScreen from './ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
 const AppTabs = () => {
   const {UIColor} = useGlobalContext();
+
+  const homeOutline = require("../assets/navbar/homeOutline.svg");
+  const homeFilled = require("../assets/navbar/homeFilled.svg");
+  const friendsOutline = require("../assets/navbar/friendsOutline.svg");
+  const friendsFilled = require("../assets/navbar/friendsFilled.svg");
+  const plusOutline = require("../assets/navbar/plusOutline.svg");
+  const plusFilled = require("../assets/navbar/plusFilled.svg");
+  const bellOutline = require("../assets/navbar/bellOutline.svg");
+  const bellFilled = require("../assets/navbar/bellFilled.svg");
+  const mailOutline = require("../assets/navbar/mailOutline.svg");
+  const mailFilled = require("../assets/navbar/mailFilled.svg");
 
   return (
     <Tab.Navigator
@@ -32,8 +43,9 @@ const AppTabs = () => {
         component={ProfileScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <HomeOutline/>
+          tabBarIcon: ({ focused }) => (
+            // <HomeOutline/>
+            <Image source={focused ? homeFilled : homeOutline } />
           ),
           header: () => <HeaderButton/>
         }}
@@ -43,8 +55,8 @@ const AppTabs = () => {
         component={ConnectionsScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <FriendsOutline/>
+          tabBarIcon: ({ focused }) => (
+            <Image source={focused ? friendsFilled : friendsOutline } />
           ),
           header: () => <HeaderButton/>
         }}
@@ -54,8 +66,8 @@ const AppTabs = () => {
         component={NewPostScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <PlusOutline/>
+          tabBarIcon: ({ focused }) => (
+            <Image source={focused ? plusFilled : plusOutline } />
           ),
           header: () => <HeaderButton/>
         }}
@@ -65,8 +77,8 @@ const AppTabs = () => {
         component={NotificationsScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <BellOutline/>
+          tabBarIcon: ({ focused }) => (
+            <Image source={focused ? bellFilled : bellOutline } />
           ),
           header: () => <HeaderButton/>
         }}
@@ -76,8 +88,8 @@ const AppTabs = () => {
         component={EmptyScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <MailOutline/>
+          tabBarIcon: ({ focused }) => (
+            <Image source={focused ? mailFilled : mailOutline } />
           ),
           header: (props) => <HeaderButton/>
         }}
