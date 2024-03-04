@@ -10,11 +10,12 @@ const PublicConnectionsScreen = () => {
   const [query, setQuery] = useState('');
   const [following, setFollowing] = useState();
   const [followers, setFollowers] = useState();
-  const [publicUsers, setPublicUsers] = useState();
   const [filteredFollowing, setFilteredFollowing] = useState(following);
   const [filteredFollowers, setFilteredFollowers] = useState(followers);
-  const [filteredPublicUsers, setFilteredPublicUsers] = useState(publicUsers);
-
+  const [followingPublicUsers, setFollowingPublicUsers] = useState('');
+  const [filteredFollowingPublicUsers, setFilteredFollowingPublicUsers] = useState('');
+  const [notFollowingPublicUsers, setNotFollowingPublicUsers] = useState('');
+  const [filteredNotFollowingPublicUsers, setFilteredNotFollowingPublicUsers] = useState('');
 
 
   const {
@@ -30,15 +31,18 @@ const PublicConnectionsScreen = () => {
   useEffect(() => {
     const fetchAllPublicUsers = async() => {
         try {
-            const response  = await fetch(dbURI + `profile/getAllPublicProfiles`);
+            const response  = await fetch(dbURI + `profile/getAllPublicProfiles/${currentProfileID}`);
 
             if (!response.ok) {
                 console.error('Failed to fetch conenction requests');
             }
             console.log("SUCCESS??");
             const allPublicUser = await response.json();
-            setPublicUsers(allPublicUser.data);
-            setFilteredPublicUsers(allPublicUser.data);
+            setFollowingPublicUsers(allPublicUser.data1);
+            setFilteredFollowingPublicUsers(allPublicUser.data1);
+
+            setNotFollowingPublicUsers(allPublicUser.data2);
+            setFilteredNotFollowingPublicUsers(allPublicUser.data2);
         } catch (error) {
             console.log('error message for all user: ', error);
         }
@@ -100,12 +104,14 @@ const PublicConnectionsScreen = () => {
       return <View><Text style={styles.tabTitle}>Followers</Text><FollowerList users={filteredFollowers}/></View>;
     } else {
         // show all tabs 
-        console.log("NEITHER TAB??");
-        return <View><SearchUserList users={filteredPublicUsers} /></View>
+        console.log("### following: " + filteredFollowingPublicUsers);
+        console.log("### not following: " + filteredNotFollowingPublicUsers);
+        return <View><SearchUserList users={filteredFollowingPublicUsers} isConnection={true} isPrivate={false}/><SearchUserList users={filteredNotFollowingPublicUsers} isConnection={false} isPrivate={false}/></View>
     }
   };
 
   const handleSearch = (text) => {
+    setActiveTab('neither');
     setQuery(text);
     const formattedQuery = text.toLowerCase();
     if (activeTab == 'tab1') {
@@ -119,10 +125,14 @@ const PublicConnectionsScreen = () => {
       });
       setFilteredFollowers(filteredData);
     } else {
-      const filteredData = publicUsers.filter((user) => {
+      const filteredDataF = followingPublicUsers.filter((user) => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
-      setFilteredPublicUsers(filteredData);
+      const filteredDataNF = notFollowingPublicUsers.filter((user) => {
+        return user.displayName.toLowerCase().includes(formattedQuery);
+      });
+      setFilteredFollowingPublicUsers(filteredDataF);
+      setFilteredNotFollowingPublicUsers(filteredDataNF);
     }
   };
 

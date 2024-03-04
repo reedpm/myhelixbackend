@@ -12,8 +12,10 @@ const PrivateConnectionsScreen = () => {
   const [requests, setRequests] = useState();
   const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(connections);
   const [filteredRequestUsers, setFilteredRequestUsers] = useState(requests);
-  const [privateUsers, setPrivateUsers] = useState('');
-  const [filteredPrivateUsers, setFilteredPrivateUsers] = useState(privateUsers);
+  const [followingPrivateUsers, setFollowingPrivateUsers] = useState('');
+  const [filteredFollowingPrivateUsers, setFilteredFollowingPrivateUsers] = useState('');
+  const [notFollowingPrivateUsers, setNotFollowingPrivateUsers] = useState('');
+  const [filteredNotFollowingPrivateUsers, setFilteredNotFollowingPrivateUsers] = useState('');
 
 
   const {
@@ -29,15 +31,18 @@ const PrivateConnectionsScreen = () => {
   useEffect(() => {
     const fetchAllPrivateUsers = async() => {
         try {
-            const response  = await fetch(dbURI + `profile/getAllPrivateProfiles`);
+            const response  = await fetch(dbURI + `profile/getAllPrivateProfiles/${currentProfileID}`);
 
             if (!response.ok) {
                 console.error('Failed to fetch conenction requests');
             }
             console.log("SUCCESS??");
             const allPrivateUser = await response.json();
-            setPrivateUsers(allPrivateUser.data);
-            setFilteredPrivateUsers(allPrivateUser.data);
+            setFollowingPrivateUsers(allPrivateUser.data1);
+            setFilteredFollowingPrivateUsers(allPrivateUser.data1);
+
+            setNotFollowingPrivateUsers(allPrivateUser.data2);
+            setFilteredNotFollowingPrivateUsers(allPrivateUser.data2);
         } catch (error) {
             console.log('error message for all user: ', error);
         }
@@ -100,11 +105,12 @@ const PrivateConnectionsScreen = () => {
     } else {
         // show all tabs 
         console.log("NEITHER TAB??");
-        return <View><SearchUserList users={filteredPrivateUsers} /></View>
+        return <View><SearchUserList users={filteredFollowingPrivateUsers} isConnection={true} isPrivate={true}/><SearchUserList users={filteredNotFollowingPrivateUsers} isConnection={false} isPrivate={true}/></View>
     }
   };
 
   const handleSearch = (text) => {
+    setActiveTab('neither')
     setQuery(text);
     const formattedQuery = text.toLowerCase();
     if (activeTab == 'tab1') {
@@ -118,11 +124,14 @@ const PrivateConnectionsScreen = () => {
       });
       setFilteredConnectionUsers(filteredData);
     } else {
-      console.log(" in here");
-      const filteredData = privateUsers.filter((user) => {
+      const filteredDataF = followingPrivateUsers.filter((user) => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
-      setFilteredPrivateUsers(filteredData);
+      const filteredDataNF = notFollowingPrivateUsers.filter((user) => {
+        return user.displayName.toLowerCase().includes(formattedQuery);
+      });
+      setFilteredFollowingPrivateUsers(filteredDataF);
+      setFilteredNotFollowingPrivateUsers(filteredDataNF);
     }
   };
 
