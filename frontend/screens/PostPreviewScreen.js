@@ -6,16 +6,48 @@ import {
   View,
   Image,
 } from 'react-native';
-import {useGlobalContext} from '../GlobalContext';
+import {useGlobalContext, dbURI} from '../GlobalContext';
 import PropTypes from 'prop-types';
-import { customFonts } from '../CustomFonts';
-import { fonts } from '../styles';
+import {customFonts} from '../CustomFonts';
+import {fonts} from '../styles';
+import {ScrollView} from 'react-native';
 
 const PostPreviewScreen = (props) => {
   customFonts();
   const {
+    currentProfileData,
     UIColor,
   } = useGlobalContext();
+
+  const createPost = async () => {
+    try {
+      const response = await fetch(dbURI + 'posts/createPost/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          profileID: currentProfileData._id,
+          content: props.route.params.text,
+          category: 'Announcement',
+        }),
+      });
+
+      if (!response.ok) {
+        // Handle unsuccessful post creation
+        Alert.alert(
+            'Post could not be made',
+            'Please try again later.',
+        );
+        return;
+      }
+      navigation.navigate('AppTabs', {
+        screen: 'Feed',
+      });
+    } catch (error) {
+      console.error('Error during post creation:', error);
+    }
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -27,23 +59,15 @@ const PostPreviewScreen = (props) => {
       marginRight: 20,
       marginTop: 20,
     },
-    textInput: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 8,
-      padding: 10,
-      fontSize: 16,
-      fontFamily: fonts.regular,
-    },
     image: {
-      width: 100,
-      height: 100,
+      width: 50,
+      height: 50,
       borderRadius: 50,
       marginRight: 20,
     },
     submitButton: {
       backgroundColor: UIColor,
-      alignSelf: 'flex-start',
+      alignSelf: 'flex-end',
       marginTop: 10,
       borderRadius: 15,
     },
@@ -53,19 +77,49 @@ const PostPreviewScreen = (props) => {
       margin: 10,
       fontFamily: fonts.regular,
     },
-    icon: {
-      width: 25,
-      height: 25,
+    scroll: {
+      maxHeight: 750,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      padding: 10,
+      fontSize: 16,
+      fontFamily: fonts.regular,
+      marginVertical: 10,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      margin: 10,
+    },
+    title: {
+      fontFamily: fonts.bold,
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+    postText: {
+      fontSize: 16,
+      fontFamily: fonts.regular,
     },
   });
 
   return (
     <View style={styles.container}>
-      <Text>{props.route.params.text}</Text>
-      <Pressable style={styles.submitButton}>
+      <View style={styles.row}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: currentProfileData?.profileImage ?? 'https://reactnative.dev/img/tiny_logo.png',
+          }}
+        />
+        <Text style={styles.title}>{currentProfileData?.displayName}</Text>
+      </View>
+      <ScrollView style={styles.scroll}>
+        <Text style={styles.postText}>{props.route.params.text}</Text>
+      </ScrollView>
+      <Pressable style={styles.submitButton} onPress={createPost}>
         <Text style={styles.buttonText}>Submit</Text>
       </Pressable>
-
     </View>
   );
 };
