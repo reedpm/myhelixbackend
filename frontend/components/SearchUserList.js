@@ -2,7 +2,10 @@ import React from 'react';
 import {FlatList, StyleSheet, StatusBar} from 'react-native';
 import SearchUser from './SearchUser';
 
-const SearchUserList = ({users}) => {
+const SearchUserList = ({users, isConnection, isPrivate}) => {
+    const handlePress = async() => {
+        console.log("handle pressed");
+    }
 
   return (
     <FlatList
@@ -12,6 +15,9 @@ const SearchUserList = ({users}) => {
       renderItem={({item}) => (
         <SearchUser
           user={item}
+          onFollow={() => handlePress(item.requestId)}
+          isConnection={isConnection}
+          isPrivate={isPrivate}
         />
       )}
     />

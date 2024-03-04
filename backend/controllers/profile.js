@@ -81,18 +81,28 @@ exports.update = async (req, res, next) => {
 exports.getAllPrivateProfiles = async (req, res, next) => {
   try{
     const personalProfiles = await Profile.find({ type: 'PERSONAL' });
-    console.log("###  all private users: " + personalProfiles);
-    res.status(200).send({ data: personalProfiles});
-      // Profile.find({type: 'PERSONAL'}).exec()
-      // .then(data => {
-      //   // If data is found, send it back
-      //   console.log("### data: " + data);
-      //   res.status(200).send({ data: data });
-      // })
-      // .catch(err => {
-      //   // If an error occurs, send an error response
-      //   res.status(403).send({ data: err.message });
-      // });
+
+    const profile = await Profile.findById(req.params.profileID);
+    if (!profile) {
+      return res.status(409).send('Profile not found');
+    } else {
+      console.log("### profile following " + profile.following);
+    }
+
+
+    var notFollowingArr = [];
+    var followingArr = [];
+
+    for (var i = 0; i < personalProfiles.length; i++) {
+      if (!(profile.following).includes(personalProfiles[i]._id)) {
+        notFollowingArr.push(personalProfiles[i]);
+      } else {
+        followingArr.push(personalProfiles[i]);
+      }
+    }
+
+    res.status(200).send({ data1: followingArr, data2: notFollowingArr});
+
   }
   catch(err){
       console.log("error");
@@ -107,8 +117,25 @@ exports.getAllPrivateProfiles = async (req, res, next) => {
 exports.getAllPublicProfiles = async (req, res, next) => {
   try{
     const publicProfiles = await Profile.find({ type: 'PUBLIC' });
-    console.log("###  all public users: " + publicProfiles);
-    res.status(200).send({ data: publicProfiles});
+    // differentiate between already follower and stranger
+    const profile = await Profile.findById(req.params.profileID);
+    if (!profile) {
+      return res.status(409).send('Profile not found');
+    } 
+
+
+    var notFollowingArr = [];
+    var followingArr = [];
+
+    for (var i = 0; i < publicProfiles.length; i++) {
+      if (!(profile.following).includes(publicProfiles[i]._id)) {
+        notFollowingArr.push(publicProfiles[i]);
+      } else {
+        followingArr.push(publicProfiles[i]);
+      }
+    }
+
+    res.status(200).send({ data1: followingArr, data2: notFollowingArr});
   }
   catch(err){
       console.log("error");
