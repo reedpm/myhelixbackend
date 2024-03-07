@@ -46,7 +46,7 @@ router.get("/getProfile/:profileID", ProfileController.getProfile);
  *       '200':
  *         description: Successfully found and returned the Profile doc
  */
-router.get("/getAllPrivateProfiles", ProfileController.getAllPrivateProfiles);
+router.get("/getAllPrivateProfiles/:profileID", ProfileController.getAllPrivateProfiles);
 
 // get back the entire Profile Document back in a json
 /**
@@ -67,7 +67,7 @@ router.get("/getAllPrivateProfiles", ProfileController.getAllPrivateProfiles);
  *       '200':
  *         description: Successfully found and returned the Profile doc
  */
-router.get("/getAllPublicProfiles", ProfileController.getAllPublicProfiles);
+router.get("/getAllPublicProfiles/:profileID", ProfileController.getAllPublicProfiles);
 
 // Route to update profile information
 /**

@@ -134,6 +134,8 @@ const NewPostScreen = () => {
     },
     row: {
       flexDirection: 'row',
+      alignItems: 'center',
+      margin: 10,
     },
     title: {
       fontFamily: fonts.bold,
@@ -148,12 +150,10 @@ const NewPostScreen = () => {
         <Image
           style={styles.image}
           source={{
-            uri: 'https://reactnative.dev/img/tiny_logo.png',
+            uri: currentProfileData?.profileImage ?? 'https://reactnative.dev/img/tiny_logo.png',
           }}
         />
-        <View style={styles.column}>
-          <Text style={styles.title}>{currentProfileData?.displayName}</Text>
-        </View>
+        <Text style={styles.title}>{currentProfileData?.displayName}</Text>
       </View>
       <TextInput
         style={styles.textInput}
