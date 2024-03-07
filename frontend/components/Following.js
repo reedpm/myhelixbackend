@@ -1,15 +1,13 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
+import {View, Text, StyleSheet, Image} from 'react-native';
+import PropTypes from 'prop-types';
+
 
 const getRandomColor = () => {
   const colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink'];
   return colors[Math.floor(Math.random() * colors.length)];
 };
 const Following = ({user}) => {
-  const {UIColor} = useGlobalContext();
-
-  console.log("This is user data: " + user);
   const imageSource = user.profileImage? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
 
@@ -25,10 +23,16 @@ const Following = ({user}) => {
         <Text style={styles.name}>{user.displayName}</Text>
       </View>
       {/* <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, acceptButtonStyle]} onPress={onAccept}>
+        <TouchableOpacity
+          style={[styles.button, acceptButtonStyle]}
+          onPress={onAccept}
+        >
           <Text style={acceptTextStyle}>accept</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={onDelete}>
+        <TouchableOpacity
+          style={[styles.button, styles.deleteButton]}
+          onPress={onDelete}
+        >
           <Text>delete</Text>
         </TouchableOpacity>
       </View> */}
@@ -46,9 +50,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#cccccc',
-    // padding: 10,
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#cccccc',
   },
   name: {
     fontSize: 18,
@@ -87,8 +88,15 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: 'green', // Default color, will be overridden by image
+    backgroundColor: 'green',
   },
 });
+
+Following.propTypes = {
+  user: PropTypes.shape({
+    profileImage: PropTypes.string,
+    displayName: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default Following;

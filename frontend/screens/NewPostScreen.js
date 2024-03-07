@@ -10,7 +10,7 @@ import {
 import * as ImagePicker from 'react-native-image-picker';
 import {useGlobalContext} from '../GlobalContext';
 import {useNavigation} from '@react-navigation/native';
-import { fonts } from '../styles';
+import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
 
 
@@ -27,7 +27,10 @@ const NewPostScreen = () => {
 
   const previewPost = async () => {
     if (text == '') {
-      alert('The post cannot be empty. Please write something in the text box before posting.');
+      alert(
+          'The post cannot be empty.',
+          'Please write something in the text box before posting.',
+      );
     } else {
       navigation.navigate(
           'PostPreview',
@@ -164,7 +167,10 @@ const NewPostScreen = () => {
         value={text}
       />
       <View style={styles.buttonsContainer}>
-        <Pressable style={styles.photoButtonContainer} onPress={handleImagePicker}>
+        <Pressable
+          style={styles.photoButtonContainer}
+          onPress={handleImagePicker}
+        >
           <Image
             style={styles.icon}
             source={require('../assets/photo-rectangle.png')}

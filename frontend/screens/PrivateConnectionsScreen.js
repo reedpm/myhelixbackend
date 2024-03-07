@@ -1,51 +1,73 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, FlatList, SafeAreaView, Item} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+} from 'react-native';
 import ConnectionsRequestList from '../components/ConnectionsRequestList';
 import ConnectionsList from '../components/ConnectionsList';
 import SearchUserList from '../components/SearchUserList';
-import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
+import {useGlobalContext, dbURI} from '../GlobalContext';
 
 const PrivateConnectionsScreen = () => {
   const [activeTab, setActiveTab] = useState('neither');
   const [query, setQuery] = useState('');
   const [connections, setConnections] = useState();
   const [requests, setRequests] = useState();
-  const [filteredConnectionUsers, setFilteredConnectionUsers] = useState(connections);
-  const [filteredRequestUsers, setFilteredRequestUsers] = useState(requests);
-  const [followingPrivateUsers, setFollowingPrivateUsers] = useState('');
-  const [filteredFollowingPrivateUsers, setFilteredFollowingPrivateUsers] = useState('');
-  const [notFollowingPrivateUsers, setNotFollowingPrivateUsers] = useState('');
-  const [filteredNotFollowingPrivateUsers, setFilteredNotFollowingPrivateUsers] = useState('');
+  const [
+    filteredConnectionUsers,
+    setFilteredConnectionUsers,
+  ] = useState(connections);
+  const [
+    filteredRequestUsers,
+    setFilteredRequestUsers,
+  ] = useState(requests);
+  const [
+    followingPrivateUsers,
+    setFollowingPrivateUsers,
+  ] = useState('');
+  const [
+    filteredFollowingPrivateUsers,
+    setFilteredFollowingPrivateUsers,
+  ] = useState('');
+  const [
+    notFollowingPrivateUsers,
+    setNotFollowingPrivateUsers,
+  ] = useState('');
+  const [
+    filteredNotFollowingPrivateUsers,
+    setFilteredNotFollowingPrivateUsers,
+  ] = useState('');
 
 
   const {
     currentProfileID,
-    setCurrentProfileID,
-    currentProfileData,
-    setCurrentProfileData,
-    userData,
-    UIColor,
-    setUIColor,
+
   } = useGlobalContext();
 
   useEffect(() => {
-    const fetchAllPrivateUsers = async() => {
-        try {
-            const response  = await fetch(dbURI + `profile/getAllPrivateProfiles/${currentProfileID}`);
+    const fetchAllPrivateUsers = async () => {
+      try {
+        const response = await fetch(
+            dbURI + `profile/getAllPrivateProfiles/${currentProfileID}`,
+        );
 
-            if (!response.ok) {
-                console.error('Failed to fetch conenction requests');
-            }
-            console.log("SUCCESS??");
-            const allPrivateUser = await response.json();
-            setFollowingPrivateUsers(allPrivateUser.data1);
-            setFilteredFollowingPrivateUsers(allPrivateUser.data1);
-
-            setNotFollowingPrivateUsers(allPrivateUser.data2);
-            setFilteredNotFollowingPrivateUsers(allPrivateUser.data2);
-        } catch (error) {
-            console.log('error message for all user: ', error);
+        if (!response.ok) {
+          console.error('Failed to fetch conenction requests');
         }
+        console.log('SUCCESS??');
+        const allPrivateUser = await response.json();
+        setFollowingPrivateUsers(allPrivateUser.data1);
+        setFilteredFollowingPrivateUsers(allPrivateUser.data1);
+
+        setNotFollowingPrivateUsers(allPrivateUser.data2);
+        setFilteredNotFollowingPrivateUsers(allPrivateUser.data2);
+      } catch (error) {
+        console.log('error message for all user: ', error);
+      }
     };
     fetchAllPrivateUsers();
   }, []);
@@ -63,7 +85,6 @@ const PrivateConnectionsScreen = () => {
         const requestData = await response.json();
         setRequests(requestData.data);
         setFilteredRequestUsers(requestData.data);
-        // console.log("### this is response data: " + reque)
       } catch (error) {
         console.log('error message for request: ', error);
       }
@@ -95,22 +116,40 @@ const PrivateConnectionsScreen = () => {
   const renderContent = () => {
     if (activeTab === 'tab1') {
       return (
-      <View>
-        <Text style={styles.tabTitle}>Connection Requests</Text>
-        <ConnectionsRequestList users={filteredRequestUsers}/>
-      </View>
+        <View>
+          <Text style={styles.tabTitle}>Connection Requests</Text>
+          <ConnectionsRequestList users={filteredRequestUsers}/>
+        </View>
       );
     } else if (activeTab === 'tab2') {
-      return <View><Text style={styles.tabTitle}>Your Connections</Text><ConnectionsList users={filteredConnectionUsers}/></View>;
+      return (
+        <View>
+          <Text style={styles.tabTitle}>Your Connections</Text>
+          <ConnectionsList users={filteredConnectionUsers}/>
+        </View>
+      );
     } else {
-        // show all tabs 
-        console.log("NEITHER TAB??");
-        return <View><SearchUserList users={filteredFollowingPrivateUsers} isConnection={true} isPrivate={true}/><SearchUserList users={filteredNotFollowingPrivateUsers} isConnection={false} isPrivate={true}/></View>
+      // show all tabs
+      console.log('NEITHER TAB??');
+      return (
+        <View>
+          <SearchUserList
+            users={filteredFollowingPrivateUsers}
+            isConnection={true}
+            isPrivate={true}
+          />
+          <SearchUserList
+            users={filteredNotFollowingPrivateUsers}
+            isConnection={false}
+            isPrivate={true}
+          />
+        </View>
+      );
     }
   };
 
   const handleSearch = (text) => {
-    setActiveTab('neither')
+    setActiveTab('neither');
     setQuery(text);
     const formattedQuery = text.toLowerCase();
     if (activeTab == 'tab1') {
@@ -118,7 +157,7 @@ const PrivateConnectionsScreen = () => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
       setFilteredRequestUsers(filteredData);
-    } else if (activeTab == 'tab2'){
+    } else if (activeTab == 'tab2') {
       const filteredData = connections.filter((user) => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
@@ -147,7 +186,9 @@ const PrivateConnectionsScreen = () => {
         <View style={styles.tabContainer}>
           <TouchableOpacity
             style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
-            onPress={() => {setActiveTab('tab1')}}
+            onPress={() => {
+              setActiveTab('tab1');
+            }}
           >
             <Text>requests</Text>
           </TouchableOpacity>
@@ -159,9 +200,9 @@ const PrivateConnectionsScreen = () => {
           </TouchableOpacity>
         </View>
         <ScrollView nestedScrollEnabled={true}>
-        <View style={styles.content}>
-          {renderContent()}
-        </View>
+          <View style={styles.content}>
+            {renderContent()}
+          </View>
         </ScrollView>
       </View>
     </View>

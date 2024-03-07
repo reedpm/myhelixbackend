@@ -1,9 +1,10 @@
 import React from 'react';
-import {FlatList, StyleSheet, StatusBar} from 'react-native';
+import {FlatList} from 'react-native';
 import Following from './Following';
+import PropTypes from 'prop-types';
+
 
 const FollowingList = ({users}) => {
-
   return (
     <FlatList
       nestedScrollEnabled={true}
@@ -18,22 +19,15 @@ const FollowingList = ({users}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  scrollView: {
-    height: '20%',
-    width: '80%',
-    margin: 20,
-    alignSelf: 'center',
-    padding: 20,
-    borderWidth: 5,
-    borderRadius: 5,
-    borderColor: 'black',
-    backgroundColor: 'lightblue'
-  },
-});
+FollowingList.propTypes = {
+  users: PropTypes.arrayOf(
+      PropTypes.shape({
+        _id: PropTypes.oneOfType(
+            [PropTypes.string, PropTypes.number],
+        ).isRequired,
+      }),
+  ).isRequired,
+};
+
 
 export default FollowingList;

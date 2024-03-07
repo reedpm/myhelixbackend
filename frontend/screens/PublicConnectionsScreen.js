@@ -1,9 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, FlatList, SafeAreaView, Item} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+} from 'react-native';
 import FollowerList from '../components/FollowerList';
 import FollowingList from '../components/FollowingList';
 import SearchUserList from '../components/SearchUserList';
-import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
+import {useGlobalContext, dbURI} from '../GlobalContext';
 
 const PublicConnectionsScreen = () => {
   const [activeTab, setActiveTab] = useState('neither');
@@ -13,39 +20,44 @@ const PublicConnectionsScreen = () => {
   const [filteredFollowing, setFilteredFollowing] = useState(following);
   const [filteredFollowers, setFilteredFollowers] = useState(followers);
   const [followingPublicUsers, setFollowingPublicUsers] = useState('');
-  const [filteredFollowingPublicUsers, setFilteredFollowingPublicUsers] = useState('');
-  const [notFollowingPublicUsers, setNotFollowingPublicUsers] = useState('');
-  const [filteredNotFollowingPublicUsers, setFilteredNotFollowingPublicUsers] = useState('');
+  const [
+    filteredFollowingPublicUsers,
+    setFilteredFollowingPublicUsers,
+  ] = useState('');
+  const [
+    notFollowingPublicUsers,
+    setNotFollowingPublicUsers,
+  ] = useState('');
+  const [
+    filteredNotFollowingPublicUsers,
+    setFilteredNotFollowingPublicUsers,
+  ] = useState('');
 
 
   const {
     currentProfileID,
-    setCurrentProfileID,
-    currentProfileData,
-    setCurrentProfileData,
-    userData,
-    UIColor,
-    setUIColor,
   } = useGlobalContext();
 
   useEffect(() => {
-    const fetchAllPublicUsers = async() => {
-        try {
-            const response  = await fetch(dbURI + `profile/getAllPublicProfiles/${currentProfileID}`);
+    const fetchAllPublicUsers = async () => {
+      try {
+        const response = await fetch(
+            dbURI + `profile/getAllPublicProfiles/${currentProfileID}`,
+        );
 
-            if (!response.ok) {
-                console.error('Failed to fetch conenction requests');
-            }
-            console.log("SUCCESS??");
-            const allPublicUser = await response.json();
-            setFollowingPublicUsers(allPublicUser.data1);
-            setFilteredFollowingPublicUsers(allPublicUser.data1);
-
-            setNotFollowingPublicUsers(allPublicUser.data2);
-            setFilteredNotFollowingPublicUsers(allPublicUser.data2);
-        } catch (error) {
-            console.log('error message for all user: ', error);
+        if (!response.ok) {
+          console.error('Failed to fetch conenction requests');
         }
+        console.log('SUCCESS??');
+        const allPublicUser = await response.json();
+        setFollowingPublicUsers(allPublicUser.data1);
+        setFilteredFollowingPublicUsers(allPublicUser.data1);
+
+        setNotFollowingPublicUsers(allPublicUser.data2);
+        setFilteredNotFollowingPublicUsers(allPublicUser.data2);
+      } catch (error) {
+        console.log('error message for all user: ', error);
+      }
     };
     fetchAllPublicUsers();
   }, []);
@@ -82,7 +94,7 @@ const PublicConnectionsScreen = () => {
           console.error('Failed to fetch following');
         }
         const followingData = await response.json();
-        console.log("### following data?? " + followingData);
+        console.log('### following data?? ' + followingData);
         setFollowing(followingData.data);
         setFilteredFollowing(followingData.data);
       } catch (error) {
@@ -95,18 +107,33 @@ const PublicConnectionsScreen = () => {
   const renderContent = () => {
     if (activeTab === 'tab1') {
       return (
-      <View>
-        <Text style={styles.tabTitle}>Following</Text>
-        <FollowingList users={filteredFollowing}/>
-      </View>
+        <View>
+          <Text style={styles.tabTitle}>Following</Text>
+          <FollowingList users={filteredFollowing}/>
+        </View>
       );
     } else if (activeTab === 'tab2') {
-      return <View><Text style={styles.tabTitle}>Followers</Text><FollowerList users={filteredFollowers}/></View>;
+      return (
+        <View>
+          <Text style={styles.tabTitle}>Followers </Text>
+          <FollowerList users={filteredFollowers}/>
+        </View>
+      );
     } else {
-        // show all tabs 
-        console.log("### following: " + filteredFollowingPublicUsers);
-        console.log("### not following: " + filteredNotFollowingPublicUsers);
-        return <View><SearchUserList users={filteredFollowingPublicUsers} isConnection={true} isPrivate={false}/><SearchUserList users={filteredNotFollowingPublicUsers} isConnection={false} isPrivate={false}/></View>
+      console.log('### following: ' + filteredFollowingPublicUsers);
+      console.log('### not following: ' + filteredNotFollowingPublicUsers);
+      return (
+        <View>
+          <SearchUserList
+            users={filteredFollowingPublicUsers}
+            isConnection={true} isPrivate={false}
+          />
+          <SearchUserList
+            users={filteredNotFollowingPublicUsers}
+            isConnection={false} isPrivate={false}
+          />
+        </View>
+      );
     }
   };
 
@@ -138,34 +165,36 @@ const PublicConnectionsScreen = () => {
 
   return (
     <ScrollView scrollEnabled={true}>
-    <View>
-      <TextInput
-        style={styles.searchBar}
-        placeholder="Search Connections"
-        value={query}
-        onChangeText={handleSearch}
-      />
-      <View style={styles.container}>
-        <View style={styles.tabContainer}>
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
-            onPress={() => {setActiveTab('tab1')}}
-          >
-            <Text>following</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'tab2' && styles.activeTab]}
-            onPress={() => setActiveTab('tab2')}
-          >
-            <Text>followers</Text>
-          </TouchableOpacity>
-        </View>
-        
-        <View style={styles.content}>
-          {renderContent()}
+      <View>
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search Connections"
+          value={query}
+          onChangeText={handleSearch}
+        />
+        <View style={styles.container}>
+          <View style={styles.tabContainer}>
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'tab1' && styles.activeTab]}
+              onPress={() => {
+                setActiveTab('tab1');
+              }}
+            >
+              <Text>following</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'tab2' && styles.activeTab]}
+              onPress={() => setActiveTab('tab2')}
+            >
+              <Text>followers</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.content}>
+            {renderContent()}
+          </View>
         </View>
       </View>
-    </View>
     </ScrollView>
   );
 };

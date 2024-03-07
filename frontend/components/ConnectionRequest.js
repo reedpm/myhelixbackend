@@ -1,8 +1,10 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {useGlobalContext} from '../GlobalContext';
-import { fonts } from '../styles';
-import { customFonts } from '../CustomFonts';
+import {fonts} from '../styles';
+import {customFonts} from '../CustomFonts';
+import PropTypes from 'prop-types';
+
 
 const getRandomColor = () => {
   const colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink'];
@@ -20,8 +22,8 @@ const ConnectionsRequest = ({user, onAccept, onDelete}) => {
     acceptButtonStyle = styles.acceptButtonPublic;
     acceptTextStyle = styles.publicButtonText;
   }
-  console.log("This is user data: " + user);
-  const imageSource = user.sender.profileImage? {uri: user.sender.profileImage} : null;
+  const imageSource = user.sender.profileImage ?
+    {uri: user.sender.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
 
   return (
@@ -36,10 +38,16 @@ const ConnectionsRequest = ({user, onAccept, onDelete}) => {
         <Text style={styles.name}>{user.sender.displayName}</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, acceptButtonStyle]} onPress={onAccept}>
+        <TouchableOpacity
+          style={[styles.button, acceptButtonStyle]}
+          onPress={onAccept}
+        >
           <Text style={acceptTextStyle}>accept</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={onDelete}>
+        <TouchableOpacity
+          style={[styles.button, styles.deleteButton]}
+          onPress={onDelete}
+        >
           <Text>delete</Text>
         </TouchableOpacity>
       </View>
@@ -57,9 +65,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#cccccc',
-    // padding: 10,
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#cccccc',
   },
   name: {
     fontSize: 18,
@@ -102,5 +107,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'green', // Default color, will be overridden by image
   },
 });
+
+ConnectionsRequest.propTypes = {
+  user: PropTypes.shape({
+    sender: PropTypes.shape({
+      profileImage: PropTypes.string,
+      displayName: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  onAccept: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
+
 
 export default ConnectionsRequest;
