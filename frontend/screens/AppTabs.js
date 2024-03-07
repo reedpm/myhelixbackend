@@ -18,16 +18,16 @@ const Tab = createBottomTabNavigator();
 const AppTabs = () => {
   const {UIColor} = useGlobalContext();
 
-  const homeOutline = require("../assets/navbar/homeOutline.svg");
-  const homeFilled = require("../assets/navbar/homeFilled.svg");
-  const friendsOutline = require("../assets/navbar/friendsOutline.svg");
-  const friendsFilled = require("../assets/navbar/friendsFilled.svg");
-  const plusOutline = require("../assets/navbar/plusOutline.svg");
-  const plusFilled = require("../assets/navbar/plusFilled.svg");
-  const bellOutline = require("../assets/navbar/bellOutline.svg");
-  const bellFilled = require("../assets/navbar/bellFilled.svg");
-  const mailOutline = require("../assets/navbar/mailOutline.svg");
-  const mailFilled = require("../assets/navbar/mailFilled.svg");
+  const homeOutline = require("../assets/navbar/homeOutline.png");
+  const homeFilled = require("../assets/navbar/homeFilled.png");
+  const friendsOutline = require("../assets/navbar/friendsOutline.png");
+  const friendsFilled = require("../assets/navbar/friendsFilled.png");
+  const plusOutline = require("../assets/navbar/plusOutline.png");
+  const plusFilled = require("../assets/navbar/plusFilled.png");
+  const bellOutline = require("../assets/navbar/bellOutline.png");
+  const bellFilled = require("../assets/navbar/bellFilled.png");
+  const mailOutline = require("../assets/navbar/mailOutline.png");
+  const mailFilled = require("../assets/navbar/mailFilled.png");
 
   return (
     <Tab.Navigator
@@ -39,7 +39,7 @@ const AppTabs = () => {
       }}
     >
       <Tab.Screen
-        name="Feed"
+        name="Profile"
         component={ProfileScreen}
         options={{
           tabBarShowLabel: false,
