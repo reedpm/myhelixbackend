@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   Pressable,
+  Picker,
   StyleSheet,
   Text,
   TextInput,
@@ -10,13 +11,27 @@ import {
 import * as ImagePicker from 'react-native-image-picker';
 import {useGlobalContext} from '../GlobalContext';
 import {useNavigation} from '@react-navigation/native';
-import { fonts } from '../styles';
+import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
+
+const optionsList = [
+  {value: 'news_current_events', label: 'News and Current Events'},
+  {value: 'arts_creativity', label: 'Arts and Creativity'},
+  {value: 'memes_humos', label: 'Memes and Humor'},
+  {value: 'education_research', label: 'Education and Research'},
+  {value: 'life_hacks_tips', label: 'Life Hacks and Tips'},
+  {value: 'food_cooking', label: 'Food and Cooking'},
+  {value: 'tech_gadgets', label: 'Technology and Gadgets'},
+  {value: 'travel_lifestyle', label: 'Travel and Lifestyle'},
+  {value: 'social_causes_activism', label: 'Social Causes and Activism'},
+];
 
 
 const NewPostScreen = () => {
   customFonts();
   const [text, setText] = useState('');
+  const [selectedValue, setSelectedValue] = useState('');
+
 
   const {
     currentProfileData,
@@ -27,7 +42,10 @@ const NewPostScreen = () => {
 
   const previewPost = async () => {
     if (text == '') {
-      alert('The post cannot be empty. Please write something in the text box before posting.');
+      alert(
+          'The post cannot be empty.',
+          'Please write something in the text box before posting.',
+      );
     } else {
       navigation.navigate(
           'PostPreview',
@@ -57,8 +75,6 @@ const NewPostScreen = () => {
         if (response.assets) {
           console.log(response);
           setNewImage(response.assets[0].uri);
-          console.log(response.assets[0].uri);
-          console.log(response.assets[0].uri.split(';base64,')[0]);
         }
       }
     });
@@ -142,6 +158,16 @@ const NewPostScreen = () => {
       fontSize: 20,
       fontWeight: 'bold',
     },
+    picker: {
+      marginVertical: 5,
+      borderRadius: 5,
+      alignSelf: 'flex-start',
+    },
+    pickerItem: {
+      fontSize: 16,
+      fontFamily: fonts.regular,
+      color: 'pink',
+    },
   });
 
   return (
@@ -155,6 +181,21 @@ const NewPostScreen = () => {
         />
         <Text style={styles.title}>{currentProfileData?.displayName}</Text>
       </View>
+      <Picker
+        style={styles.picker}
+        selectedValue={selectedValue}
+        onValueChange={(itemValue, _) => setSelectedValue(itemValue)}
+      >
+        <Picker.Item label="Pick a category" value="" />
+        {optionsList.map((option) => (
+          <Picker.Item
+            style={styles.pickerItem}
+            key={option.value}
+            label={option.label}
+            value={option.value}
+          />
+        ))}
+      </Picker>
       <TextInput
         style={styles.textInput}
         multiline={true}
