@@ -5,6 +5,7 @@ import NewPostScreen from './NewPostScreen';
 import ConnectionsScreen from './ConnectionsScreen';
 import NotificationsScreen from './NotificationScreen';
 import ProfileScreen from './ProfileScreen';
+import MessagesScreen from './MessagesScreen';
 
 import {useGlobalContext} from '../GlobalContext';
 import HeaderButton from '../components/HeaderButton';
@@ -81,7 +82,7 @@ const AppTabs = () => {
       />
       <Tab.Screen
         name="Messages"
-        component={EmptyScreen}
+        component={MessagesScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({focused}) => (
