@@ -1,33 +1,30 @@
 import React from 'react';
-import {Image} from 'react-native'; 
+import {Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import ProfileScreen from './ProfileScreen';
 import NewPostScreen from './NewPostScreen';
-import EmptyScreen from './EmptyScreen';
 import ConnectionsScreen from './ConnectionsScreen';
-import {
-  HomeOutline, FriendsOutline, PlusOutline, BellOutline, MailOutline,
-} from '../icons/index';
+import NotificationsScreen from './NotificationScreen';
+import ProfileScreen from './ProfileScreen';
 
 import {useGlobalContext} from '../GlobalContext';
 import HeaderButton from '../components/HeaderButton';
-import NotificationsScreen from './NotificationScreen';
+
 
 const Tab = createBottomTabNavigator();
 
 const AppTabs = () => {
   const {UIColor} = useGlobalContext();
 
-  const homeOutline = require("../assets/navbar/homeOutline.png");
-  const homeFilled = require("../assets/navbar/homeFilled.png");
-  const friendsOutline = require("../assets/navbar/friendsOutline.png");
-  const friendsFilled = require("../assets/navbar/friendsFilled.png");
-  const plusOutline = require("../assets/navbar/plusOutline.png");
-  const plusFilled = require("../assets/navbar/plusFilled.png");
-  const bellOutline = require("../assets/navbar/bellOutline.png");
-  const bellFilled = require("../assets/navbar/bellFilled.png");
-  const mailOutline = require("../assets/navbar/mailOutline.png");
-  const mailFilled = require("../assets/navbar/mailFilled.png");
+  const homeOutline = require('../assets/navbar/homeOutline.png');
+  const homeFilled = require('../assets/navbar/homeFilled.png');
+  const friendsOutline = require('../assets/navbar/friendsOutline.png');
+  const friendsFilled = require('../assets/navbar/friendsFilled.png');
+  const plusOutline = require('../assets/navbar/plusOutline.png');
+  const plusFilled = require('../assets/navbar/plusFilled.png');
+  const bellOutline = require('../assets/navbar/bellOutline.png');
+  const bellFilled = require('../assets/navbar/bellFilled.png');
+  const mailOutline = require('../assets/navbar/mailOutline.png');
+  const mailFilled = require('../assets/navbar/mailFilled.png');
 
   return (
     <Tab.Navigator
@@ -39,15 +36,14 @@ const AppTabs = () => {
       }}
     >
       <Tab.Screen
-        name="Profile"
+        name="Feed"
         component={ProfileScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: ({ focused }) => (
-            // <HomeOutline/>
+          tabBarIcon: ({focused}) => (
             <Image source={focused ? homeFilled : homeOutline } />
           ),
-          header: () => <HeaderButton/>
+          header: () => <HeaderButton/>,
         }}
       />
       <Tab.Screen
@@ -55,10 +51,10 @@ const AppTabs = () => {
         component={ConnectionsScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <Image source={focused ? friendsFilled : friendsOutline } />
           ),
-          header: () => <HeaderButton/>
+          header: () => <HeaderButton/>,
         }}
       />
       <Tab.Screen
@@ -66,10 +62,10 @@ const AppTabs = () => {
         component={NewPostScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <Image source={focused ? plusFilled : plusOutline } />
           ),
-          header: () => <HeaderButton/>
+          header: () => <HeaderButton/>,
         }}
       />
       <Tab.Screen
@@ -77,10 +73,10 @@ const AppTabs = () => {
         component={NotificationsScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <Image source={focused ? bellFilled : bellOutline } />
           ),
-          header: () => <HeaderButton/>
+          header: () => <HeaderButton/>,
         }}
       />
       <Tab.Screen
@@ -88,10 +84,10 @@ const AppTabs = () => {
         component={EmptyScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <Image source={focused ? mailFilled : mailOutline } />
           ),
-          header: (props) => <HeaderButton/>
+          header: () => <HeaderButton/>,
         }}
       />
     </Tab.Navigator>

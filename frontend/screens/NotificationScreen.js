@@ -8,6 +8,7 @@ import {
 import {Divider, Avatar, Badge, ListItem} from '@rneui/themed';
 import {customFonts} from '../CustomFonts';
 import {fonts} from '../styles';
+import PropTypes from 'prop-types';
 
 
 const NotificationItem = ({item}) => {
@@ -16,8 +17,12 @@ const NotificationItem = ({item}) => {
     <ListItem bottomDivider>
       <Avatar rounded source={{uri: item.avatarUrl}} />
       <ListItem.Content>
-        <ListItem.Title style={{fontWeight: 'bold'}}>{item.title}</ListItem.Title>
-        <ListItem.Subtitle>{item.subtitle}</ListItem.Subtitle>
+        <ListItem.Title style={{fontWeight: 'bold'}}>
+          {item.title}
+        </ListItem.Title>
+        <ListItem.Subtitle>
+          {item.subtitle}
+        </ListItem.Subtitle>
       </ListItem.Content>
       {item.isNew && <Badge status="error" />}
     </ListItem>
@@ -31,8 +36,30 @@ const NotificationsScreen = () => {
     // Fetch notifications from the backend and group them
     // Using a static array for grouped notifications for now
     setSections([
-      {title: 'Today', data: [{id: '1', title: 'John Doe and 4 others', subtitle: 'liked your post', avatarUrl: 'avatar_url', isNew: true}]},
-      {title: 'Last week', data: [{id: '2', title: 'Jane Doe', subtitle: 'sent you a connection request', avatarUrl: 'avatar_url', isNew: false}]},
+      {
+        title: 'Today',
+        data: [
+          {
+            id: '1',
+            title: 'John Doe and 4 others',
+            subtitle: 'liked your post',
+            avatarUrl: 'avatar_url',
+            isNew: true,
+          },
+        ],
+      },
+      {
+        title: 'Last week',
+        data: [
+          {
+            id: '2',
+            title: 'Jane Doe',
+            subtitle: 'sent you a connection request',
+            avatarUrl: 'avatar_url',
+            isNew: false,
+          },
+        ],
+      },
       // other grouped notifications
     ]);
   }, []);
@@ -66,6 +93,15 @@ const NotificationsScreen = () => {
       />
     </View>
   );
+};
+
+NotificationItem.propTypes = {
+  item: PropTypes.shape({
+    avatarUrl: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    subtitle: PropTypes.string.isRequired,
+    isNew: PropTypes.bool,
+  }).isRequired,
 };
 
 export default NotificationsScreen;

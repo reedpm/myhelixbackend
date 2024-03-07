@@ -223,12 +223,16 @@ const ProfileScreen = () => {
                   value={currentProfileData?.displayName}
                   placeholder="Name"
                   onChangeText={(text) =>
-                    setCurrentProfileData({...currentProfileData, displayName: text})
+                    setCurrentProfileData(
+                        {...currentProfileData, displayName: text},
+                    )
                   }
                 />
               ) : (
                 <View style={styles.row}>
-                  <Text style={styles.title}>{currentProfileData?.displayName}</Text>
+                  <Text style={styles.title}>
+                    {currentProfileData?.displayName}
+                  </Text>
                 </View>
 
               )}
@@ -255,13 +259,10 @@ const ProfileScreen = () => {
           <Divider
             style={styles.divider}
             color="#D9D9D9"
-            // inset
-            // insetType="middle"
             subHeaderStyle={{}}
             width={3}
             orientation="horizontal"
           />
-
 
           <FlatList
             data={posts}

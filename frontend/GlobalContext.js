@@ -1,5 +1,7 @@
 import React, {createContext, useContext, useState, useEffect} from 'react';
 import {colors} from './styles';
+import PropTypes from 'prop-types';
+
 
 const GlobalContext = createContext();
 
@@ -8,7 +10,7 @@ export const useGlobalContext = () => useContext(GlobalContext);
 export const dbURI = 'http://localhost:3000/api/';
 export const UI_COLOR = {
   PERSONAL: colors.blue,
-  PUBLIC: colors.red, // 9D7F95
+  PUBLIC: colors.red,
 };
 
 export const GlobalProvider = ({children}) => {
@@ -57,4 +59,8 @@ export const GlobalProvider = ({children}) => {
       {children}
     </GlobalContext.Provider>
   );
+};
+
+GlobalProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
