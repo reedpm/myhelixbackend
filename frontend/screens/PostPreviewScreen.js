@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import {customFonts} from '../CustomFonts';
 import {fonts} from '../styles';
 import {ScrollView} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const PostPreviewScreen = (props) => {
   customFonts();
@@ -18,6 +19,7 @@ const PostPreviewScreen = (props) => {
     currentProfileData,
     UIColor,
   } = useGlobalContext();
+  const navigation = useNavigation();
 
   const createPost = async () => {
     try {
