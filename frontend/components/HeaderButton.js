@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Image, Dimensions } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image, useWindowDimensions } from "react-native";
 import { EllipseProfile, HeaderLeftBlue, HeaderRightRed } from '../icons/index';
 import {useNavigation} from '@react-navigation/native';
 import {useGlobalContext, UI_COLOR} from '../GlobalContext';
@@ -40,8 +40,15 @@ const HeaderButton = ( props ) => {
     });
   }
 
-  // const leftBar = require("../assets/left_toggle.png");
-  // const rightBar = require("../assets/right_toggle.png");
+  const windowWidth = useWindowDimensions().width;
+
+  const leftBarSmallest = require("../assets/leftToggleSmallest.png"); 
+  const rightBarSmallest = require("../assets/rightToggleSmallest.png");  
+  const leftBarSmaller = require("../assets/leftToggleSmaller.png"); 
+  const rightBarSmaller = require("../assets/rightToggleSmaller.png"); 
+  const leftBar = (windowWidth >  1350) ? require("../assets/leftToggle.png") : (windowWidth <  730) ? leftBarSmallest: leftBarSmaller;
+  const rightBar = (windowWidth >  1350) ? require("../assets/rightToggle.png") : (windowWidth <  730) ? rightBarSmallest: rightBarSmaller;  
+
 
   return (
     <View
@@ -55,15 +62,16 @@ const HeaderButton = ( props ) => {
       <TouchableOpacity
         onPress={handlePrivateClick}
         style= {{
-          width: '50%',
-          resizeMode:"contain",
+          // width: '50%',
+          // resizeMode:"contain",
           // height: 20,
+          justifyContent: 'flex-end'
         }}
         >
         {/* <HeaderLeftBlue/> */}
         {/* <img src="../assets/navbar/stretchedHeaderLeftBlue.svg" width="100%" resizeMode="contain" maxHeight="60"/> */}
-        <img src="../assets/leftToggleSmallest.png" resizeMode="contain"  height="60"/>
-        {/* <Image source={leftBar} styles={styles.toggle}/> */}
+        {/* <img src="../assets/leftToggleSmallest.png" resizeMode="contain"  height="60"/> */}
+        <Image source= {leftBar} style={styles.toggleLeft}/>
       </TouchableOpacity>
       
       <TouchableOpacity
@@ -83,13 +91,14 @@ const HeaderButton = ( props ) => {
       <TouchableOpacity
         onPress={handlePublicClick}
         style= {{
-          width: '50%',
-          resizeMode:"contain"
+          // width: '50%',
+          // resizeMode:"contain"
+          justifyContent: 'flex-start'
         }}
         >
         {/* <HeaderRightRed/> */}
-        <img src="../assets/rightToggleSmallest.png" resizeMode="contain"  height="60"/>
-        {/* <Image source={rightBar} width="100%" styles={styles.toggle}/> */}
+        {/* <img src="../assets/rightToggleSmallest.png" resizeMode="contain"  height="60"/> */}
+        <Image source={rightBar} style={styles.toggleRight}/>
 
       </TouchableOpacity>
         
@@ -105,11 +114,15 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
   },
-  toggle: {
-    flex: 1,
-    width: 400,
-    maxHeight: 60,
-    resizeMode: 'stretch',
+  toggleLeft: {
+    height: 60,
+    // width: auto
+    resizeMode: 'contain',
+  },
+  toggleRight: {
+    resizeMode: 'contain',
+    height: 60,
+    // width: 'auto'
   }
 });
 
