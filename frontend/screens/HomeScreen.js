@@ -32,20 +32,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 16,
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    marginVertical: 300,
+    justifyContent: 'center',
+    marginVertical: 50,
     marginHorizontal: 50,
+    alignItems: 'center',
   },
   button: {
     backgroundColor: colors.blue,
     padding: 10,
+    margin: 10,
     borderRadius: 10,
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 20,
     fontFamily: fonts.regular,
   },
 });

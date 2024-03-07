@@ -14,6 +14,7 @@ import * as ImagePicker from 'react-native-image-picker';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
+import {useFocusEffect} from '@react-navigation/native';
 
 
 const ProfileScreen = () => {
@@ -99,30 +100,36 @@ const ProfileScreen = () => {
     });
   };
 
+  // Fetch profile data using the personalProfile route
+  const fetchPosts = async () => {
+    try {
+    // Fetch user posts
+      const postsResponse = await fetch(
+          dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
+      if (!postsResponse.ok) {
+        console.error('Failed to fetch posts');
+        return;
+      }
+
+      const postsData = await postsResponse.json();
+
+      // Update profileData state with posts
+      setPosts(postsData.data);
+    } catch (error) {
+      console.error('Error during posts fetch:', error);
+    }
+  };
 
   useEffect(() => {
-    // Fetch profile data using the personalProfile route
-    const fetchPosts = async () => {
-      try {
-        // Fetch user posts
-        const postsResponse = await fetch(
-            dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
-        if (!postsResponse.ok) {
-          console.error('Failed to fetch posts');
-          return;
-        }
-
-        const postsData = await postsResponse.json();
-
-        // Update profileData state with posts
-        setPosts(postsData.data);
-      } catch (error) {
-        console.error('Error during posts fetch:', error);
-      }
-    };
-
     fetchPosts();
   }, [currentProfileID]);
+
+  useFocusEffect(
+      React.useCallback(() => {
+        fetchPosts();
+      }, [currentProfileID]),
+  );
+
 
   const styles = StyleSheet.create({
     container: {
