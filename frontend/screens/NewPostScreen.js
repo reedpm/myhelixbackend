@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 import {useGlobalContext} from '../GlobalContext';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import { fonts } from '../styles';
 import {customFonts} from '../CustomFonts';
 
@@ -18,6 +18,18 @@ const NewPostScreen = () => {
   customFonts();
   const [text, setText] = useState('');
 
+  // function to clear the text box (TextInput)
+  const clearTextInput = () => {
+    setText('');
+  };
+
+  // hook to clear TextInput when the screen gains focus
+  useFocusEffect(
+    React.useCallback(() => {
+      clearTextInput();
+    }, [])
+  );
+  
   const {
     currentProfileData,
     UIColor,
