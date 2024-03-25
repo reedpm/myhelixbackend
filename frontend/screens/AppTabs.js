@@ -1,20 +1,21 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import NewPostScreen from './NewPostScreen';
 import EmptyScreen from './EmptyScreen';
 import ConnectionsScreen from './ConnectionsScreen';
 import {
-  HomeOutline, FriendsOutline, PlusOutline, BellOutline, MailOutline,
+  HomeOutline, FriendsOutline, PlusOutline, BellOutline, MailOutline, HomeFilled,
 } from '../icons/index';
 
-import {useGlobalContext} from '../GlobalContext';
+import { useGlobalContext } from '../GlobalContext';
 import NotificationsScreen from './NotificationScreen';
 import ProfileScreen from './ProfileScreen';
+import FeedScreen from './FeedScreen';
 
 const Tab = createBottomTabNavigator();
 
 const AppTabs = () => {
-  const {UIColor} = useGlobalContext();
+  const { UIColor } = useGlobalContext();
 
   return (
     <Tab.Navigator
@@ -30,7 +31,7 @@ const AppTabs = () => {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <HomeOutline/>
+            <HomeOutline />
           ),
         }}
       />
@@ -40,7 +41,17 @@ const AppTabs = () => {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <FriendsOutline/>
+            <FriendsOutline />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Feeds"
+        component={FeedScreen}
+        options={{
+          tabBarShowLabel: false,
+          tabBarIcon: () => (
+            <HomeFilled />
           ),
         }}
       />
@@ -50,7 +61,7 @@ const AppTabs = () => {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <PlusOutline/>
+            <PlusOutline />
           ),
         }}
       />
@@ -60,7 +71,7 @@ const AppTabs = () => {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <BellOutline/>
+            <BellOutline />
           ),
         }}
       />
@@ -70,7 +81,7 @@ const AppTabs = () => {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
-            <MailOutline/>
+            <MailOutline />
           ),
         }}
       />
