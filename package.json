@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons": "^4.8.3",
     "@babel/core": "^7.20.0",
     "@expo-google-fonts/league-spartan": "^0.2.3",
     "@expo/metro-runtime": "~3.1.1",

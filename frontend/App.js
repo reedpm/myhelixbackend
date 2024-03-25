@@ -10,6 +10,7 @@ import ConnectionsScreen from './screens/ConnectionsScreen';
 import PostPreviewScreen from './screens/PostPreviewScreen';
 import {GlobalProvider} from './GlobalContext';
 import NewPostScreen from './screens/NewPostScreen';
+import FeedScreen from './screens/FeedScreen';
 
 
 const Stack = createStackNavigator();
@@ -27,6 +28,7 @@ const App = () => {
           <Stack.Screen name="AppTabs" component={AppTabs} />
           <Stack.Screen name="NewPost" component={NewPostScreen} />
           <Stack.Screen name="PostPreview" component={PostPreviewScreen} />
+          <Stack.Screen name="Feed" component={FeedScreen} />
           {/* Add other screens and navigation options as needed */}
         </Stack.Navigator>
       </GlobalProvider>
