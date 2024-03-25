@@ -4,7 +4,7 @@ import NewPostScreen from './NewPostScreen';
 import EmptyScreen from './EmptyScreen';
 import ConnectionsScreen from './ConnectionsScreen';
 import {
-  HomeOutline, FriendsOutline, PlusOutline, BellOutline, MailOutline, HomeFilled,
+  HomeOutline, FriendsOutline, PlusOutline, BellOutline, MailOutline,
 } from '../icons/index';
 
 import { useGlobalContext } from '../GlobalContext';
@@ -27,7 +27,7 @@ const AppTabs = () => {
     >
       <Tab.Screen
         name="Feed"
-        component={ProfileScreen}
+        component={FeedScreen}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: () => (
@@ -42,16 +42,6 @@ const AppTabs = () => {
           tabBarShowLabel: false,
           tabBarIcon: () => (
             <FriendsOutline />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Feeds"
-        component={FeedScreen}
-        options={{
-          tabBarShowLabel: false,
-          tabBarIcon: () => (
-            <HomeFilled />
           ),
         }}
       />
