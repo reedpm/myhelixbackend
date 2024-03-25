@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from "react"
 import {
   StyleSheet,
   TouchableOpacity,
   View,
   Image,
   useWindowDimensions,
+  Text
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useGlobalContext, UI_COLOR} from '../GlobalContext';
+import ProfileDropdown from './ProfileDropdown';
 
 const HeaderButton = () => {
   const {
@@ -23,7 +25,9 @@ const HeaderButton = () => {
     setCurrentProfileID(userData.publicProfiles[0]);
     setUIColor(UI_COLOR[currentProfileData.type]);
     navigation.navigate('AppTabs', {
-      screen: 'Profile',
+      screen: 'Connections', params: {
+        screen: 'Profile'
+      }
     });
   };
 
@@ -31,13 +35,9 @@ const HeaderButton = () => {
     setCurrentProfileID(userData.personalProfile);
     setUIColor(UI_COLOR[currentProfileData.type]);
     navigation.navigate('AppTabs', {
-      screen: 'Profile',
-    });
-  };
-
-  const handleProfileClick = () => {
-    navigation.navigate('AppTabs', {
-      screen: 'Profile',
+      screen: 'Connections', params: {
+        screen: 'Profile'
+      }
     });
   };
 
@@ -54,7 +54,15 @@ const HeaderButton = () => {
   require('../assets/rightToggle.png') : (windowWidth < 730) ?
   rightBarSmallest: rightBarSmaller;
 
-
+  const [selected, setSelected] = useState(undefined)
+  const data = [
+    { label: "Private1", value: "1" },
+    { label: "Public1", value: "2" },
+    { label: "Public2", value: "3" },
+    { label: "Public3", value: "4" },
+    { label: "Public4", value: "5" }
+  ]
+  
   return (
     <View
       style={{
@@ -67,14 +75,19 @@ const HeaderButton = () => {
         <Image source= {leftBar} style={styles.toggleLeft}/>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleProfileClick}>
+      {/* <TouchableOpacity 
+        onPress={handleProfileClick}
+        // onLongPress={handleDropDown}
+      >
         <Image
           style={styles.picture}
           source={{
             uri: currentProfileData?.profileImage || 'https://reactnative.dev/img/tiny_logo.png',
           }}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
+      <ProfileDropdown data={data} onSelect={setSelected} />
 
       <TouchableOpacity onPress={handlePublicClick}>
         <Image source={rightBar} style={styles.toggleRight}/>

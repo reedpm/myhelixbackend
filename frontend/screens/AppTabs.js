@@ -1,6 +1,8 @@
 import React from 'react';
 import {Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import NewPostScreen from './NewPostScreen';
 import ConnectionsScreen from './ConnectionsScreen';
 import NotificationsScreen from './NotificationScreen';
@@ -12,6 +14,20 @@ import HeaderButton from '../components/HeaderButton';
 
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+const ConnectionsStack= () => {
+  return(
+    <Stack.Navigator initialRouteName="Connections" 
+        screenOptions={{
+          headerShown: false
+        }}
+      >
+      <Stack.Screen name="Connections" component={ConnectionsScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+    </Stack.Navigator>
+  );
+};
 
 const AppTabs = () => {
   const {UIColor} = useGlobalContext();
@@ -26,6 +42,7 @@ const AppTabs = () => {
   const bellFilled = require('../assets/navbar/bellFilled.png');
   const mailOutline = require('../assets/navbar/mailOutline.png');
   const mailFilled = require('../assets/navbar/mailFilled.png');
+  const navigationComp = useNavigation();
 
   return (
     <Tab.Navigator
@@ -33,7 +50,7 @@ const AppTabs = () => {
         tabBarStyle: {
           backgroundColor: UIColor,
         },
-        // headerShown: false,
+        header: () => <HeaderButton/>,
       }}
     >
       <Tab.Screen
@@ -44,18 +61,24 @@ const AppTabs = () => {
           tabBarIcon: ({focused}) => (
             <Image source={focused ? homeFilled : homeOutline } />
           ),
-          header: () => <HeaderButton/>,
         }}
       />
       <Tab.Screen
         name="Connections"
-        component={ConnectionsScreen}
+        component={ConnectionsStack}
+        listeners={{
+          tabPress: () => {
+            navigationComp.navigate('Connections', {
+              screen: 'Connections'
+            });
+          },
+        }}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({focused}) => (
             <Image source={focused ? friendsFilled : friendsOutline } />
           ),
-          header: () => <HeaderButton/>,
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -66,7 +89,6 @@ const AppTabs = () => {
           tabBarIcon: ({focused}) => (
             <Image source={focused ? plusFilled : plusOutline } />
           ),
-          header: () => <HeaderButton/>,
         }}
       />
       <Tab.Screen
@@ -77,7 +99,6 @@ const AppTabs = () => {
           tabBarIcon: ({focused}) => (
             <Image source={focused ? bellFilled : bellOutline } />
           ),
-          header: () => <HeaderButton/>,
         }}
       />
       <Tab.Screen
@@ -88,7 +109,6 @@ const AppTabs = () => {
           tabBarIcon: ({focused}) => (
             <Image source={focused ? mailFilled : mailOutline } />
           ),
-          header: () => <HeaderButton/>,
         }}
       />
     </Tab.Navigator>
