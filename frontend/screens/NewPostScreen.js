@@ -30,6 +30,7 @@ const optionsList = [
 const NewPostScreen = () => {
   customFonts();
   const [text, setText] = useState('');
+  const [category, setCategory] = useState('');
   const [selectedValue, setSelectedValue] = useState('');
 
 
@@ -51,6 +52,7 @@ const NewPostScreen = () => {
           'PostPreview',
           {
             text: text,
+            category: category,
           },
       );
     }
@@ -78,6 +80,13 @@ const NewPostScreen = () => {
         }
       }
     });
+  };
+
+  const handleCategoryPicker = (itemValue, selectedIndex) => {
+    setSelectedValue(itemValue);
+    setCategory(optionsList[selectedIndex-1].label);
+    console.log(itemValue);
+    console.log(optionsList[selectedIndex-1].label);
   };
 
 
@@ -184,7 +193,7 @@ const NewPostScreen = () => {
       <Picker
         style={styles.picker}
         selectedValue={selectedValue}
-        onValueChange={(itemValue, _) => setSelectedValue(itemValue)}
+        onValueChange={handleCategoryPicker}
       >
         <Picker.Item label="Pick a category" value="" />
         {optionsList.map((option) => (

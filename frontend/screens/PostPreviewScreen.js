@@ -31,7 +31,7 @@ const PostPreviewScreen = (props) => {
         body: JSON.stringify({
           profileID: currentProfileData._id,
           content: props.route.params.text,
-          category: 'Announcement',
+          category: proprs.route.params.category,
         }),
       });
 
@@ -116,6 +116,7 @@ const PostPreviewScreen = (props) => {
         />
         <Text style={styles.title}>{currentProfileData?.displayName}</Text>
       </View>
+      <Text style={styles.title}>{props.route.params.category}</Text>
       <ScrollView style={styles.scroll}>
         <Text style={styles.postText}>{props.route.params.text}</Text>
       </ScrollView>
@@ -130,6 +131,7 @@ PostPreviewScreen.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       text: PropTypes.string.isRequired,
+      category: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
 };
