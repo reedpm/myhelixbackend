@@ -56,11 +56,18 @@ const HeaderButton = () => {
 
   const [selected, setSelected] = useState(undefined)
   const data = [
-    { label: "Private1", value: "1" , private: true},
-    { label: "Public1", value: "2" , private: false},
-    { label: "Public2", value: "3" , private: false},
-    { label: "Public3", value: "4" , private: false},
-    { label: "Public4", value: "5" , private: false}
+    { displayName: "Private1", _id: "1" , type: "PERSONAL", profileImage: ""},
+    { displayName: "Public1", _id: "2" , type: "PUBLIC", profileImage: ""},
+    { displayName: "Public2", _id: "3" , type: "PUBLIC", profileImage: ""},
+    { displayName: "Public3", _id: "4" , type: "PUBLIC", profileImage: ""},
+    { displayName: "Public4", _id: "5" , type: "PUBLIC", profileImage: ""},
+    { displayName: "Public5", _id: "6" , type: "PUBLIC", profileImage: ""},
+    { displayName: "Public6", _id: "7" , type: "PUBLIC", profileImage: ""},
+    { displayName: "Public7", _id: "8" , type: "PUBLIC", profileImage: ""},
+    { displayName: "Public8", _id: "9" , type: "PUBLIC", profileImage: ""},
+    { displayName: "Public8", _id: "10" , type: "PUBLIC", profileImage: ""},
+    { displayName: "Public8", _id: "11" , type: "PUBLIC", profileImage: ""},
+    { displayName: "Public8", _id: "12" , type: "PUBLIC", profileImage: ""},
   ]
   
   return (

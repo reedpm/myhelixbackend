@@ -7,20 +7,24 @@ import {
   Modal,
   View,
   Image,
-  Pressable
+  Pressable,
+  ScrollView
 } from "react-native"
 import {useNavigation} from '@react-navigation/native';
 import {useGlobalContext, UI_COLOR, dbURI} from '../GlobalContext';
+import {fonts} from '../styles';
 
-const ProfileDropdown = () => {
+const ProfileDropdown = ({data}) => {
     const {currentProfileData, userData, setCurrentProfileID} = useGlobalContext();
     const DropdownButton = useRef()
     const [visible, setVisible] = useState(false)
     const [selected, setSelected] = useState(undefined)
     const [profiles, setProfiles] = useState(undefined)
     const [dropdownTop, setDropdownTop] = useState(0)
+    const [buttonLeft, setButtonLeft] = useState(0)
 
     const navigation = useNavigation();
+    const buttonWidth = 160;
 
     useEffect(() => {
         const fetchCurrProfiles = async () => {
@@ -58,22 +62,15 @@ const ProfileDropdown = () => {
     }
 
     const handleProfileSelect = item => {
-        if(item.type == "PERSONAL")
-            setCurrentProfileID(userData.personalProfile);
-        else {
-            setCurrentProfileID(item._id);
-        }
+        setCurrentProfileID(item._id);
+        handleProfileClick();
         setUIColor(UI_COLOR[currentProfileData.type]);
-        navigation.navigate('AppTabs', {
-            screen: 'ConnectionsStack', params: {
-              screen: 'Profile'
-            }
-        });
     }
 
     const openDropdown = () => {
         DropdownButton.current.measure((_fx, _fy, _w, h, _px, py) => {
-        setDropdownTop(py + h)
+            setDropdownTop(py)
+            setButtonLeft(_px - buttonWidth/2);
         })
         setVisible(true)
     }
@@ -109,13 +106,22 @@ const ProfileDropdown = () => {
             style={styles.overlay}
             onPress={() => setVisible(false)}
             >
-                <View style={[styles.dropdown, { top: dropdownTop }]}>
+                <ScrollView style={[styles.dropdown, { top: dropdownTop }]}>
+                    <Text style={styles.title}>your pages</Text>
                     <FlatList
-                    data={profiles}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item._id.toString()}
+                        // ListHeaderComponent={<View><Text style={styles.title}>your pages</Text></View>}
+                        nestedScrollEnabled={true}
+                        data={profiles}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item._id.toString()}
                     />
-                </View>
+                    <TouchableOpacity
+                        style={[styles.newPage, { left: buttonLeft, width: buttonWidth }]}
+                        onPress={() => onItemPress(item)}
+                        >
+                            <Text style={styles.newPageText}>+ new page</Text>
+                    </TouchableOpacity>
+                </ScrollView>
             </TouchableOpacity>
         </Modal>
         )
@@ -140,9 +146,31 @@ const ProfileDropdown = () => {
 }
 
 const styles = StyleSheet.create({
-    buttonText: {
-        // flex: 1,
+    newPage: {
+        backgroundColor:UI_COLOR.PUBLIC, 
+        padding: 0,
+        margin: 20, 
+        borderRadius: 10, 
+        justifyContent: "center", 
+        alignItems: "center", 
+    },
+    title: {
         paddingHorizontal: 30,
+        paddingVertical: 20,
+        fontSize: 20,
+        fontFamily: fonts.bold,
+    },
+    newPageText: {
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        fontSize: 20,
+        fontFamily: fonts.regular,
+        color: "white",
+    },
+    buttonText: {
+        fontSize: 16,
+        fontFamily: fonts.regular,
+        paddingHorizontal: 20,
         paddingVertical: 20,
         textAlign: "center"
     },
@@ -157,18 +185,22 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         shadowOffset: { height: 4, width: 0 },
         shadowOpacity: 0.5,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        minHeight: "0%",
+        maxHeight: "93%",
     },
     overlay: {
         width: "100%",
         height: "100%"
     },
     item: {
-        paddingHorizontal: 10,
+        paddingHorizontal: 30,
         paddingVertical: 10,
         display: 'flex',
         flex: 1,
         flexDirection: "row",
-        justifyContent: "center",
+        // justifyContent: "center",
     },
     picture: {
         width: 60,
