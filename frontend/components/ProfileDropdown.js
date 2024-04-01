@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import {
   FlatList,
   StyleSheet,
@@ -10,16 +10,40 @@ import {
   Pressable
 } from "react-native"
 import {useNavigation} from '@react-navigation/native';
-import {useGlobalContext} from '../GlobalContext';
+import {useGlobalContext, UI_COLOR, dbURI} from '../GlobalContext';
 
-const ProfileDropdown = ({ data, onSelect }) => {
-    const {currentProfileData} = useGlobalContext();
+const ProfileDropdown = () => {
+    const {currentProfileData, userData, setCurrentProfileID} = useGlobalContext();
     const DropdownButton = useRef()
     const [visible, setVisible] = useState(false)
     const [selected, setSelected] = useState(undefined)
+    const [profiles, setProfiles] = useState(undefined)
     const [dropdownTop, setDropdownTop] = useState(0)
 
     const navigation = useNavigation();
+
+    useEffect(() => {
+        const fetchCurrProfiles = async () => {
+          try {
+            console.log('trying');
+
+            const response = await fetch(
+                dbURI + `profile/getCurrentProfiles/${userData.email}`,
+            );
+    
+            if (!response.ok) {
+              console.error('Failed to fetch current profiles');
+            }
+            console.log('curr profile success');
+            const profiles = await response.json();
+            setProfiles(profiles.data);
+    
+          } catch (error) {
+            console.log('error message for all user: ', error);
+          }
+        };
+        fetchCurrProfiles();
+      }, []);
 
     const toggleDropdown = () => {
         visible ? setVisible(false) : openDropdown()
@@ -27,7 +51,21 @@ const ProfileDropdown = ({ data, onSelect }) => {
 
     const handleProfileClick = () => {
         navigation.navigate('AppTabs', {
-          screen: 'Connections', params: {
+          screen: 'ConnectionsStack', params: {
+            screen: 'Profile'
+          }
+        });
+    }
+
+    const handleProfileSelect = item => {
+        if(item.type == "PERSONAL")
+            setCurrentProfileID(userData.personalProfile);
+        else {
+            setCurrentProfileID(item._id);
+        }
+        setUIColor(UI_COLOR[currentProfileData.type]);
+        navigation.navigate('AppTabs', {
+          screen: 'ConnectionsStack', params: {
             screen: 'Profile'
           }
         });
@@ -41,23 +79,27 @@ const ProfileDropdown = ({ data, onSelect }) => {
     }
 
     const onItemPress = item => {
-        setSelected(item)
-        onSelect(item)
-        setVisible(false)
+        setSelected(item);
+        // onSelect(item)
+        setVisible(false);
+        handleProfileSelect(item);
     }
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.item} onPress={() => onItemPress(item)}>
-            {/* <View> */}
-                <Image
-                    style={styles.picture}
-                    source={{
-                        uri: 'https://reactnative.dev/img/tiny_logo.png',
-                    }}
-                />
-                <Text style={styles.buttonText}>{item.label}</Text>
-            {/* </View>        */}
-        </TouchableOpacity>
+            <View style={item.type == "PERSONAL" ? styles.privateBorder : styles.publicBorder}>
+                {/* <View style={styles.padding}> */}
+                    <Image
+                        style= {styles.image}
+                        source={{
+                            uri: !item.profileImage ? 'https://reactnative.dev/img/tiny_logo.png' : item.profileImage,
+                        }}
+                    />
+                {/* </View> */}
+            </View> 
+
+            <Text style={styles.buttonText}>{item.displayName}</Text>
+            </TouchableOpacity>
     )
 
     const renderDropdown = () => {
@@ -67,13 +109,13 @@ const ProfileDropdown = ({ data, onSelect }) => {
             style={styles.overlay}
             onPress={() => setVisible(false)}
             >
-            <View style={[styles.dropdown, { top: dropdownTop }]}>
-                <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                />
-            </View>
+                <View style={[styles.dropdown, { top: dropdownTop }]}>
+                    <FlatList
+                    data={profiles}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item._id.toString()}
+                    />
+                </View>
             </TouchableOpacity>
         </Modal>
         )
@@ -132,6 +174,25 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
+    },
+    privateBorder:{
+        borderRadius: "50%",
+        alignSelf: 'center',
+        borderWidth: 2,
+        borderColor: UI_COLOR.PERSONAL,
+    },
+    publicBorder:{
+        borderRadius: "50%",
+        alignSelf: 'center',
+        borderWidth: 2,
+        borderColor: UI_COLOR.PUBLIC,
+    },
+    image: {
+        width: 50,
+        height: 50,
+        borderRadius: "50%",
+        borderWidth: 2,
+        borderColor: 'transparent',
     },
 })
 

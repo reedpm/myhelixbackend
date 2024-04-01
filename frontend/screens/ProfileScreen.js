@@ -16,7 +16,6 @@ import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
 import {useFocusEffect} from '@react-navigation/native';
 
-
 const ProfileScreen = () => {
   customFonts();
   const [editing, setEditing] = useState(false);
@@ -30,8 +29,13 @@ const ProfileScreen = () => {
     userData,
     UIColor,
     setUIColor,
+    setCurrentScreen,
   } = useGlobalContext();
 
+  //this is to pass back to the Tab navigator which screen within the Connections Stack is currently focused
+  useFocusEffect(() => {
+    setCurrentScreen("ProfileScreen");
+  }, []);
 
   const changeCurrentProfileID = () => {
     setCurrentProfileID(

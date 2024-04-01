@@ -18,6 +18,7 @@ export const GlobalProvider = ({children}) => {
   const [currentProfileID, setCurrentProfileID] = useState(null);
   const [currentProfileData, setCurrentProfileData] = useState(null);
   const [UIColor, setUIColor] = useState(UI_COLOR.PERSONAL);
+  const [currentScreen, setCurrentScreen] = useState("ConnectionsScreen");
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -45,7 +46,7 @@ export const GlobalProvider = ({children}) => {
       fetchProfileData();
     }
   }, [currentProfileID, setCurrentProfileID,
-    setUserData, setCurrentProfileData, setUIColor]);
+    setUserData, setCurrentProfileData, setUIColor, currentScreen, setCurrentScreen]);
 
   return (
     <GlobalContext.Provider value={
@@ -54,6 +55,7 @@ export const GlobalProvider = ({children}) => {
         currentProfileID, setCurrentProfileID,
         currentProfileData, setCurrentProfileData,
         UIColor, setUIColor,
+        currentScreen, setCurrentScreen,
       }
     }>
       {children}

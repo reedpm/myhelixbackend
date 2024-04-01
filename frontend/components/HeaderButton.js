@@ -25,7 +25,7 @@ const HeaderButton = () => {
     setCurrentProfileID(userData.publicProfiles[0]);
     setUIColor(UI_COLOR[currentProfileData.type]);
     navigation.navigate('AppTabs', {
-      screen: 'Connections', params: {
+      screen: 'ConnectionsStack', params: {
         screen: 'Profile'
       }
     });
@@ -35,7 +35,7 @@ const HeaderButton = () => {
     setCurrentProfileID(userData.personalProfile);
     setUIColor(UI_COLOR[currentProfileData.type]);
     navigation.navigate('AppTabs', {
-      screen: 'Connections', params: {
+      screen: 'ConnectionsStack', params: {
         screen: 'Profile'
       }
     });
@@ -56,11 +56,11 @@ const HeaderButton = () => {
 
   const [selected, setSelected] = useState(undefined)
   const data = [
-    { label: "Private1", value: "1" },
-    { label: "Public1", value: "2" },
-    { label: "Public2", value: "3" },
-    { label: "Public3", value: "4" },
-    { label: "Public4", value: "5" }
+    { label: "Private1", value: "1" , private: true},
+    { label: "Public1", value: "2" , private: false},
+    { label: "Public2", value: "3" , private: false},
+    { label: "Public3", value: "4" , private: false},
+    { label: "Public4", value: "5" , private: false}
   ]
   
   return (
