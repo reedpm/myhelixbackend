@@ -118,6 +118,7 @@ const ProfileScreen = () => {
       const postsData = await postsResponse.json();
 
       // Update profileData state with posts
+      console.log(postsData.data);
       setPosts(postsData.data);
     } catch (error) {
       console.error('Error during posts fetch:', error);
@@ -271,7 +272,7 @@ const ProfileScreen = () => {
           <FlatList
             data={posts}
             keyExtractor={(item) => item._id}
-            renderItem={({item}) => <Post post={item} />}
+            renderItem={({ item }) => <Post post={{ ...item, createdBy: currentProfileData.displayName }} />}
           />
 
           <View style={styles.buttonContainer}>

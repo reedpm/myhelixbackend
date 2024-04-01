@@ -7,10 +7,10 @@ import ConnectionsScreen from './ConnectionsScreen';
 import NotificationsScreen from './NotificationScreen';
 import ProfileScreen from './ProfileScreen';
 import MessagesScreen from './MessagesScreen';
+import FeedScreen from './FeedScreen';
 
 import {useGlobalContext} from '../GlobalContext';
 import HeaderButton from '../components/HeaderButton';
-
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -54,7 +54,7 @@ const AppTabs = () => {
       >
         <Tab.Screen
           name="Feed"
-          component={ProfileScreen}
+          component={FeedScreen}
           options={{
             tabBarShowLabel: false,
             tabBarIcon: ({focused}) => (

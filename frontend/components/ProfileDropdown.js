@@ -65,9 +65,9 @@ const ProfileDropdown = () => {
         }
         setUIColor(UI_COLOR[currentProfileData.type]);
         navigation.navigate('AppTabs', {
-          screen: 'ConnectionsStack', params: {
-            screen: 'Profile'
-          }
+            screen: 'ConnectionsStack', params: {
+              screen: 'Profile'
+            }
         });
     }
 
