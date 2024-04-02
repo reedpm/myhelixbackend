@@ -51,7 +51,11 @@ const notificationSchema = new mongoose.Schema({
     read: {
         type: mongoose.Schema.Types.Boolean,
         required: true,
-    }
+    },
+    createDate: {
+        type: Date,
+        required: true
+    },
     /** Convenience vars */
 }, {collection: "Notifications"});
 

@@ -18,10 +18,9 @@ exports.addNotification = async (req, res, next) => {
                 sender: notificationSender._id,
                 recipient: notificationRecipient._id,
                 read: false,
+                createDate: new Date(),
             }
         );
-        console.log(notificationSender);
-        console.log(notificationRecipient);
         // Save the notification into the database
         await notification.save();
 
@@ -37,7 +36,10 @@ exports.getNotificationsForProfile = async (req, res, next) => {
         Notification.find({ recipient: req.params.profileID }).exec()
         .then(data => {
             // If data is found, send it back
-            console.log(data);
+            // everytime the getNotifications route is called, we count the user as having read the notifications
+            for (var i = 0; i < data.length; i++) {
+                data[i]['read'] = true;
+            }
             res.status(200).send({ data: data });
         })
         .catch(err => {
