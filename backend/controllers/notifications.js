@@ -57,7 +57,8 @@ exports.getNotificationsForProfile = async (req, res, next) => {
     //     next(err);
     // }
     try {
-        const data = await Notification.find({ recipient: req.params.profileID }).populate('sender').exec();
+        // notifications of the profile with the given profile id, sorted by most to least recent
+        const data = await Notification.find({ recipient: req.params.profileID }).populate('sender').sort({ createDate: -1 }).exec();
 
         if (data.length > 0) {
 
