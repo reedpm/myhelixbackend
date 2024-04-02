@@ -7,14 +7,14 @@
  *       type: object
  *       required:
  *         - _id
- *         - notificationType
+ *         - type
  *         - sender
  *         - recipient
  *       properties:
  *         _id:
  *           type: object
  *           description: The MongoDB ID of the notification
- *         notificationType:
+ *         type:
  *           type: string
  *           description: The descriptor of the type of notification => Includes an enum of values to choose from
  *         sender:
@@ -33,7 +33,7 @@ const notificationSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
     },
-    notificationType: {
+    type: {
         type: String,
         required: true,
         enum: ['FOLLOW', 'MESSAGE', 'LIKE', 'COMMENT']

@@ -14,7 +14,7 @@ exports.addNotification = async (req, res, next) => {
         const notification = new Notification(
             {
                 _id: new mongoose.Types.ObjectId(),
-                notificationType: req.body.notificationType,
+                type: req.body.type,
                 sender: notificationSender._id,
                 recipient: notificationRecipient._id,
                 read: false,
@@ -32,23 +32,52 @@ exports.addNotification = async (req, res, next) => {
 }
 
 exports.getNotificationsForProfile = async (req, res, next) => {
-    try{
-        Notification.find({ recipient: req.params.profileID }).exec()
-        .then(data => {
-            // If data is found, send it back
-            // everytime the getNotifications route is called, we count the user as having read the notifications
-            for (var i = 0; i < data.length; i++) {
-                data[i]['read'] = true;
-            }
+    // try{
+    //     Notification.find({ recipient: req.params.profileID }).populate('sender').exec()
+    //     .then(data => {
+    //         // save data before updating read field
+    //         // using object spread syntax to do shallow copy 
+    //         const dataToSend = data.map(item => ({
+    //             ...item.toObject(),
+    //         }));
+    //         // If data is found, send it back
+    //         // everytime the getNotifications route is called, we count the user as having read the notifications
+    //         data.forEach(item => {
+    //             item.read = true;
+    //         });
+    //         res.status(200).send({ data: dataToSend });
+    //     })
+    //     .catch(err => {
+    //         // If an error occurs, send an error response
+    //         res.status(403).send({ data: err.message });
+    //     });
+    // }
+    // catch(err){
+    //     console.log("error");
+    //     next(err);
+    // }
+    try {
+        const data = await Notification.find({ recipient: req.params.profileID }).populate('sender').exec();
+
+        if (data.length > 0) {
+
+            // Send the data in the response
             res.status(200).send({ data: data });
-        })
-        .catch(err => {
-            // If an error occurs, send an error response
-            res.status(403).send({ data: err.message });
-        });
-    }
-    catch(err){
-        console.log("error");
-        next(err);
+
+            // Update the read field for each notification
+            data.forEach(item => {
+                item.read = true;
+            });
+
+            // Save each updated notification individually
+            await Promise.all(data.map(item => item.save()));
+        } else {
+            // Send a response if no data is found
+            res.status(404).send({ message: 'No notifications found' });
+        }
+    } catch (err) {
+        // Handle errors
+        console.error('Error fetching notifications:', err);
+        res.status(500).send({ message: 'Internal server error' });
     }
 }

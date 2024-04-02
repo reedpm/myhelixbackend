@@ -25,7 +25,7 @@ const NotificationController = require("../controllers/notifications.js");
  *                  recipientProfileID:
  *                      type: string
  *                      description: The ID of the profile generating the notification
- *                  notificationType:
+ *                  type:
  *                      type: string
  *                      description: The type of the notification, from ['FOLLOW', 'MESSAGE', 'LIKE', 'COMMENT']
  *     responses:
