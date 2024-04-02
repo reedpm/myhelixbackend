@@ -62,7 +62,6 @@ const NotificationsScreen = () => {
       const notificationsData = await notificationsResponse.json();
 
       setNotifications(notificationsData.data);
-      console.log(notificationsData.data);
     } catch (error) {
       console.error('Error during notifications fetch:', error);
     }
