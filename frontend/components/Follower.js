@@ -1,7 +1,7 @@
-// UserItem.js
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {View, Text, StyleSheet, Image} from 'react-native';
+import PropTypes from 'prop-types';
+
 
 const getRandomColor = () => {
   const colors = ['red', 'green', 'blue', 'orange', 'purple', 'pink'];
@@ -57,5 +57,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'green', // Default color, will be overridden by image
   },
 });
+
+Follower.propTypes = {
+  user: PropTypes.shape({
+    profileImage: PropTypes.string,
+    displayName: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default Follower;

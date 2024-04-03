@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Profile = require("../models/profile");
-const Requests = require("../models/requests");
+
 
 // const Tag_notification = require("../models/tag_notification");
 // 
@@ -144,6 +144,25 @@ exports.getAllPublicProfiles = async (req, res, next) => {
   }
 };
 
+/**
+ * Given: Profile email
+ * Returns: Profile objects associated with that email
+ */
+exports.getCurrentProfiles = async (req, res, next) => {
+  try{
+    const profiles = await Profile.find({ user: req.params.profileEmail });
+
+    if (!profiles) {
+      return res.status(409).send('Profile not found');
+    } 
+
+    res.status(200).send({ data: profiles });
+  }
+  catch(err){
+      console.log("error");
+      next(err);
+  }
+};
 
 // mongoose.Promise = Promise;
 

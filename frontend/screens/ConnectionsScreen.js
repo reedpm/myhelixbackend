@@ -1,23 +1,29 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, FlatList, SafeAreaView, Item} from 'react-native';
+import React from 'react';
+import {ScrollView} from 'react-native';
 import PublicConnectionsScreen from './PublicConnectionsScreen';
 import PrivateConnectionsScreen from './PrivateConnectionsScreen';
-import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
+import {useGlobalContext} from '../GlobalContext';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ConnectionsScreen = () => {
   const {
     currentProfileID,
-    setCurrentProfileID,
-    currentProfileData,
-    setCurrentProfileData,
     userData,
-    UIColor,
-    setUIColor,
+    setCurrentScreen
   } = useGlobalContext();
+
+    // //this is to pass back to the Tab navigator which screen within the Connections Stack is currently focused
+    useFocusEffect(() => {
+      setCurrentScreen("ConnectionsScreen");
+    }, []);
 
   return (
     <ScrollView>
-      {currentProfileID === userData.personalProfile ? <PrivateConnectionsScreen />: <PublicConnectionsScreen />}
+      {
+        currentProfileID === userData.personalProfile ?
+          <PrivateConnectionsScreen /> :
+          <PublicConnectionsScreen />
+      }
     </ScrollView>
   );
 };

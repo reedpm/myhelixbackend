@@ -39,7 +39,10 @@ const NewPostScreen = () => {
 
   const previewPost = async () => {
     if (text == '') {
-      alert('The post cannot be empty. Please write something in the text box before posting.');
+      alert(
+          'The post cannot be empty.',
+          'Please write something in the text box before posting.',
+      );
     } else {
       navigation.navigate(
           'PostPreview',
@@ -176,7 +179,10 @@ const NewPostScreen = () => {
         value={text}
       />
       <View style={styles.buttonsContainer}>
-        <Pressable style={styles.photoButtonContainer} onPress={handleImagePicker}>
+        <Pressable
+          style={styles.photoButtonContainer}
+          onPress={handleImagePicker}
+        >
           <Image
             style={styles.icon}
             source={require('../assets/photo-rectangle.png')}
