@@ -24,14 +24,6 @@ const Following = ({user}) => {
         </View>
         <Text style={styles.name}>{user.displayName}</Text>
       </View>
-      {/* <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, acceptButtonStyle]} onPress={onAccept}>
-          <Text style={acceptTextStyle}>accept</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={onDelete}>
-          <Text>delete</Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 };

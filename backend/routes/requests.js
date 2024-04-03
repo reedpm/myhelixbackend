@@ -35,7 +35,35 @@ const { verifyToken } = require("../extern/verifyToken.js");
  *       '200':
  *         description: Successfully sent a follow request to the profile being followed
  */
-router.post("/follow/:id/:profileID", RequestController.followPrivateProfile);
+router.put("/followprivate/:id/:profileID", RequestController.followPrivateProfile);
+// `requests/followprivate/${followProfileId}/${currentProfileID}`
+
+// Route to send follow request
+/**
+ * @swagger
+ * /api/requests/follow/{id}/{profileID}:
+ *   post:
+ *     summary: Places a Follow request to the profile's incoming requests array
+ *     tags:
+ *       - Requests
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the profile that we want to follow
+ *       - in: path
+ *         name: profileID
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the current profile sending the request
+ *     responses:
+ *       '200':
+ *         description: Successfully sent a follow request to the profile being followed
+ */
+router.put("/followpublic/:id/:profileID", RequestController.followPublicProfile);
 
 // Route to unfollow 
 /**
@@ -62,7 +90,34 @@ router.post("/follow/:id/:profileID", RequestController.followPrivateProfile);
  *       '200':
  *         description: Successfully unfollowed a specific profile
  */
-router.put("/unfollow/:id/:profileID", verifyToken, RequestController.unFollowProfile);
+router.put("/unfollowprivate/:id/:profileID", RequestController.unFollowPrivateProfile);
+
+// Route to unfollow 
+/**
+ * @swagger
+ * /api/requests/unfollow/{id}/{profileID}:
+ *   put:
+ *     summary: Unfollows a specific profile
+ *     tags:
+ *       - Requests
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the profile that we want to unfollow
+ *       - in: path
+ *         name: profileID
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the current profile
+ *     responses:
+ *       '200':
+ *         description: Successfully unfollowed a specific profile
+ */
+router.put("/unfollowpublic/:id/:profileID",  RequestController.unFollowPublicProfile);
 
 // Route to handle a follow request
 /**
