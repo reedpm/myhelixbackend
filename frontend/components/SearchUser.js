@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -10,8 +10,44 @@ const getRandomColor = () => {
 
 // private: isConnection (follow & follower = true)
 // public: isConnection (is a follower )
-const SearchUser = ({user, onFollow, isConnection, isPrivate}) => {
-  console.log('### user profile: ' + user.profileImage);
+const SearchUser = ({user, onFollow, onUnfollow, isConnection, isPrivate}) => {
+  const [followButtonText, setFollowButtonText] = useState('follow');
+  const [unfollowButtonText, setUnfollowButtonText] = useState('unfollow');
+
+  const changeUnfollowText = () => {
+    if (isPrivate) {
+      if (unfollowButtonText == 'unfollow') {
+        setUnfollowButtonText('follow');
+      } else {
+        setUnfollowButtonText('requested');
+      }
+    } else {
+      if (unfollowButtonText == 'unfollow') {
+        setUnfollowButtonText('follow');
+      } else {
+        setUnfollowButtonText('unfollow');
+      }
+    }
+    onUnfollow();
+  }
+
+  const changeFollowText = () => {
+    if (isPrivate) {
+      if (followButtonText == 'follow') {
+        setFollowButtonText('requested');
+      } else {
+        setFollowButtonText('follow');
+      }
+    } else {
+      if (followButtonText == 'unfollow') {
+        setFollowButtonText('follow');
+      } else {
+        setFollowButtonText('unfollow');
+      }
+    }
+    onFollow();
+  }
+
   const imageSource = user.profileImage ? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
   let buttonColor;
@@ -34,19 +70,13 @@ const SearchUser = ({user, onFollow, isConnection, isPrivate}) => {
       <View style={styles.buttonContainer}>
         { isConnection ?
             (
-                <TouchableOpacity
-                  style={[styles.button, styles.followButton]}
-                  onPress={onFollow}
-                >
-                  <Text>unfollow</Text>
+                <TouchableOpacity style={[styles.button, styles.followButton]} onPress={() => {changeUnfollowText()}}>
+                    <Text>{unfollowButtonText}</Text>
                 </TouchableOpacity>
             ) :
             (
-                <TouchableOpacity
-                  style={[styles.button, {backgroundColor: buttonColor}]}
-                  onPress={onFollow}
-                >
-                  <Text>follow</Text>
+                <TouchableOpacity style={[styles.button, {backgroundColor: buttonColor}]} onPress={() => {changeFollowText()}}>
+                    <Text>{followButtonText}</Text>
                 </TouchableOpacity>
             )
         }

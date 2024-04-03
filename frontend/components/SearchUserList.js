@@ -1,12 +1,100 @@
 import React from 'react';
 import {FlatList} from 'react-native';
 import SearchUser from './SearchUser';
+import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 import PropTypes from 'prop-types';
 
 const SearchUserList = ({users, isConnection, isPrivate}) => {
-  const handlePress = async () => {
-    console.log('handle pressed');
-  };
+  const {
+    currentProfileID,
+  } = useGlobalContext();
+
+    const handleFollow = async(followProfileId) => {
+        if (isPrivate) { // private connection
+          // send a request
+          try {
+            const response = await fetch(dbURI + `requests/followprivate/${followProfileId}/${currentProfileID}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                
+              }),
+            })
+            if (!response.ok) {
+              console.error('Failed to Follow Private');
+            }
+          } catch (error) {
+
+          }
+          
+        } else { // public connection
+              // send a request
+          try {
+            const response = await fetch(dbURI + `requests/followpublic/${followProfileId}/${currentProfileID}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                
+              }),
+            })
+            if (!response.ok) {
+              console.error('Failed to Follow public');
+            }
+          } catch (error) {
+
+          }
+        }
+
+    }
+    const handleUnfollow = async(followProfileId) => {
+      if (isPrivate) { // private connection
+        // automatically remove from follower/following list of recipentee
+        // automatically remove from follower/following list of recipent
+        // send a request
+        try {
+          const response = await fetch(dbURI + `requests/unfollowprivate/${followProfileId}/${currentProfileID}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              
+            }),
+          })
+          if (!response.ok) {
+            console.error('Failed to UnFollow Private');
+          }
+        } catch (error) {
+
+        }
+
+      } else { // public connection
+        // automatically remove from follower list of recipentee
+        // automatically remove from following list of recipent 
+        try {
+          const response = await fetch(dbURI + `requests/unfollowpublic/${followProfileId}/${currentProfileID}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              
+            }),
+          })
+          if (!response.ok) {
+            console.error('Failed to UnFollow public');
+          }
+        } catch (error) {
+
+        }
+        
+      }
+
+  }
 
   return (
     <FlatList
@@ -16,7 +104,8 @@ const SearchUserList = ({users, isConnection, isPrivate}) => {
       renderItem={({item}) => (
         <SearchUser
           user={item}
-          onFollow={() => handlePress(item.requestId)}
+          onFollow={() => handleFollow(item._id)}
+          onUnfollow={() => handleUnfollow(item._id)}
           isConnection={isConnection}
           isPrivate={isPrivate}
         />
