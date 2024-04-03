@@ -48,7 +48,6 @@ const SearchUser = ({user, onFollow, onUnfollow, isConnection, isPrivate}) => {
     onFollow();
   }
 
-  console.log('### user profile: ' + user.profileImage);
   const imageSource = user.profileImage ? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
   let buttonColor;

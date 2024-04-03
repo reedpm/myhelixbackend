@@ -10,7 +10,6 @@ const SearchUserList = ({users, isConnection, isPrivate}) => {
   } = useGlobalContext();
 
     const handleFollow = async(followProfileId) => {
-        console.log("&&& in handle follow");
         if (isPrivate) { // private connection
           // send a request
           try {
@@ -49,7 +48,6 @@ const SearchUserList = ({users, isConnection, isPrivate}) => {
 
           }
         }
-        console.log("handle pressed");
 
     }
     const handleUnfollow = async(followProfileId) => {
@@ -57,7 +55,6 @@ const SearchUserList = ({users, isConnection, isPrivate}) => {
         // automatically remove from follower/following list of recipentee
         // automatically remove from follower/following list of recipent
         // send a request
-        console.log("is private?? ");
         try {
           const response = await fetch(dbURI + `requests/unfollowprivate/${followProfileId}/${currentProfileID}`, {
             method: 'PUT',
@@ -96,7 +93,6 @@ const SearchUserList = ({users, isConnection, isPrivate}) => {
         }
         
       }
-      console.log("handle pressed");
 
   }
 
