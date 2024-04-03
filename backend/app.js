@@ -13,6 +13,7 @@ const requests = require("./routes/requests.js");
 const profile = require("./routes/profile.js");
 const posts = require("./routes/posts.js");
 const conversation = require("./routes/conversations.js");
+const notification = require("./routes/notifications.js")
 
 // For API Documentation, we utilize SWAGGER modules
 const swaggerUI = require('swagger-ui-express');
@@ -61,6 +62,7 @@ app.use("/api/requests", requests);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
 app.use("/api/conversations", conversation);
+app.use("/api/notifications", notification);
 
 // Route to swagger API docs
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec, { explorer: true }));

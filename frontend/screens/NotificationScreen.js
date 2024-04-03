@@ -9,59 +9,66 @@ import {Divider, Avatar, Badge, ListItem} from '@rneui/themed';
 import {customFonts} from '../CustomFonts';
 import {fonts} from '../styles';
 import PropTypes from 'prop-types';
+import {useGlobalContext, dbURI} from '../GlobalContext';
 
 
-const NotificationItem = ({item}) => {
+const NotificationItem = ({notification}) => {
   customFonts();
+  const notificationMessages = {
+    'COMMENT': 'commented on your post.',
+    'LIKE': 'liked your post.',
+    'FOLLOW': 'followed you.',
+    'MESSAGE': 'messaged you.',
+  };
+  const styles = StyleSheet.create({
+    notification: {
+      fontWeight: 'bold',
+    },
+  });
+
   return (
     <ListItem bottomDivider>
-      <Avatar rounded source={{uri: item.avatarUrl}} />
+      <Avatar rounded source={{uri: notification.sender.profileImage ?? 'https://reactnative.dev/img/tiny_logo.png'}} />
       <ListItem.Content>
-        <ListItem.Title style={{fontWeight: 'bold'}}>
-          {item.title}
+        <ListItem.Title style={styles.notification}>
+          {
+            notification.sender.displayName + ' ' +
+            notificationMessages[notification.type]
+          }
         </ListItem.Title>
-        <ListItem.Subtitle>
-          {item.subtitle}
-        </ListItem.Subtitle>
       </ListItem.Content>
-      {item.isNew && <Badge status="error" />}
+      {!notification.read && <Badge status="error" />}
     </ListItem>
   );
 };
 
 const NotificationsScreen = () => {
-  const [sections, setSections] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const {currentProfileID} = useGlobalContext();
+
+
+  const fetchNotifications = async () => {
+    try {
+    // Fetch user posts
+      const notificationsResponse = await fetch(
+          dbURI +
+          `notifications/getNotificationsByProfileID/${currentProfileID}`);
+
+      if (!notificationsResponse.ok) {
+        console.error('Failed to fetch notifications');
+        return;
+      }
+
+      const notificationsData = await notificationsResponse.json();
+
+      setNotifications(notificationsData.data);
+    } catch (error) {
+      console.error('Error during notifications fetch:', error);
+    }
+  };
 
   useEffect(() => {
-    // Fetch notifications from the backend and group them
-    // Using a static array for grouped notifications for now
-    setSections([
-      {
-        title: 'Today',
-        data: [
-          {
-            id: '1',
-            title: 'John Doe and 4 others',
-            subtitle: 'liked your post',
-            avatarUrl: 'avatar_url',
-            isNew: true,
-          },
-        ],
-      },
-      {
-        title: 'Last week',
-        data: [
-          {
-            id: '2',
-            title: 'Jane Doe',
-            subtitle: 'sent you a connection request',
-            avatarUrl: 'avatar_url',
-            isNew: false,
-          },
-        ],
-      },
-      // other grouped notifications
-    ]);
+    fetchNotifications();
   }, []);
 
   const styles = StyleSheet.create({
@@ -77,30 +84,50 @@ const NotificationsScreen = () => {
       marginBottom: 5,
       paddingHorizontal: 16,
     },
-    // Add other styles here as needed
   });
 
   return (
     <View style={styles.container}>
+      {notifications ? (
       <SectionList
-        sections={sections}
-        keyExtractor={(item, index) => item.id + index}
-        renderItem={({item}) => <NotificationItem item={item} />}
+        sections={[{title: 'Notifications', data: notifications || []}]}
+        keyExtractor={(item, index) => item._id + index}
+        renderItem={({item}) => <NotificationItem notification={item} />}
         renderSectionHeader={({section: {title}}) => (
           <Text style={styles.sectionHeader}>{title}</Text>
         )}
         ItemSeparatorComponent={() => <Divider />}
       />
+    ) : (
+      <Text>No notifications found</Text>
+    )}
     </View>
   );
 };
 
 NotificationItem.propTypes = {
-  item: PropTypes.shape({
-    avatarUrl: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
-    isNew: PropTypes.bool,
+  notification: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    type: PropTypes.oneOf(['COMMENT', 'LIKE', 'FOLLOW', 'MESSAGE']).isRequired,
+    sender: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      user: PropTypes.string.isRequired,
+      displayName: PropTypes.string.isRequired,
+      profileImage: PropTypes.string.isRequired,
+      bio: PropTypes.string.isRequired,
+      followers: PropTypes.array.isRequired,
+      following: PropTypes.array.isRequired,
+      conversations: PropTypes.array.isRequired,
+      posts: PropTypes.array.isRequired,
+      pages: PropTypes.array.isRequired,
+      incomingRequests: PropTypes.array.isRequired,
+      outgoingRequests: PropTypes.array.isRequired,
+      __v: PropTypes.number.isRequired,
+    }).isRequired,
+    recipient: PropTypes.string.isRequired,
+    read: PropTypes.bool.isRequired,
+    __v: PropTypes.number.isRequired,
   }).isRequired,
 };
 
