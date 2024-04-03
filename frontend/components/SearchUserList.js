@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList} from 'react-native';
 import SearchUser from './SearchUser';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
+import PropTypes from 'prop-types';
 
 const SearchUserList = ({users, isConnection, isPrivate}) => {
   const {
@@ -30,7 +31,23 @@ const SearchUserList = ({users, isConnection, isPrivate}) => {
           }
           
         } else { // public connection
+              // send a request
+          try {
+            const response = await fetch(dbURI + `requests/followpublic/${followProfileId}/${currentProfileID}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                
+              }),
+            })
+            if (!response.ok) {
+              console.error('Failed to Follow public');
+            }
+          } catch (error) {
 
+          }
         }
         console.log("handle pressed");
 
@@ -61,8 +78,23 @@ const SearchUserList = ({users, isConnection, isPrivate}) => {
       } else { // public connection
         // automatically remove from follower list of recipentee
         // automatically remove from following list of recipent 
+        try {
+          const response = await fetch(dbURI + `requests/unfollowpublic/${followProfileId}/${currentProfileID}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              
+            }),
+          })
+          if (!response.ok) {
+            console.error('Failed to UnFollow public');
+          }
+        } catch (error) {
+
+        }
         
-        console.log("is not private??");
       }
       console.log("handle pressed");
 

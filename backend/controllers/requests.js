@@ -136,10 +136,6 @@ exports.followPublicProfile = async (req, res, next) => { // private profile fol
         // Current Profile
         const currentProfile = await Profile.findById(req.params.profileID);
 
-        // Before we do anything, double check that the types are the same and are PERSONAL PROFILES
-        if(profileToBeFollowed.type !== currentProfile.type || profileToBeFollowed.type === "PUBLIC"){
-            return next(handleError(405, "Invalid profile types => No request sent"));
-        }
 
         // Check to see if the profile that needs to be followed already has the sender profile id in its followers list
         // If currentProfile is not following the profile to be followed

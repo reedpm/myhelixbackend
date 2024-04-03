@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -15,25 +15,39 @@ const SearchUser = ({user, onFollow, onUnfollow, isConnection, isPrivate}) => {
   const [unfollowButtonText, setUnfollowButtonText] = useState('unfollow');
 
   const changeUnfollowText = () => {
-    if (unfollowButtonText == 'unfollow') {
-      setUnfollowButtonText('follow');
+    if (isPrivate) {
+      if (unfollowButtonText == 'unfollow') {
+        setUnfollowButtonText('follow');
+      } else {
+        setUnfollowButtonText('requested');
+      }
     } else {
-      setUnfollowButtonText('requested');
+      if (unfollowButtonText == 'unfollow') {
+        setUnfollowButtonText('follow');
+      } else {
+        setUnfollowButtonText('unfollow');
+      }
     }
     onUnfollow();
   }
 
   const changeFollowText = () => {
-    if (followButtonText == 'follow') {
-      setFollowButtonText('requested');
+    if (isPrivate) {
+      if (followButtonText == 'follow') {
+        setFollowButtonText('requested');
+      } else {
+        setFollowButtonText('follow');
+      }
     } else {
-      setFollowButtonText('follow');
+      if (followButtonText == 'unfollow') {
+        setFollowButtonText('follow');
+      } else {
+        setFollowButtonText('unfollow');
+      }
     }
     onFollow();
   }
 
-  console.log("### user profile: " + user.profileImage);
-const SearchUser = ({user, onFollow, isConnection, isPrivate}) => {
   console.log('### user profile: ' + user.profileImage);
   const imageSource = user.profileImage ? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();
