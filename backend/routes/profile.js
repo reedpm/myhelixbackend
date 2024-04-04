@@ -53,6 +53,27 @@ router.get("/getAllPrivateProfiles/:profileID", ProfileController.getAllPrivateP
  * @swagger
  * /api/profile/getAllPublicProfiles:
  *   get:
+ *     summary: Retrieves the Profile doc from a given profile email
+ *     tags:
+ *       - Profile
+ *     parameters:
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the profile to find
+ *     responses:
+ *       '200':
+ *         description: Successfully found and returned the Profile doc
+ */
+router.get("/getCurrentProfiles/:profileEmail", ProfileController.getCurrentProfiles);
+
+// get back the entire Profile Document back in a json
+/**
+ * @swagger
+ * /api/profile/getAllPublicProfiles:
+ *   get:
  *     summary: Retrieves the Profile doc from the given profile ID
  *     tags:
  *       - Profile
