@@ -47,7 +47,7 @@ const ProfileDropdown = ({data}) => {
           }
         };
         fetchCurrProfiles();
-      }, []);
+      }, [userData]);
 
     const toggleDropdown = () => {
         visible ? setVisible(false) : openDropdown()
@@ -57,6 +57,15 @@ const ProfileDropdown = ({data}) => {
         navigation.navigate('AppTabs', {
           screen: 'ConnectionsStack', params: {
             screen: 'Profile'
+          }
+        });
+    }
+
+    const handleNewProfileClick = () => {
+        setVisible(false);
+        navigation.navigate('AppTabs', {
+          screen: 'ConnectionsStack', params: {
+            screen: 'NewProfile'
           }
         });
     }
@@ -117,7 +126,7 @@ const ProfileDropdown = ({data}) => {
                     />
                     <TouchableOpacity
                         style={[styles.newPage, { left: buttonLeft, width: buttonWidth }]}
-                        onPress={() => onItemPress(item)}
+                        onPress={handleNewProfileClick}
                         >
                             <Text style={styles.newPageText}>+ new page</Text>
                     </TouchableOpacity>

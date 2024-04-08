@@ -6,6 +6,7 @@ import NewPostScreen from './NewPostScreen';
 import ConnectionsScreen from './ConnectionsScreen';
 import NotificationsScreen from './NotificationScreen';
 import ProfileScreen from './ProfileScreen';
+import NewProfileScreen from './NewProfileScreen';
 import MessagesScreen from './MessagesScreen';
 import FeedScreen from './FeedScreen';
 
@@ -24,6 +25,7 @@ const ConnectionsStack= () => {
       >
       <Stack.Screen name="ConnectionsPage" component={ConnectionsScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="NewProfile" component={NewProfileScreen} />
     </Stack.Navigator>
   );
 };

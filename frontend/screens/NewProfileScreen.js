@@ -7,42 +7,83 @@ import {
   TextInput,
   View,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {Divider} from '@rneui/themed';
-import Post from '../components/Post';
 import * as ImagePicker from 'react-native-image-picker';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
-const ProfileScreen = () => {
+const NewProfileScreen = () => {
   customFonts();
-  const [editing, setEditing] = useState(false);
-  const [newImage, setNewImage] = useState(null);
-  const [posts, setPosts] = useState(null);
   const {
     currentProfileID,
     setCurrentProfileID,
     currentProfileData,
     setCurrentProfileData,
     userData,
+    setUserData,
     UIColor,
     setUIColor,
     setCurrentScreen,
   } = useGlobalContext();
+  const [newImage, setNewImage] = useState(null);
+  
+  const setInitialName = () => {
+    if(userData) {
+      return "Public Profile #" + (userData.publicProfiles.length + 1);
+    }
+    else{
+      return "Public Profile #1";
+    }
+  }
+  const [displayName, setDisplayName] = useState(null);
+  const [bio, setBio] = useState(null);
+  const navigation = useNavigation();
 
   //this is to pass back to the Tab navigator which screen within the Connections Stack is currently focused
   useFocusEffect(() => {
     setCurrentScreen("ProfileScreen");
   });
 
-  const changeCurrentProfileID = () => {
-    setCurrentProfileID(
-      currentProfileID === userData.personalProfile ?
-      userData.publicProfiles[0] : userData.personalProfile,
-    );
-    setUIColor(UI_COLOR[currentProfileData.type]);
+
+
+  const createNewProfile = async () => {
+    const response = await fetch(dbURI + `user/addPublicProfile/${userData.email}`, 
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        displayName: displayName,
+        profileImage: newImage,
+        bio: bio,
+      }),
+    });
+
+    if (!response.ok) {
+      // Handle unsuccessful signup
+      Alert.alert(
+          'Create new profile failed',
+      );
+      return;
+    }
+    console.log('new profile success');
+
+    const data = await response.json();
+
+    console.log('got data');
+    setUserData({...data});
+    console.log('set data');
+
+    setCurrentProfileID(data.publicProfiles[data.publicProfiles.length - 1]);
+    setUIColor(UI_COLOR['PUBLIC']);
+    // Navigate to the Profile screen upon successful signup
+    navigation.navigate('Profile');
+    console.log('navigated');
   };
 
   const updateProfile = async () => {
@@ -67,14 +108,6 @@ const ProfileScreen = () => {
       );
       return;
     }
-  };
-
-  const handleEditPress = () => {
-    if (editing) {
-      // this code runs when the button is clicked to save profile information
-      updateProfile();
-    }
-    setEditing(!editing);
   };
 
 
@@ -103,38 +136,6 @@ const ProfileScreen = () => {
       }
     });
   };
-
-  // Fetch profile data using the personalProfile route
-  const fetchPosts = async () => {
-    try {
-    // Fetch user posts
-      const postsResponse = await fetch(
-          dbURI + `posts/getPostsByProfileID/${currentProfileID}`);
-      if (!postsResponse.ok) {
-        console.error('Failed to fetch posts');
-        return;
-      }
-
-      const postsData = await postsResponse.json();
-
-      // Update profileData state with posts
-      console.log(postsData.data);
-      setPosts(postsData.data);
-    } catch (error) {
-      console.error('Error during posts fetch:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, [currentProfileID]);
-
-  useFocusEffect(
-      React.useCallback(() => {
-        fetchPosts();
-      }, [currentProfileID]),
-  );
-
 
   const styles = StyleSheet.create({
     container: {
@@ -201,65 +202,36 @@ const ProfileScreen = () => {
       {currentProfileData ? (
         <>
           <View style={styles.row}>
-            {editing ? (
-              <Pressable onPress={handleImagePicker}>
-                <Image
-                  style={styles.image}
-                  source={{
-                    uri: newImage || (currentProfileData.profileImage ?? 'https://reactnative.dev/img/tiny_logo.png'),
-                  }}
-                />
-              </Pressable>
-            ) : (
+
+            <Pressable onPress={handleImagePicker}>
               <Image
                 style={styles.image}
                 source={{
-                  uri: currentProfileData.profileImage ?? 'https://reactnative.dev/img/tiny_logo.png',
+                  uri: newImage || ('https://reactnative.dev/img/tiny_logo.png'),
                 }}
               />
-            )}
+            </Pressable>
 
 
             <View style={styles.column}>
 
-              {editing ? (
-                <TextInput
-                  style={styles.title}
-                  value={currentProfileData?.displayName}
-                  placeholder="Name"
-                  onChangeText={(text) =>
-                    setCurrentProfileData(
-                        {...currentProfileData, displayName: text},
-                    )
-                  }
-                />
-              ) : (
-                <View style={styles.row}>
-                  <Text style={styles.title}>
-                    {currentProfileData?.displayName}
-                  </Text>
-                </View>
 
-              )}
-              {editing ? (
+              <TextInput
+                style={styles.title}
+                value={displayName}
+                placeholder="Name"
+                onChangeText={setDisplayName}
+              />
+
                 <View style={styles.row}>
                   <TextInput
                     style={styles.label}
-                    value={currentProfileData?.bio}
-                    placeholder="Bio"
-                    onChangeText={(text) =>
-                      setCurrentProfileData({...currentProfileData, bio: text})
-                    }
+                    value={bio}
+                    placeholder="Type your bio here..."
+                    onChangeText={setBio}
                   />
                 </View>
-              ) : (
-                <View style={styles.row}>
-                  <Text style={styles.label}>{currentProfileData?.bio}</Text>
-                </View>
-
-              )}
             </View>
-
           </View>
           <Divider
             style={styles.divider}
@@ -269,19 +241,13 @@ const ProfileScreen = () => {
             orientation="horizontal"
           />
 
-          <FlatList
-            data={posts}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => <Post post={{ ...item, createdBy: currentProfileData.displayName }} />}
-          />
-
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.button} onPress={handleEditPress}>
+            {/* <Pressable style={styles.button} onPress={handleEditPress}>
               <Text style={styles.buttonText}>{editing ? 'Save' : 'Edit'}</Text>
-            </Pressable>
-            <Pressable style={styles.button} onPress={changeCurrentProfileID}>
-              <Text style={styles.buttonText}>Change Profile</Text>
-            </Pressable>
+            </Pressable> */}
+            <TouchableOpacity style={styles.button} onPress={createNewProfile}>
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>
           </View>
         </>
       ) : null}
@@ -290,4 +256,4 @@ const ProfileScreen = () => {
 };
 
 
-export default ProfileScreen;
+export default NewProfileScreen;
