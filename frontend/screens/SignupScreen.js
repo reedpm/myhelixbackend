@@ -85,7 +85,7 @@ const SignupScreen = () => {
       />
 
       <Pressable style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Signup</Text>
+        <Text style={styles.buttonText}>Next</Text>
       </Pressable>
     </View>
   );
