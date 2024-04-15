@@ -2,6 +2,7 @@
 const mongoose = require("mongoose");
 const Post = require("../models/posts.js");
 const Profile = require("../models/profile.js");
+const Notification = require("../controllers/notifications.js");
 
 /**
  * Given: JSON body
@@ -68,6 +69,11 @@ exports.likePost = async (req, res, next) => {
         // Find the post given the passed post ID
         const post = Post.findById(req.params.postid);
 
+        // make notification for the liking of this post
+        req.body.senderProfileID = req.params.currentid; 
+        req.body.recipientProfileID = post.createdBy; 
+        req.body.type = 'POST'; 
+        await Notification.addNotification(req, res, next);
         // Check to make sure that we have not previously liked the post in the first place
         if(!post.likes.includes(req.params.currentid)){
             await post.updateOne({
@@ -133,3 +139,9 @@ exports.getPostsByCreatedBy = async (req, res, next) => {
         next(err);
     }
 };
+
+/*
+TODO: make a function/route for making comments and make sure to 
+create a notification in this function using the addNotification from the Notification controller
+you can see the likePost function to see how this is done.
+*/
