@@ -66,10 +66,9 @@ exports.deletePost = async (req, res, next) => {
 exports.likePost = async (req, res, next) => {
     try{
         // Find the post given the passed post ID
-        const post = Post.findById(req.params.postid);
-
+        const post = await Post.findById(req.params.postid);
         // Check to make sure that we have not previously liked the post in the first place
-        if(!post.likes.includes(req.params.currentid)){
+        if(post && post.likes && !post.likes.includes(req.params.currentid)){
             await post.updateOne({
                 $push: {likes: req.params.currentid}
             });
@@ -93,10 +92,10 @@ exports.likePost = async (req, res, next) => {
 exports.unlikePost = async (req, res, next) => {
     try{
         // Find the post given the passed post ID
-        const post = Post.findById(req.params.postid);
+        const post = await Post.findById(req.params.postid);
 
         // Check to make sure we have liked the post in the first place
-        if(post.likes.includes(req.params.currentid)){
+        if (post && post.likes && post.likes.includes(req.params.currentid)){
             await post.updateOne({
                 $pull: {likes: req.params.currentid}
             });
