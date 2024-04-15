@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Profile = require("../models/profile");
+const User = require("../models/user.js");
 
 
 // const Tag_notification = require("../models/tag_notification");
@@ -73,6 +74,31 @@ exports.update = async (req, res, next) => {
     // }
   }
 // 
+
+/**
+ * Given: profile's information
+ * Returns: Updated profile information
+ */
+exports.deletePublicProfile = async (req, res, next) => {
+  // We ensure that the email passed in the path matches the email passed by the verification token
+  console.log(req.params);
+  console.log(req.body);
+  try{
+    // Find user in DB by email and delete
+    await Profile.findOneAndDelete({_id: req.params.profileID});
+    //delete profile from publicProfiles list within User
+    const user = await User.findOneAndUpdate(
+      {email: req.params.email},
+      { $pull: {publicProfiles: req.params.profileID}},
+      {new: true},
+    );
+    // return updated user with one less public profile
+    res.status(200).json(user);
+  }
+  catch(err){
+    next(err);
+  }
+}
 
 /**
  * Given: Profile ID

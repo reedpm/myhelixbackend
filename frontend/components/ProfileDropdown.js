@@ -15,7 +15,7 @@ import {useGlobalContext, UI_COLOR, dbURI} from '../GlobalContext';
 import {fonts} from '../styles';
 
 const ProfileDropdown = ({data}) => {
-    const {currentProfileData, userData, setCurrentProfileID} = useGlobalContext();
+    const {currentProfileData, userData, setUserData, setUIColor, setCurrentProfileID} = useGlobalContext();
     const DropdownButton = useRef()
     const [visible, setVisible] = useState(false)
     const [selected, setSelected] = useState(undefined)
@@ -29,7 +29,6 @@ const ProfileDropdown = ({data}) => {
     useEffect(() => {
         const fetchCurrProfiles = async () => {
           try {
-            console.log('trying');
 
             const response = await fetch(
                 dbURI + `profile/getCurrentProfiles/${userData.email}`,
@@ -38,7 +37,6 @@ const ProfileDropdown = ({data}) => {
             if (!response.ok) {
               console.error('Failed to fetch current profiles');
             }
-            console.log('curr profile success');
             const profiles = await response.json();
             setProfiles(profiles.data);
     
@@ -47,27 +45,76 @@ const ProfileDropdown = ({data}) => {
           }
         };
         fetchCurrProfiles();
-      }, [userData]);
+      });
 
     const toggleDropdown = () => {
         visible ? setVisible(false) : openDropdown()
     }
 
+    const setInitialName = () => {
+        if(userData) {
+          return "Public Profile #" + (userData.publicProfiles.length + 1);
+        }
+        else{
+          return "Public Profile #1";
+        }
+    }
+
     const handleProfileClick = () => {
         navigation.navigate('AppTabs', {
           screen: 'ConnectionsStack', params: {
-            screen: 'Profile'
+            screen: 'Profile', params: {
+                editing: false,
+            }
           }
         });
     }
 
+    const createNewProfile = async () => {
+        const response = await fetch(dbURI + `user/addPublicProfile/${userData.email}`, 
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            displayName: setInitialName(),
+            profileImage: null,
+            bio: null,
+          }),
+        });
+    
+        if (!response.ok) {
+          // Handle unsuccessful signup
+          Alert.alert(
+              'Create new profile failed',
+          );
+          return;
+        }
+        console.log('new profile success');
+    
+        const data = await response.json();
+    
+        console.log('got data');
+        setUserData({...data});
+        console.log('set data');
+    
+        setCurrentProfileID(data.publicProfiles[data.publicProfiles.length - 1]);
+        setUIColor(UI_COLOR['PUBLIC']);
+        // Navigate to the Profile screen upon successful signup
+        navigation.navigate('AppTabs', {
+            screen: 'ConnectionsStack', params: {
+              screen: 'Profile', params: {
+                editing: true,
+              }
+            }
+          });
+          console.log('navigated');
+    }
+
     const handleNewProfileClick = () => {
         setVisible(false);
-        navigation.navigate('AppTabs', {
-          screen: 'ConnectionsStack', params: {
-            screen: 'NewProfile'
-          }
-        });
+        createNewProfile();
     }
 
     const handleProfileSelect = item => {

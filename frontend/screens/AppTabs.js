@@ -6,7 +6,6 @@ import NewPostScreen from './NewPostScreen';
 import ConnectionsScreen from './ConnectionsScreen';
 import NotificationsScreen from './NotificationScreen';
 import ProfileScreen from './ProfileScreen';
-import NewProfileScreen from './NewProfileScreen';
 import MessagesScreen from './MessagesScreen';
 import FeedScreen from './FeedScreen';
 
@@ -25,7 +24,7 @@ const ConnectionsStack= () => {
       >
       <Stack.Screen name="ConnectionsPage" component={ConnectionsScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen name="NewProfile" component={NewProfileScreen} />
+      {/* <Stack.Screen name="NewProfile" component={NewProfileScreen} /> */}
     </Stack.Navigator>
   );
 };
@@ -38,7 +37,7 @@ const AppTabs = () => {
   const friendsOutline = require('../assets/navbar/friendsOutline.png');
   const friendsFilled = require('../assets/navbar/friendsFilled.png');
   const plusOutline = require('../assets/navbar/plusOutline.png');
-  const plusFilled = require('../assets/navbar/plusFilled.png');
+  const plusFilled = require('../assets/navbar/plusFilled2.png');
   const bellOutline = require('../assets/navbar/bellOutline.png');
   const bellFilled = require('../assets/navbar/bellFilled.png');
   const mailOutline = require('../assets/navbar/mailOutline.png');

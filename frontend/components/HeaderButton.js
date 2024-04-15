@@ -26,7 +26,9 @@ const HeaderButton = () => {
     setUIColor(UI_COLOR[currentProfileData.type]);
     navigation.navigate('AppTabs', {
       screen: 'ConnectionsStack', params: {
-        screen: 'Profile'
+        screen: 'Profile', params: {
+          editing: false,
+        }
       }
     });
   };
@@ -36,7 +38,9 @@ const HeaderButton = () => {
     setUIColor(UI_COLOR[currentProfileData.type]);
     navigation.navigate('AppTabs', {
       screen: 'ConnectionsStack', params: {
-        screen: 'Profile'
+        screen: 'Profile', params: {
+          editing: false,
+        }
       }
     });
   };

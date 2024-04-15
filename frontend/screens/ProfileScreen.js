@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
   Image,
+  Modal,
 } from 'react-native';
 import {Divider} from '@rneui/themed';
 import Post from '../components/Post';
@@ -16,17 +17,20 @@ import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
 import {useFocusEffect} from '@react-navigation/native';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({route}) => {
   customFonts();
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(route.params.editing);
   const [newImage, setNewImage] = useState(null);
   const [posts, setPosts] = useState(null);
+  const [deletePopup, setDeletePopup] = useState(false);
+
   const {
     currentProfileID,
     setCurrentProfileID,
     currentProfileData,
     setCurrentProfileData,
     userData,
+    setUserData,
     UIColor,
     setUIColor,
     setCurrentScreen,
@@ -67,6 +71,33 @@ const ProfileScreen = () => {
       );
       return;
     }
+  };
+
+  const deleteProfile = async () => {
+    const response = await fetch(dbURI + 'profile/deleteProfile/' +
+                    userData.email + '/' + currentProfileID + '',
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      // Handle unsuccessful profile delete
+      Alert.alert(
+          'Profile delete failed',
+      );
+      return;
+    }
+
+    const data = await response.json();
+    // console.log("deleted profile, remaining profiles:");
+    // console.log(data);
+    //updates userData.publicProfiles
+    setUserData({...data});
+    setCurrentProfileID(userData.personalProfile);
+    setUIColor(UI_COLOR[currentProfileData.type]);
   };
 
   const handleEditPress = () => {
@@ -127,6 +158,7 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     fetchPosts();
+    setEditing(route.params.editing);
   }, [currentProfileID]);
 
   useFocusEffect(
@@ -282,6 +314,11 @@ const ProfileScreen = () => {
             <Pressable style={styles.button} onPress={changeCurrentProfileID}>
               <Text style={styles.buttonText}>Change Profile</Text>
             </Pressable>
+            {currentProfileID !== userData.personalProfile &&
+                <Pressable style={styles.button} onPress={deleteProfile}>
+                  <Text style={styles.buttonText}>Delete Profile</Text>
+                </Pressable>
+              }
           </View>
         </>
       ) : null}
