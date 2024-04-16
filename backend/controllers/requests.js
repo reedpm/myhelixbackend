@@ -226,6 +226,34 @@ exports.unFollowPublicProfile = async (req, res, next) => {
     }
 }
 
+exports.deletePrivateRequest = async (req, res, next) => {
+    try{
+        // Find profile to be followed
+        const profileBeingFollowed = await Profile.findById(req.params.id);
+        // Current Profile
+        const currentProfile = await Profile.findById(req.params.profileID);
+
+        // Pull the current profile from the followers list of the profile to unfollow if 
+        // currently not following
+        if(currentProfile.following.includes(profileBeingFollowed._id)){
+            // Pull the current profile from the list of followers of the profile being followed
+            profileBeingFollowed.followers.pull(currentProfile._id);
+            await profileBeingFollowed.save();
+
+            currentProfile.following.pull(profileBeingFollowed._id);
+            await currentProfile.save();
+        }
+        else{
+            return next(handleError(403, "Error: Profile does not exist or no further action required"));
+        }
+
+        res.status(200).send("Unfollowed Successfully");
+    }
+    catch(err){
+        next(err);
+    }
+}
+
 /**
  * Given: a value of 0 or 1
  * Given: Request ID

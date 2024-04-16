@@ -42,6 +42,8 @@ const PrivateConnectionsScreen = () => {
     setFilteredNotFollowingPrivateUsers,
   ] = useState('');
 
+  const [outgoingRequests, setOutgoingRequests] = useState();
+
 
   const {
     currentProfileID,
@@ -65,6 +67,8 @@ const PrivateConnectionsScreen = () => {
 
         setNotFollowingPrivateUsers(allPrivateUser.data2);
         setFilteredNotFollowingPrivateUsers(allPrivateUser.data2);
+
+        setOutgoingRequests(allPrivateUser.data3);
       } catch (error) {
         console.log('error message for all user: ', error);
       }
@@ -140,6 +144,11 @@ const PrivateConnectionsScreen = () => {
           />
           <SearchUserList
             users={filteredNotFollowingPrivateUsers}
+            isConnection={false}
+            isPrivate={true}
+          />
+          <SearchUserList
+            users={outgoingRequests}
             isConnection={false}
             isPrivate={true}
           />
