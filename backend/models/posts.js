@@ -59,6 +59,22 @@ const postSchema = new mongoose.Schema({
         }
     ],
     likeCount: Number,
+    comments: [
+        {
+            commenter: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Profiles"
+            },
+            commentBody: {
+                type: String,
+                max: 200,
+            },
+            commentDate: {
+                type: Date,
+                default: Date.now,
+            }
+        }
+    ]
     /** Convenience vars */
 }, {collection: "Posts"});
 

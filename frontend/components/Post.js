@@ -8,7 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 import { useGlobalContext, dbURI, UI_COLOR } from '../GlobalContext';
 import { Button } from '@rneui/base';
 
-const likeIconImg = require('../assets/leftToggle.png');
+const outlineRedHeart = require('../assets/red_heart_outline.png');
+const filledRedHeart = require('../assets/red_heart_filled.png');
+const commentOutline = require('../assets/chat.png');
 
 const Post = ({ post }) => {
   const {
@@ -21,11 +23,6 @@ const Post = ({ post }) => {
   const [likeCount, setLikeCount] = useState(post.likeCount);
   const [liked, setLiked] = useState(false);
 
-  // TODO: fix this so rerender page after hitting like count
-  // useEffect(() => {
-  //   handleLikePress();
-  // }, [likeCount]);
-
   customFonts();
   const navigation = useNavigation();
   const handlePress = () => {
@@ -33,10 +30,7 @@ const Post = ({ post }) => {
   };
 
   const handleLikePress = async () => {
-    // toggle between red and blank when clicked vs unlicked
-    // if (!liked) {
-    //   setColor('#ff0000');
-    // }
+    // TODO: toggle between red and blank when clicked vs unlicked
 
     // increase like count 
     try {
@@ -69,6 +63,10 @@ const Post = ({ post }) => {
     }
   };
 
+  const handleCommentPress = async () => {
+    // TODO: when press, will bring to a new page to write comment. Also include a submit button to add comment to database under profile of commenter 
+  };
+
   return (
     <Pressable onPress={handlePress}>
       <View style={styles.container}>
@@ -76,9 +74,15 @@ const Post = ({ post }) => {
         <Text style={styles.createdBy}>Created by: {post.createdBy}</Text>
         <Text style={styles.date}>Created on: {post.createDate}</Text>
         <Text style={styles.createdBy}>Category: {post.category}</Text>
-        {/* <Image style={styles.likeIcon} src={likeIconImg} /> */}
-        <Button onPress={handleLikePress}>{liked ? 'Unlike' : 'Like'}</Button>
-        <Text style={styles.likes}>{likeCount}</Text>
+        <div style={styles.likeCommentContainer}>
+          <Pressable onPress={handleLikePress}>
+            <Image style={styles.likeCommentIcons} source={!liked ? outlineRedHeart : filledRedHeart} alt='heart icon' />
+          </Pressable>
+          <Pressable onPress={handleCommentPress}>
+            <Image style={styles.likeCommentIcons} source={commentOutline} alt='comment icon' />
+          </Pressable>
+        </div>
+        {/* <Text style={styles.likes}>{likeCount}</Text> */}
         {/* Add more components to display other post information as needed */}
       </View>
     </Pressable>
@@ -108,16 +112,17 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontFamily: fonts.regular,
   },
+  likeCommentContainer: {
+    display: 'flex',
+  },
   likesCount: {
     fontSize: 8,
     color: 'gray',
     fontFamily: fonts.regular,
   },
-  likeIcon: {
+  likeCommentIcons: {
     width: 25,
     height: 25,
-    top: 538,
-    left: 297,
     gap: 0,
     opacity: 1,
   }
@@ -134,3 +139,4 @@ Post.propTypes = {
 };
 
 export default Post;
+
