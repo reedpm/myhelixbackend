@@ -7,6 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import {dbURI} from '../App';
 import {colors, fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
+import Background from '../assets/gradient.png';
 
 
 const SignupScreen = () => {
@@ -55,22 +56,22 @@ const SignupScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Name:</Text>
+      <Text style={styles.label}>Name</Text>
       <TextInput
         style={styles.input}
         onChangeText={setDisplayName}
         value={displayName}
-        placeholder="Enter your name"
+        placeholder="John Doe"
         keyboardType="default"
         autoCapitalize="none"
       />
 
-      <Text style={styles.label}>Email:</Text>
+      <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
         onChangeText={setEmail}
         value={email}
-        placeholder="Enter your email"
+        placeholder="example@gmail.com"
         keyboardType="email-address"
         autoCapitalize="none"
       />
@@ -80,7 +81,7 @@ const SignupScreen = () => {
         style={styles.input}
         onChangeText={setPassword}
         value={password}
-        placeholder="Enter your password"
+        placeholder=""
         secureTextEntry
       />
 
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   button: {
-    backgroundColor: colors.blue,
+    backgroundImage: `url(${Background})`,
     padding: 10,
     borderRadius: 10,
   },
