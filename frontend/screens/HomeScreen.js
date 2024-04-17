@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: colors.blue,
+    backgroundImage: `url("../assets/gradient.png")`,
     padding: 10,
     margin: 10,
     borderRadius: 10,

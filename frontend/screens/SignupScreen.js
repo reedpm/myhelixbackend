@@ -7,7 +7,6 @@ import {useNavigation} from '@react-navigation/native';
 import {dbURI} from '../App';
 import {colors, fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
-import Background from '../assets/gradient.png';
 
 
 const SignupScreen = () => {
@@ -96,6 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 16,
   },
   label: {
@@ -110,11 +110,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 10,
     borderRadius: 10,
+    width: 300,
   },
   button: {
-    backgroundImage: `url(${Background})`,
+    backgroundImage: `url("../assets/gradient.png")`,
     padding: 10,
     borderRadius: 10,
+    width: 300, 
+    height: auto,
   },
   buttonText: {
     color: 'white',
