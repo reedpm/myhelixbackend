@@ -55,22 +55,22 @@ const SignupScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Name</Text>
+      <Text style={styles.label}>Name:</Text>
       <TextInput
         style={styles.input}
         onChangeText={setDisplayName}
         value={displayName}
-        placeholder="John Doe"
+        placeholder="Enter your name"
         keyboardType="default"
         autoCapitalize="none"
       />
 
-      <Text style={styles.label}>Email</Text>
+      <Text style={styles.label}>Email:</Text>
       <TextInput
         style={styles.input}
         onChangeText={setEmail}
         value={email}
-        placeholder="example@gmail.com"
+        placeholder="Enter your email"
         keyboardType="email-address"
         autoCapitalize="none"
       />
@@ -80,12 +80,12 @@ const SignupScreen = () => {
         style={styles.input}
         onChangeText={setPassword}
         value={password}
-        placeholder=""
+        placeholder="Enter your password"
         secureTextEntry
       />
 
       <Pressable style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Next</Text>
+        <Text style={styles.buttonText}>Signup</Text>
       </Pressable>
     </View>
   );
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center', 
     paddingHorizontal: 16,
   },
   label: {
@@ -110,14 +110,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 10,
     borderRadius: 10,
-    width: 300,
   },
   button: {
     backgroundImage: `url("../assets/gradient.png")`,
+    alignItems: 'center',
     padding: 10,
+    width: 130,
     borderRadius: 10,
-    width: 300, 
-    height: auto,
   },
   buttonText: {
     color: 'white',
