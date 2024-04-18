@@ -13,6 +13,8 @@ import PostPreviewScreen from './screens/PostPreviewScreen';
 import {GlobalProvider} from './GlobalContext';
 import NewPostScreen from './screens/NewPostScreen';
 import FeedScreen from './screens/FeedScreen';
+import PrivateSetupScreen from './screens/PrivateSetupScreen';
+import PublicSetupScreen from './screens/PublicSetupScreen';
 
 
 const Stack = createStackNavigator();
@@ -54,6 +56,8 @@ const App = () => {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="PrivateSetupScreen" component={PrivateSetupScreen} />
+          <Stack.Screen name="PublicSetupScreen" component={PublicSetupScreen} />
           <Stack.Screen
             name="AppTabs"
             component={AppTabs}

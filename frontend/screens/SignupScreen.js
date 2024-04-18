@@ -4,20 +4,22 @@ import {
   Alert, Pressable,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {dbURI} from '../App';
 import {colors, fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
+import { dbURI, useGlobalContext } from '../GlobalContext';
 
 
 const SignupScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const {setUserData, setCurrentProfileID} = useGlobalContext();
   const navigation = useNavigation();
   customFonts();
 
   const handleSignup = async () => {
     try {
+      console.log(email, password, displayName);
       const response = await fetch(dbURI + 'signup', {
         method: 'POST',
         headers: {
@@ -29,7 +31,7 @@ const SignupScreen = () => {
           displayName: displayName,
         }),
       });
-
+      console.log(response);
       if (!response.ok) {
         // Handle unsuccessful signup
         Alert.alert(
@@ -40,22 +42,28 @@ const SignupScreen = () => {
       }
 
       const data = await response.json();
+      console.log(data);
 
       setUserData({...data});
       setCurrentProfileID(data.personalProfile);
 
       // Navigate to the Profile screen upon successful signup
-      navigation.navigate('AppTabs', {
-        screen: 'Profile',
-      });
+      // navigation.navigate('AppTabs', {
+      //   screen: 'Profile',
+      // });
+      navigation.navigate('PrivateSetupScreen');
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error('Error during signup:', error);
+      Alert.alert(
+          'Signup Failed',
+          'An account is already registered with this email.',
+      );
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Name:</Text>
+      <Text style={styles.label}>Name</Text>
       <TextInput
         style={styles.input}
         onChangeText={setDisplayName}
@@ -65,7 +73,7 @@ const SignupScreen = () => {
         autoCapitalize="none"
       />
 
-      <Text style={styles.label}>Email:</Text>
+      <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
         onChangeText={setEmail}
@@ -75,7 +83,7 @@ const SignupScreen = () => {
         autoCapitalize="none"
       />
 
-      <Text style={styles.label}>Password:</Text>
+      <Text style={styles.label}>Password</Text>
       <TextInput
         style={styles.input}
         onChangeText={setPassword}
@@ -95,13 +103,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center', 
-    paddingHorizontal: 16,
+    alignItems: 'center',
+    width: 300,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   label: {
     fontSize: 16,
     fontFamily: fonts.regular,
     marginBottom: 8,
+    alignSelf: 'flex-start',
   },
   input: {
     height: 40,
@@ -110,6 +121,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 10,
     borderRadius: 10,
+    width: 300,
+
   },
   button: {
     backgroundImage: `url("../assets/gradient.png")`,

@@ -37,13 +37,6 @@ const ProfileScreen = () => {
     setCurrentScreen("ProfileScreen");
   }, []);
 
-  const changeCurrentProfileID = () => {
-    setCurrentProfileID(
-      currentProfileID === userData.personalProfile ?
-      userData.publicProfiles[0] : userData.personalProfile,
-    );
-    setUIColor(UI_COLOR[currentProfileData.type]);
-  };
 
   const updateProfile = async () => {
     const response = await fetch(dbURI + 'profile/updateProfile/' +
@@ -278,9 +271,6 @@ const ProfileScreen = () => {
           <View style={styles.buttonContainer}>
             <Pressable style={styles.button} onPress={handleEditPress}>
               <Text style={styles.buttonText}>{editing ? 'Save' : 'Edit'}</Text>
-            </Pressable>
-            <Pressable style={styles.button} onPress={changeCurrentProfileID}>
-              <Text style={styles.buttonText}>Change Profile</Text>
             </Pressable>
           </View>
         </>
