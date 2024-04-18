@@ -228,24 +228,24 @@ exports.unFollowPublicProfile = async (req, res, next) => {
 
 exports.deletePrivateRequest = async (req, res, next) => {
     try{
+        // delete from outgoing 
+        // delete from incoming 
+        // delete request in general from mongoDB
+
         // Find profile to be followed
         const profileBeingFollowed = await Profile.findById(req.params.id);
         // Current Profile
         const currentProfile = await Profile.findById(req.params.profileID);
 
-        // Pull the current profile from the followers list of the profile to unfollow if 
-        // currently not following
-        if(currentProfile.following.includes(profileBeingFollowed._id)){
-            // Pull the current profile from the list of followers of the profile being followed
-            profileBeingFollowed.followers.pull(currentProfile._id);
-            await profileBeingFollowed.save();
+        const request = await Request.findById(req.params.reqID);
 
-            currentProfile.following.pull(profileBeingFollowed._id);
-            await currentProfile.save();
-        }
-        else{
-            return next(handleError(403, "Error: Profile does not exist or no further action required"));
-        }
+        profileBeingFollowed.outgoingRequests.pull(request._id);
+        await profileBeingFollowed.save();
+
+        currentProfile.incomingRequests.pull(request._id);
+        await currentProfile.save();
+
+        await Request.findByIdAndDelete(request._id);
 
         res.status(200).send("Unfollowed Successfully");
     }

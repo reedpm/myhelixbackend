@@ -126,11 +126,11 @@ const PublicConnectionsScreen = () => {
         <View>
           <SearchUserList
             users={filteredFollowingPublicUsers}
-            isConnection={true} isPrivate={false}
+            isConnection={true} isPrivate={false} isRequest={false}
           />
           <SearchUserList
             users={filteredNotFollowingPublicUsers}
-            isConnection={false} isPrivate={false}
+            isConnection={false} isPrivate={false} isRequest={false}
           />
         </View>
       );
