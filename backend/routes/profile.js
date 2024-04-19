@@ -129,12 +129,12 @@ router.get("/getAllPublicProfiles/:profileID", ProfileController.getAllPublicPro
  */
 router.put("/updateProfile/:email/:profileID", ProfileController.update);
 
-// Route to update profile information
+// Route to delete profile information
 /**
  * @swagger
- * /api/profile/updateProfile/{email}/{proid}:
+ * /api/profile/deleteProfile/{email}/{proid}:
  *   delete:
- *     summary: Updates the profile information
+ *     summary: Deletes the profile information
  *     parameters:
  *       - in: path
  *         name: email

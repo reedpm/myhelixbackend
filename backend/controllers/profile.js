@@ -77,7 +77,7 @@ exports.update = async (req, res, next) => {
 
 /**
  * Given: profile's information
- * Returns: Updated profile information
+ * Returns: Updated user information (profile list excludes deleted public profile)
  */
 exports.deletePublicProfile = async (req, res, next) => {
   // We ensure that the email passed in the path matches the email passed by the verification token

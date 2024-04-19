@@ -12,11 +12,9 @@ import {
 import { Card } from "@rneui/themed";
 
 import {fonts} from '../styles';
-import { useGlobalContext, UI_COLOR } from "../GlobalContext";
+import { UI_COLOR } from "../GlobalContext";
 
 const DeleteConfirm = (props) => {
-    const { UIColor } = useGlobalContext();
-
     const [show, setShow] = useState(false);
   
     const handleClose = () => setShow(false);
@@ -27,7 +25,7 @@ const DeleteConfirm = (props) => {
         onPress={handleShow}
         style={styles.buttonDelete}
         >
-        <Modal visible={show} transparent animationType="none">
+        <Modal visible={show} transparent>
           <TouchableOpacity
               style={styles.overlay}
               onPress={handleClose}

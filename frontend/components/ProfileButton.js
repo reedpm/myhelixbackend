@@ -14,11 +14,10 @@ import {useNavigation} from '@react-navigation/native';
 import {useGlobalContext, UI_COLOR, dbURI} from '../GlobalContext';
 import {fonts} from '../styles';
 
-const ProfileDropdown = ({data}) => {
+const ProfileButton = () => {
     const {currentProfileData, userData, setUserData, setUIColor, setCurrentProfileID} = useGlobalContext();
     const DropdownButton = useRef()
     const [visible, setVisible] = useState(false)
-    const [selected, setSelected] = useState(undefined)
     const [profiles, setProfiles] = useState(undefined)
     const [dropdownTop, setDropdownTop] = useState(0)
     const [buttonLeft, setButtonLeft] = useState(0)
@@ -78,9 +77,7 @@ const ProfileDropdown = ({data}) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            displayName: setInitialName(),
-            profileImage: null,
-            bio: null,
+            displayName: setInitialName()
           }),
         });
     
@@ -95,9 +92,7 @@ const ProfileDropdown = ({data}) => {
     
         const data = await response.json();
     
-        console.log('got data');
         setUserData({...data});
-        console.log('set data');
     
         setCurrentProfileID(data.publicProfiles[data.publicProfiles.length - 1]);
         setUIColor(UI_COLOR['PUBLIC']);
@@ -109,7 +104,6 @@ const ProfileDropdown = ({data}) => {
               }
             }
           });
-          console.log('navigated');
     }
 
     const handleNewProfileClick = () => {
@@ -132,8 +126,6 @@ const ProfileDropdown = ({data}) => {
     }
 
     const onItemPress = item => {
-        setSelected(item);
-        // onSelect(item)
         setVisible(false);
         handleProfileSelect(item);
     }
@@ -141,14 +133,12 @@ const ProfileDropdown = ({data}) => {
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.item} onPress={() => onItemPress(item)}>
             <View style={item.type == "PERSONAL" ? styles.privateBorder : styles.publicBorder}>
-                {/* <View style={styles.padding}> */}
                     <Image
                         style= {styles.image}
                         source={{
                             uri: !item.profileImage ? 'https://reactnative.dev/img/tiny_logo.png' : item.profileImage,
                         }}
                     />
-                {/* </View> */}
             </View> 
 
             <Text style={styles.buttonText}>{item.displayName}</Text>
@@ -165,12 +155,12 @@ const ProfileDropdown = ({data}) => {
                 <ScrollView style={[styles.dropdown, { top: dropdownTop }]}>
                     <Text style={styles.title}>your pages</Text>
                     <FlatList
-                        // ListHeaderComponent={<View><Text style={styles.title}>your pages</Text></View>}
                         nestedScrollEnabled={true}
                         data={profiles}
                         renderItem={renderItem}
                         keyExtractor={(item) => item._id.toString()}
                     />
+                    {/* Button to create a new public page */}
                     <TouchableOpacity
                         style={[styles.newPage, { left: buttonLeft, width: buttonWidth }]}
                         onPress={handleNewProfileClick}
@@ -285,4 +275,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ProfileDropdown
+export default ProfileButton

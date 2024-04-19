@@ -10,7 +10,7 @@ import MessagesScreen from './MessagesScreen';
 import FeedScreen from './FeedScreen';
 
 import {useGlobalContext} from '../GlobalContext';
-import HeaderButton from '../components/HeaderButton';
+import HeaderButtons from '../components/HeaderButtons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -49,7 +49,7 @@ const AppTabs = () => {
           tabBarStyle: {
             backgroundColor: UIColor,
           },
-          header: () => <HeaderButton/>,
+          header: () => <HeaderButtons/>,
           unmountOnBlur: true,
         }}
       >

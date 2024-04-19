@@ -23,7 +23,6 @@ const ProfileScreen = ({route}) => {
   const [editing, setEditing] = useState(route.params.editing);
   const [newImage, setNewImage] = useState(null);
   const [posts, setPosts] = useState(null);
-  const [deletePopup, setDeletePopup] = useState(false);
 
   const {
     currentProfileID,
@@ -311,6 +310,7 @@ const ProfileScreen = ({route}) => {
             <Pressable style={styles.button} onPress={changeCurrentProfileID}>
               <Text style={styles.buttonText}>Change Profile</Text>
             </Pressable>
+            {/* Delete button only appears for public profiles */}
             {currentProfileID !== userData.personalProfile &&
                 <DeleteConfirm buttonText={"Delete \'" + currentProfileData?.displayName + "\'"} handleDelete={deleteProfile} canDelete={userData.publicProfiles.length > 1}/>
               }
