@@ -109,6 +109,12 @@ exports.followPrivateProfile = async (req, res, next) => { // private profile fo
 
             await newFollowRequest.save();
 
+            // make notification for the follow request
+            req.body.senderProfileID = currentProfile; 
+            req.body.recipientProfileID = profileToBeFollowed; 
+            req.body.type = 'REQUEST'; 
+            await Notification.addNotification(req, res, next);
+
             // We add an incoming request to the recipient profile
             profileToBeFollowed.incomingRequests.push(newFollowRequest._id);
             await profileToBeFollowed.save();
