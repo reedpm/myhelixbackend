@@ -14,6 +14,7 @@ import {GlobalProvider} from './GlobalContext';
 import NewPostScreen from './screens/NewPostScreen';
 import FeedScreen from './screens/FeedScreen';
 import PostDetailsScreen from './screens/PostDetailsScreen';
+import NewCommentScreen from './screens/NewCommentScreen';
 
 
 const Stack = createStackNavigator();
@@ -67,6 +68,7 @@ const App = () => {
           <Stack.Screen name="PostPreview" component={PostPreviewScreen} />
           <Stack.Screen name="Feed" component={FeedScreen} />
           <Stack.Screen name="PostDetails" component={PostDetailsScreen} />
+          <Stack.Screen name="NewComment" component={NewCommentScreen} />
           {/* Add other screens and navigation options as needed */}
         </Stack.Navigator>
       </GlobalProvider>
