@@ -14,11 +14,10 @@ import {useNavigation} from '@react-navigation/native';
 import {useGlobalContext, UI_COLOR, dbURI} from '../GlobalContext';
 import {fonts} from '../styles';
 
-const ProfileDropdown = ({data}) => {
-    const {currentProfileData, userData, setCurrentProfileID} = useGlobalContext();
+const ProfileButton = () => {
+    const {currentProfileData, userData, setUserData, setUIColor, setCurrentProfileID} = useGlobalContext();
     const DropdownButton = useRef()
     const [visible, setVisible] = useState(false)
-    const [selected, setSelected] = useState(undefined)
     const [profiles, setProfiles] = useState(undefined)
     const [dropdownTop, setDropdownTop] = useState(0)
     const [buttonLeft, setButtonLeft] = useState(0)
@@ -29,7 +28,6 @@ const ProfileDropdown = ({data}) => {
     useEffect(() => {
         const fetchCurrProfiles = async () => {
           try {
-            console.log('trying');
 
             const response = await fetch(
                 dbURI + `profile/getCurrentProfiles/${userData.email}`,
@@ -38,7 +36,6 @@ const ProfileDropdown = ({data}) => {
             if (!response.ok) {
               console.error('Failed to fetch current profiles');
             }
-            console.log('curr profile success');
             const profiles = await response.json();
             setProfiles(profiles.data);
     
@@ -47,18 +44,71 @@ const ProfileDropdown = ({data}) => {
           }
         };
         fetchCurrProfiles();
-      }, []);
+      });
 
     const toggleDropdown = () => {
         visible ? setVisible(false) : openDropdown()
     }
 
+    const setInitialName = () => {
+        if(userData) {
+          return "Public Profile #" + (userData.publicProfiles.length + 1);
+        }
+        else{
+          return "Public Profile #1";
+        }
+    }
+
     const handleProfileClick = () => {
         navigation.navigate('AppTabs', {
           screen: 'ConnectionsStack', params: {
-            screen: 'Profile'
+            screen: 'Profile', params: {
+                editing: false,
+            }
           }
         });
+    }
+
+    const createNewProfile = async () => {
+        const response = await fetch(dbURI + `user/addPublicProfile/${userData.email}`, 
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            displayName: setInitialName()
+          }),
+        });
+    
+        if (!response.ok) {
+          // Handle unsuccessful signup
+          Alert.alert(
+              'Create new profile failed',
+          );
+          return;
+        }
+        console.log('new profile success');
+    
+        const data = await response.json();
+    
+        setUserData({...data});
+    
+        setCurrentProfileID(data.publicProfiles[data.publicProfiles.length - 1]);
+        setUIColor(UI_COLOR['PUBLIC']);
+        // Navigate to the Profile screen upon successful signup
+        navigation.navigate('AppTabs', {
+            screen: 'ConnectionsStack', params: {
+              screen: 'Profile', params: {
+                editing: true,
+              }
+            }
+          });
+    }
+
+    const handleNewProfileClick = () => {
+        setVisible(false);
+        createNewProfile();
     }
 
     const handleProfileSelect = item => {
@@ -76,8 +126,6 @@ const ProfileDropdown = ({data}) => {
     }
 
     const onItemPress = item => {
-        setSelected(item);
-        // onSelect(item)
         setVisible(false);
         handleProfileSelect(item);
     }
@@ -85,14 +133,12 @@ const ProfileDropdown = ({data}) => {
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.item} onPress={() => onItemPress(item)}>
             <View style={item.type == "PERSONAL" ? styles.privateBorder : styles.publicBorder}>
-                {/* <View style={styles.padding}> */}
                     <Image
                         style= {styles.image}
                         source={{
                             uri: !item.profileImage ? 'https://reactnative.dev/img/tiny_logo.png' : item.profileImage,
                         }}
                     />
-                {/* </View> */}
             </View> 
 
             <Text style={styles.buttonText}>{item.displayName}</Text>
@@ -109,15 +155,15 @@ const ProfileDropdown = ({data}) => {
                 <ScrollView style={[styles.dropdown, { top: dropdownTop }]}>
                     <Text style={styles.title}>your pages</Text>
                     <FlatList
-                        // ListHeaderComponent={<View><Text style={styles.title}>your pages</Text></View>}
                         nestedScrollEnabled={true}
                         data={profiles}
                         renderItem={renderItem}
                         keyExtractor={(item) => item._id.toString()}
                     />
+                    {/* Button to create a new public page */}
                     <TouchableOpacity
                         style={[styles.newPage, { left: buttonLeft, width: buttonWidth }]}
-                        onPress={() => onItemPress(item)}
+                        onPress={handleNewProfileClick}
                         >
                             <Text style={styles.newPageText}>+ new page</Text>
                     </TouchableOpacity>
@@ -132,6 +178,7 @@ const ProfileDropdown = ({data}) => {
         ref={DropdownButton}
         onPress={handleProfileClick}
         onLongPress={toggleDropdown}
+        delayLongPress={400}
         >
             {renderDropdown()}
             <Image
@@ -228,4 +275,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default ProfileDropdown
+export default ProfileButton

@@ -129,7 +129,32 @@ router.get("/getAllPublicProfiles/:profileID", ProfileController.getAllPublicPro
  */
 router.put("/updateProfile/:email/:profileID", ProfileController.update);
 
-
+// Route to delete profile information
+/**
+ * @swagger
+ * /api/profile/deleteProfile/{email}/{proid}:
+ *   delete:
+ *     summary: Deletes the profile information
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The email of the user that the profile to delete belongs to
+ *       - in: path
+ *         name: proid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The profile id of the profile to be deleted
+ *     tags:
+ *       - Profile
+ *     responses:
+ *       '200':
+ *         description: Successfully deleted Profile and returned the updated Profile doc
+ */
+router.delete("/deleteProfile/:email/:profileID", ProfileController.deletePublicProfile);
 
 /**
  * @swagger
