@@ -188,6 +188,7 @@ const ProfileDropdown = ({data}) => {
         ref={DropdownButton}
         onPress={handleProfileClick}
         onLongPress={toggleDropdown}
+        delayLongPress={400}
         >
             {renderDropdown()}
             <Image

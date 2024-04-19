@@ -16,6 +16,7 @@ import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
 import {useFocusEffect} from '@react-navigation/native';
+import DeleteConfirm from '../components/DeleteConfirm';
 
 const ProfileScreen = ({route}) => {
   customFonts();
@@ -92,9 +93,6 @@ const ProfileScreen = ({route}) => {
     }
 
     const data = await response.json();
-    // console.log("deleted profile, remaining profiles:");
-    // console.log(data);
-    //updates userData.publicProfiles
     setUserData({...data});
     setCurrentProfileID(userData.personalProfile);
     setUIColor(UI_COLOR[currentProfileData.type]);
@@ -107,7 +105,6 @@ const ProfileScreen = ({route}) => {
     }
     setEditing(!editing);
   };
-
 
   const handleImagePicker = () => {
     const options = {
@@ -315,9 +312,7 @@ const ProfileScreen = ({route}) => {
               <Text style={styles.buttonText}>Change Profile</Text>
             </Pressable>
             {currentProfileID !== userData.personalProfile &&
-                <Pressable style={styles.button} onPress={deleteProfile}>
-                  <Text style={styles.buttonText}>Delete Profile</Text>
-                </Pressable>
+                <DeleteConfirm buttonText={"Delete \'" + currentProfileData?.displayName + "\'"} handleDelete={deleteProfile} canDelete={userData.publicProfiles.length > 1}/>
               }
           </View>
         </>
