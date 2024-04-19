@@ -10,7 +10,7 @@ import MessagesScreen from './MessagesScreen';
 import FeedScreen from './FeedScreen';
 
 import {useGlobalContext} from '../GlobalContext';
-import HeaderButton from '../components/HeaderButton';
+import HeaderButtons from '../components/HeaderButtons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,6 +24,7 @@ const ConnectionsStack= () => {
       >
       <Stack.Screen name="ConnectionsPage" component={ConnectionsScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      {/* <Stack.Screen name="NewProfile" component={NewProfileScreen} /> */}
     </Stack.Navigator>
   );
 };
@@ -36,7 +37,7 @@ const AppTabs = () => {
   const friendsOutline = require('../assets/navbar/friendsOutline.png');
   const friendsFilled = require('../assets/navbar/friendsFilled.png');
   const plusOutline = require('../assets/navbar/plusOutline.png');
-  const plusFilled = require('../assets/navbar/plusFilled.png');
+  const plusFilled = require('../assets/navbar/plusFilled2.png');
   const bellOutline = require('../assets/navbar/bellOutline.png');
   const bellFilled = require('../assets/navbar/bellFilled.png');
   const mailOutline = require('../assets/navbar/mailOutline.png');
@@ -48,7 +49,7 @@ const AppTabs = () => {
           tabBarStyle: {
             backgroundColor: UIColor,
           },
-          header: () => <HeaderButton/>,
+          header: () => <HeaderButtons/>,
           unmountOnBlur: true,
         }}
       >
