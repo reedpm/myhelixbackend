@@ -232,6 +232,34 @@ exports.unFollowPublicProfile = async (req, res, next) => {
     }
 }
 
+exports.deletePrivateRequest = async (req, res, next) => {
+    try{
+        // delete from outgoing 
+        // delete from incoming 
+        // delete request in general from mongoDB
+
+        // Find profile to be followed
+        const profileBeingFollowed = await Profile.findById(req.params.id);
+        // Current Profile
+        const currentProfile = await Profile.findById(req.params.profileID);
+
+        const request = await Request.findById(req.params.reqID);
+
+        profileBeingFollowed.outgoingRequests.pull(request._id);
+        await profileBeingFollowed.save();
+
+        currentProfile.incomingRequests.pull(request._id);
+        await currentProfile.save();
+
+        await Request.findByIdAndDelete(request._id);
+
+        res.status(200).send("Unfollowed Successfully");
+    }
+    catch(err){
+        next(err);
+    }
+}
+
 /**
  * Given: a value of 0 or 1
  * Given: Request ID
