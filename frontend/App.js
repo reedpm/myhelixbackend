@@ -47,17 +47,32 @@ const App = () => {
   return (
     <NavigationContainer>
       <GlobalProvider>
-        <Stack.Navigator 
+        <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{
-            headerShown: false
+            headerShown: false,
           }}
-          >
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Signup" component={SignupScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="PrivateSetupScreen" component={PrivateSetupScreen} />
-          <Stack.Screen name="PublicSetupScreen" component={PublicSetupScreen} />
+        >
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={SignupScreen}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            name="PrivateSetupScreen"
+            component={PrivateSetupScreen}
+          />
+          <Stack.Screen
+            name="PublicSetupScreen"
+            component={PublicSetupScreen}
+          />
           <Stack.Screen
             name="AppTabs"
             component={AppTabs}
@@ -65,10 +80,22 @@ const App = () => {
               headerTitle: getHeaderTitle(route),
             })}
           />
-          <Stack.Screen name="Connection" component={ConnectionsScreen} />
-          <Stack.Screen name="NewPost" component={NewPostScreen} />
-          <Stack.Screen name="PostPreview" component={PostPreviewScreen} />
-          <Stack.Screen name="Feed" component={FeedScreen} />
+          <Stack.Screen
+            name="Connection"
+            component={ConnectionsScreen}
+          />
+          <Stack.Screen
+            name="NewPost"
+            component={NewPostScreen}
+          />
+          <Stack.Screen
+            name="PostPreview"
+            component={PostPreviewScreen}
+          />
+          <Stack.Screen
+            name="Feed"
+            component={FeedScreen}
+          />
           {/* Add other screens and navigation options as needed */}
         </Stack.Navigator>
       </GlobalProvider>

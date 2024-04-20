@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {colors, fonts} from '../styles';
+import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
 
 const HomeScreen = () => {

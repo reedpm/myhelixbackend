@@ -1,16 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {
-  FlatList,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
   Image,
+  Alert,
 } from 'react-native';
-import {useGlobalContext, dbURI} from '../GlobalContext';
+import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
+import {useNavigation} from '@react-navigation/native';
 import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
+import ImagePicker from 'react-native-image-picker';
 
 const PublicSetupScreen = () => {
   customFonts();
@@ -21,15 +23,17 @@ const PublicSetupScreen = () => {
     setCurrentProfileData,
     userData,
     UIColor,
-    setCurrentProfileID
+    setCurrentProfileID,
+    setUIColor,
   } = useGlobalContext();
+  const navigation = useNavigation();
+
 
   useEffect(() => {
-    setCurrentProfileID(userData.publicProfile);
+    setCurrentProfileID(userData.publicProfiles[0]);
   }, []);
 
   const saveProfile = async () => {
-
     const response = await fetch(dbURI + 'profile/updateProfile/' +
                     userData.email + '/' + currentProfileID + '',
     {
@@ -52,10 +56,35 @@ const PublicSetupScreen = () => {
       return;
     }
     navigation.navigate('AppTabs', {
-        screen: 'Feed',
-      });
+      screen: 'Feed',
+    });
   };
 
+  const handleImagePicker = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 1,
+      title: 'Select profile picture',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      noData: true, // Exclude Base64 data
+    };
+
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (response.didCancel || response.error) {
+        console.error('Image picker error:', response.error);
+      } else {
+        if (response.assets) {
+          console.log(response);
+          setNewImage(response.assets[0].uri);
+          console.log(response.assets[0].uri);
+          console.log(response.assets[0].uri.split(';base64,')[0]);
+        }
+      }
+    });
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -122,43 +151,43 @@ const PublicSetupScreen = () => {
       {currentProfileData ? (
         <>
           <View style={styles.row}>
-        
+
             <Pressable onPress={handleImagePicker}>
-            <Image
+              <Image
                 style={styles.image}
                 source={{
-                uri: newImage || (currentProfileData.profileImage ?? 'https://reactnative.dev/img/tiny_logo.png'),
+                  uri: newImage || (currentProfileData.profileImage ?? 'https://reactnative.dev/img/tiny_logo.png'),
                 }}
-            />
+              />
             </Pressable>
             <View style={styles.column}>
+              <TextInput
+                style={styles.title}
+                value={currentProfileData?.displayName}
+                placeholder="Name"
+                onChangeText={(text) =>
+                  setCurrentProfileData(
+                      {...currentProfileData, displayName: text},
+                  )
+                }
+              />
+              <View style={styles.row}>
                 <TextInput
-                    style={styles.title}
-                    value={currentProfileData?.displayName}
-                    placeholder="Name"
-                    onChangeText={(text) =>
-                    setCurrentProfileData(
-                        {...currentProfileData, displayName: text},
-                    )
-                    }
+                  style={styles.label}
+                  value={currentProfileData?.bio}
+                  placeholder="Bio"
+                  onChangeText={(text) =>
+                    setCurrentProfileData({...currentProfileData, bio: text})
+                  }
                 />
-                <View style={styles.row}>
-                    <TextInput
-                    style={styles.label}
-                    value={currentProfileData?.bio}
-                    placeholder="Bio"
-                    onChangeText={(text) =>
-                        setCurrentProfileData({...currentProfileData, bio: text})
-                    }
-                    />
-                </View>
+              </View>
             </View>
 
           </View>
 
           <View style={styles.buttonContainer}>
             <Pressable style={styles.button} onPress={saveProfile}>
-              <Text style={styles.buttonText}>Next</Text>
+              <Text style={styles.buttonText}>Done</Text>
             </Pressable>
           </View>
         </>

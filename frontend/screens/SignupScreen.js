@@ -47,10 +47,6 @@ const SignupScreen = () => {
       setUserData({...data});
       setCurrentProfileID(data.personalProfile);
 
-      // Navigate to the Profile screen upon successful signup
-      // navigation.navigate('AppTabs', {
-      //   screen: 'Profile',
-      // });
       navigation.navigate('PrivateSetupScreen');
     } catch (error) {
       console.error('Error during signup:', error);

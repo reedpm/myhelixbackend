@@ -18,7 +18,7 @@ export const GlobalProvider = ({children}) => {
   const [currentProfileID, setCurrentProfileID] = useState(null);
   const [currentProfileData, setCurrentProfileData] = useState(null);
   const [UIColor, setUIColor] = useState(UI_COLOR.PERSONAL);
-  const [currentScreen, setCurrentScreen] = useState("ConnectionsScreen");
+  const [currentScreen, setCurrentScreen] = useState('ConnectionsScreen');
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -37,6 +37,7 @@ export const GlobalProvider = ({children}) => {
           profileImage: 'https://reactnative.dev/img/tiny_logo.png',
         });
         setUIColor(UI_COLOR[data.data.type]);
+        console.log("changed color");
       } catch (error) {
         console.error('Error during profile data fetch:', error);
       }
@@ -45,8 +46,15 @@ export const GlobalProvider = ({children}) => {
     if (currentProfileID) {
       fetchProfileData();
     }
-  }, [currentProfileID, setCurrentProfileID,
-    setUserData, setCurrentProfileData, setUIColor, currentScreen, setCurrentScreen]);
+  }, [
+    currentProfileID,
+    setCurrentProfileID,
+    setUserData,
+    setCurrentProfileData,
+    setUIColor,
+    currentScreen,
+    setCurrentScreen,
+  ]);
 
   return (
     <GlobalContext.Provider value={
