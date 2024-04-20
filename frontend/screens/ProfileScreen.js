@@ -302,9 +302,6 @@ const ProfileScreen = ({route}) => {
             <Pressable style={styles.button} onPress={handleEditPress}>
               <Text style={styles.buttonText}>{editing ? 'Save' : 'Edit'}</Text>
             </Pressable>
-            <Pressable style={styles.button} onPress={changeCurrentProfileID}>
-              <Text style={styles.buttonText}>Change Profile</Text>
-            </Pressable>
             {/* Delete button only appears for public profiles */}
             {currentProfileID !== userData.personalProfile &&
                 <DeleteConfirm buttonText={'Delete \'' + currentProfileData?.displayName + '\''} handleDelete={deleteProfile} canDelete={userData.publicProfiles.length > 1}/>
