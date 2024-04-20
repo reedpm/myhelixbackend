@@ -15,7 +15,7 @@ import { fonts } from '../styles';
 import { customFonts } from '../CustomFonts';
 
 
-const NewCommentScreen = () => {
+const NewCommentScreen = (props) => {
     customFonts();
     const [text, setText] = useState('');
 
@@ -54,6 +54,7 @@ const NewCommentScreen = () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
+                        postID: props.route.params.postID,
                         commenterID: currentProfileID,
                         content: text,
                     }),

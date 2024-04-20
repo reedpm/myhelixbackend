@@ -34,6 +34,10 @@ const commentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
     },
+    // postID: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: true,
+    // },
     commenter: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Profiles",

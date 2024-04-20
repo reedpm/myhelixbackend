@@ -63,7 +63,9 @@ const Post = ({ post }) => {
 
   const handleCommentPress = async () => {
     // TODO: when press, will bring to a new page to write comment. Also include a submit button to add comment to database under profile of commenter
-    navigation.navigate('NewComment');
+    navigation.navigate('NewComment', {
+      postID: post._id,
+    });
   };
 
   return (

@@ -30,6 +30,8 @@ const FeedScreen = () => {
                 }
                 const followsData = await followsResponse.json();
                 setFollows(followsData.data);
+                console.log("follows response json is", followsData);
+                console.log("follows is", follows);
 
                 //  fetch posts for each user in follows
                 const fetchPostsForFollows = async () => {
@@ -56,6 +58,7 @@ const FeedScreen = () => {
                     // Flatten the array of arrays into a single array of posts
                     const allPosts = postsArray.flat();
                     setPosts(allPosts);
+                    console.log("Feed Screen posts is", posts);
                 };
 
                 fetchPostsForFollows();

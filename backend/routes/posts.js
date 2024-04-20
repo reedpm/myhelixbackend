@@ -168,5 +168,25 @@ router.get("/getPostsByProfileID/:profileID", PostController.getPostsByCreatedBy
  */
 router.post("/createComment/", PostController.createComment);
 
+/**
+ * @swagger
+ * /api/posts/getCommentsByPostID/{postid}:
+ *   get:
+ *     summary: Gets all comments that have been created for the given post id
+ *     tags:
+ *       - Comment
+ *     parameters:
+ *       - in: path
+ *         name: postid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the post whose comments are to be retrieved
+ *     responses:
+ *       '200':
+ *         description: Successfully retrieved all comments made for the given a post ID
+ */
+router.get("/getCommentsByPostID/:postid", PostController.getCommentsByPostID);
+
 // Export router for use in app.js
 module.exports = router;
