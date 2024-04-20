@@ -40,13 +40,6 @@ const ProfileScreen = ({route}) => {
     setCurrentScreen('ProfileScreen');
   });
 
-  const changeCurrentProfileID = () => {
-    setCurrentProfileID(
-      currentProfileID === userData.personalProfile ?
-      userData.publicProfiles[0] : userData.personalProfile,
-    );
-    setUIColor(UI_COLOR[currentProfileData.type]);
-  };
 
   const updateProfile = async () => {
     const response = await fetch(dbURI + 'profile/updateProfile/' +
