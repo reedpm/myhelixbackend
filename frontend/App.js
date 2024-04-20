@@ -13,6 +13,8 @@ import PostPreviewScreen from './screens/PostPreviewScreen';
 import {GlobalProvider} from './GlobalContext';
 import NewPostScreen from './screens/NewPostScreen';
 import FeedScreen from './screens/FeedScreen';
+import PrivateSetupScreen from './screens/PrivateSetupScreen';
+import PublicSetupScreen from './screens/PublicSetupScreen';
 import PostDetailsScreen from './screens/PostDetailsScreen';
 import NewCommentScreen from './screens/NewCommentScreen';
 
@@ -47,15 +49,32 @@ const App = () => {
   return (
     <NavigationContainer>
       <GlobalProvider>
-        <Stack.Navigator 
+        <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{
-            headerShown: false
+            headerShown: false,
           }}
-          >
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Signup" component={SignupScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
+        >
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={SignupScreen}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            name="PrivateSetupScreen"
+            component={PrivateSetupScreen}
+          />
+          <Stack.Screen
+            name="PublicSetupScreen"
+            component={PublicSetupScreen}
+          />
           <Stack.Screen
             name="AppTabs"
             component={AppTabs}
@@ -63,12 +82,30 @@ const App = () => {
               headerTitle: getHeaderTitle(route),
             })}
           />
-          <Stack.Screen name="Connection" component={ConnectionsScreen} />
-          <Stack.Screen name="NewPost" component={NewPostScreen} />
-          <Stack.Screen name="PostPreview" component={PostPreviewScreen} />
-          <Stack.Screen name="Feed" component={FeedScreen} />
-          <Stack.Screen name="PostDetails" component={PostDetailsScreen} />
-          <Stack.Screen name="NewComment" component={NewCommentScreen} />
+          <Stack.Screen
+            name="Connection"
+            component={ConnectionsScreen}
+          />
+          <Stack.Screen
+            name="NewPost"
+            component={NewPostScreen}
+          />
+          <Stack.Screen
+            name="PostPreview"
+            component={PostPreviewScreen}
+          />
+          <Stack.Screen
+            name="Feed"
+            component={FeedScreen}
+          />
+          <Stack.Screen
+            name="PostDetails"
+            component={PostDetailsScreen}
+          />
+          <Stack.Screen
+            name="NewComment"
+            component={NewCommentScreen}
+          />
           {/* Add other screens and navigation options as needed */}
         </Stack.Navigator>
       </GlobalProvider>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {colors, fonts} from '../styles';
+import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
 
 const HomeScreen = () => {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: colors.blue,
+    backgroundImage: `url("../assets/gradient.png")`,
     padding: 10,
     margin: 10,
     borderRadius: 10,

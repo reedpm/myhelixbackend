@@ -119,6 +119,33 @@ router.put("/unfollowprivate/:id/:profileID", RequestController.unFollowPrivateP
  */
 router.put("/unfollowpublic/:id/:profileID",  RequestController.unFollowPublicProfile);
 
+//deletePrivateRequest
+/**
+ * @swagger
+ * /api/requests/unfollow/{id}/{profileID}:
+ *   put:
+ *     summary: Unfollows a specific profile
+ *     tags:
+ *       - Requests
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the profile that we want to unfollow
+ *       - in: path
+ *         name: profileID
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the current profile
+ *     responses:
+ *       '200':
+ *         description: Successfully unfollowed a specific profile
+ */
+router.put("/deleterequest/:id/:profileID/:reqID",  RequestController.deletePrivateRequest);
+
 // Route to handle a follow request
 /**
  * @swagger
