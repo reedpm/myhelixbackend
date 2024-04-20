@@ -42,6 +42,9 @@ const PrivateConnectionsScreen = () => {
     setFilteredNotFollowingPrivateUsers,
   ] = useState('');
 
+  const [outgoingRequests, setOutgoingRequests] = useState('');
+  const [filteredOutgoingRequests, setFilteredOutgoingRequests] = useState(outgoingRequests);
+
 
   const {
     currentProfileID,
@@ -65,6 +68,9 @@ const PrivateConnectionsScreen = () => {
 
         setNotFollowingPrivateUsers(allPrivateUser.data2);
         setFilteredNotFollowingPrivateUsers(allPrivateUser.data2);
+
+        setOutgoingRequests(allPrivateUser.data3);
+        setFilteredOutgoingRequests(allPrivateUser.data3);
       } catch (error) {
         console.log('error message for all user: ', error);
       }
@@ -130,18 +136,25 @@ const PrivateConnectionsScreen = () => {
       );
     } else {
       // show all tabs
-      console.log('NEITHER TAB??');
       return (
         <View>
           <SearchUserList
             users={filteredFollowingPrivateUsers}
             isConnection={true}
             isPrivate={true}
+            isRequest={false}
+          />
+          <SearchUserList
+            users={filteredOutgoingRequests}
+            isConnection={false}
+            isPrivate={true}
+            isRequest={true}
           />
           <SearchUserList
             users={filteredNotFollowingPrivateUsers}
             isConnection={false}
             isPrivate={true}
+            isRequest={false}
           />
         </View>
       );
@@ -169,8 +182,14 @@ const PrivateConnectionsScreen = () => {
       const filteredDataNF = notFollowingPrivateUsers.filter((user) => {
         return user.displayName.toLowerCase().includes(formattedQuery);
       });
+
+      const filteredOutgoingRequest = outgoingRequests.filter((user) => {
+        return user.recipients.displayName.toLowerCase().includes(formattedQuery);
+      });
+      console.log("### HERE: " + filteredOutgoingRequest);
       setFilteredFollowingPrivateUsers(filteredDataF);
       setFilteredNotFollowingPrivateUsers(filteredDataNF);
+      setFilteredOutgoingRequests(filteredOutgoingRequest);
     }
   };
 

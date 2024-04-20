@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Profile = require("../models/profile");
+const User = require("../models/user.js");
 
 
 // const Tag_notification = require("../models/tag_notification");
@@ -14,18 +15,6 @@ const Profile = require("../models/profile");
  */
 exports.getProfile = async (req, res, next) => {
     try{
-        // old deprecated code 
-        // Retrieve the profile with the passed in profile ID
-        // await Profile.findById(req.params.profileID, (err, data) => {
-        //     // If we receive an error, send back an error message
-        //     if(err){
-        //         res.status(403).send({data: err});
-        //     }
-        //     // Else send back the data retreived
-        //     else{
-        //         res.status(200).send({data: data});
-        //     }
-        // });
         Profile.findById(req.params.profileID).exec()
         .then(data => {
             // If data is found, send it back
@@ -75,6 +64,31 @@ exports.update = async (req, res, next) => {
 // 
 
 /**
+ * Given: profile's information
+ * Returns: Updated user information (profile list excludes deleted public profile)
+ */
+exports.deletePublicProfile = async (req, res, next) => {
+  // We ensure that the email passed in the path matches the email passed by the verification token
+  console.log(req.params);
+  console.log(req.body);
+  try{
+    // Find user in DB by email and delete
+    await Profile.findOneAndDelete({_id: req.params.profileID});
+    //delete profile from publicProfiles list within User
+    const user = await User.findOneAndUpdate(
+      {email: req.params.email},
+      { $pull: {publicProfiles: req.params.profileID}},
+      {new: true},
+    );
+    // return updated user with one less public profile
+    res.status(200).json(user);
+  }
+  catch(err){
+    next(err);
+  }
+}
+
+/**
  * Given: Profile ID
  * Returns: List of all Personal profiles
  */
@@ -90,18 +104,65 @@ exports.getAllPrivateProfiles = async (req, res, next) => {
     }
 
 
-    var notFollowingArr = [];
-    var followingArr = [];
+    // get all outgoing requests 
+    try{
+      // });
+      Profile.findById(req.params.profileID)
+      .populate({
+        path: 'outgoingRequests',
+        populate: {
+            path: 'recipients',
+            model: 'Profiles'
+        }
+      })
+      .exec()
+      .then(data => {
+        var outgoingrequestArr = [];
+        var outgoingProf = [];
+        for (let i = 0; i < data.outgoingRequests.length; i++) {
+          outgoingProf.push(data.outgoingRequests[i].recipients[0]);
+          outgoingrequestArr.push({recipients: data.outgoingRequests[i].recipients[0], requestId: data.outgoingRequests[i]._id});
+        }
+        var notFollowingArr = [];
+        var followingArr = [];
 
-    for (var i = 0; i < personalProfiles.length; i++) {
-      if (!(profile.following).includes(personalProfiles[i]._id)) {
-        notFollowingArr.push(personalProfiles[i]);
-      } else {
-        followingArr.push(personalProfiles[i]);
-      }
-    }
+        for (var i = 0; i < personalProfiles.length; i++) {
+          if (outgoingProf.includes(personalProfiles[i]._id)) {
+            continue;
+          }
+          // if already requested --> then 
+          if (!(profile.following).includes(personalProfiles[i]._id)) {
+            notFollowingArr.push(personalProfiles[i]);
+          } else {
+            followingArr.push(personalProfiles[i]);
+          }
+        }
+        console.log("### this is outgoing requests: " + outgoingrequestArr);
+        res.status(200).send({ data1: followingArr, data2: notFollowingArr, data3: outgoingrequestArr});
+        // res.status(200).send({ data3: outgoingrequestArr});
+    })
+    .catch(err => {
+        // If an error occurs, send an error response
+        res.status(403).send({ data: err.message });
+    });
+  } catch(err){
+      console.log("error");
+      next(err);
+  }
 
-    res.status(200).send({ data1: followingArr, data2: notFollowingArr});
+    // console.log("### this is the outgoing requests: " + outgoingrequestArr);
+
+    // var notFollowingArr = [];
+    // var followingArr = [];
+
+    // for (var i = 0; i < personalProfiles.length; i++) {
+    //   if (!(profile.following).includes(personalProfiles[i]._id)) {
+    //     notFollowingArr.push(personalProfiles[i]);
+    //   } else {
+    //     followingArr.push(personalProfiles[i]);
+    //   }
+    // }
+
 
   }
   catch(err){
@@ -428,7 +489,6 @@ exports.getIncomingRequests = async (req, res) => {
       var requestProfiles = []
       for (let i = 0; i < data.incomingRequests.length; i++) {
         requestProfiles.push({sender: data.incomingRequests[i].sender, requestId: data.incomingRequests[i]._id});
-        console.log("$$$" + requestProfiles[i]);
       }
       res.status(200).send({ data: requestProfiles});
       console.log("*** " + requestProfiles);

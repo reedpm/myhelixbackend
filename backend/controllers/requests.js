@@ -109,6 +109,12 @@ exports.followPrivateProfile = async (req, res, next) => { // private profile fo
 
             await newFollowRequest.save();
 
+            // make notification for the follow request
+            req.body.senderProfileID = currentProfile; 
+            req.body.recipientProfileID = profileToBeFollowed; 
+            req.body.type = 'REQUEST'; 
+            await Notification.addNotification(req, res, next);
+
             // We add an incoming request to the recipient profile
             profileToBeFollowed.incomingRequests.push(newFollowRequest._id);
             await profileToBeFollowed.save();
@@ -218,6 +224,34 @@ exports.unFollowPublicProfile = async (req, res, next) => {
         else{
             return next(handleError(403, "Error: Profile does not exist or no further action required"));
         }
+
+        res.status(200).send("Unfollowed Successfully");
+    }
+    catch(err){
+        next(err);
+    }
+}
+
+exports.deletePrivateRequest = async (req, res, next) => {
+    try{
+        // delete from outgoing 
+        // delete from incoming 
+        // delete request in general from mongoDB
+
+        // Find profile to be followed
+        const profileBeingFollowed = await Profile.findById(req.params.id);
+        // Current Profile
+        const currentProfile = await Profile.findById(req.params.profileID);
+
+        const request = await Request.findById(req.params.reqID);
+
+        profileBeingFollowed.outgoingRequests.pull(request._id);
+        await profileBeingFollowed.save();
+
+        currentProfile.incomingRequests.pull(request._id);
+        await currentProfile.save();
+
+        await Request.findByIdAndDelete(request._id);
 
         res.status(200).send("Unfollowed Successfully");
     }

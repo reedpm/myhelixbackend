@@ -5,6 +5,7 @@ import {
   Text,
   View,
   Image,
+  Alert,
 } from 'react-native';
 import {useGlobalContext, dbURI} from '../GlobalContext';
 import PropTypes from 'prop-types';

@@ -15,6 +15,8 @@ import NewPostScreen from './screens/NewPostScreen';
 import FeedScreen from './screens/FeedScreen';
 import PrivateSetupScreen from './screens/PrivateSetupScreen';
 import PublicSetupScreen from './screens/PublicSetupScreen';
+import PostDetailsScreen from './screens/PostDetailsScreen';
+import NewCommentScreen from './screens/NewCommentScreen';
 
 
 const Stack = createStackNavigator();
@@ -95,6 +97,30 @@ const App = () => {
           <Stack.Screen
             name="Feed"
             component={FeedScreen}
+          />
+          <Stack.Screen 
+            name="Connection" 
+            component={ConnectionsScreen} 
+          />
+          <Stack.Screen 
+            name="NewPost" 
+            component={NewPostScreen} 
+          />
+          <Stack.Screen 
+            name="PostPreview" 
+            component={PostPreviewScreen} 
+          />
+          <Stack.Screen 
+            name="Feed" 
+            component={FeedScreen} 
+          />
+          <Stack.Screen 
+            name="PostDetails" 
+            component={PostDetailsScreen} 
+          />
+          <Stack.Screen 
+            name="NewComment" 
+            component={NewCommentScreen} 
           />
           {/* Add other screens and navigation options as needed */}
         </Stack.Navigator>

@@ -38,7 +38,7 @@ const FeedScreen = () => {
                             const postsResponse = await fetch(dbURI + `posts/getPostsByProfileID/${follower._id}`);
 
                             if (!postsResponse.ok) {
-                                console.error('Faileed to fetch posts for followers');
+                                console.error('Failed to fetch posts for followers');
                                 return [];
                             }
 

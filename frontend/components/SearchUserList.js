@@ -4,10 +4,30 @@ import SearchUser from './SearchUser';
 import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 import PropTypes from 'prop-types';
 
-const SearchUserList = ({users, isConnection, isPrivate}) => {
+const SearchUserList = ({users, isConnection, isPrivate, isRequest}) => {
   const {
     currentProfileID,
   } = useGlobalContext();
+
+    const handleDeleteRequest = async(followProfileId, requestId) => {
+      try {
+        const response = await fetch(dbURI + `requests/deleterequest/${followProfileId}/${currentProfileID}/${requestId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            
+          }),
+        })
+        if (!response.ok) {
+          console.error('Failed to delet');
+        }
+      } catch (error) {
+
+      }
+      
+    }
 
     const handleFollow = async(followProfileId) => {
         if (isPrivate) { // private connection
@@ -106,8 +126,10 @@ const SearchUserList = ({users, isConnection, isPrivate}) => {
           user={item}
           onFollow={() => handleFollow(item._id)}
           onUnfollow={() => handleUnfollow(item._id)}
+          onDeleteRequest={() => handleDeleteRequest(item.recipients._id, item.requestId)}
           isConnection={isConnection}
           isPrivate={isPrivate}
+          isRequest={isRequest}
         />
       )}
     />

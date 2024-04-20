@@ -15,27 +15,30 @@ import {useGlobalContext, dbURI, UI_COLOR} from '../GlobalContext';
 import {fonts} from '../styles';
 import {customFonts} from '../CustomFonts';
 import {useFocusEffect} from '@react-navigation/native';
+import DeleteConfirm from '../components/DeleteConfirm';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({route}) => {
   customFonts();
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(route.params.editing);
   const [newImage, setNewImage] = useState(null);
   const [posts, setPosts] = useState(null);
+
   const {
     currentProfileID,
     setCurrentProfileID,
     currentProfileData,
     setCurrentProfileData,
     userData,
+    setUserData,
     UIColor,
     setUIColor,
     setCurrentScreen,
   } = useGlobalContext();
 
-  //this is to pass back to the Tab navigator which screen within the Connections Stack is currently focused
+  // this is to pass back to the Tab navigator which screen within the Connections Stack is currently focused
   useFocusEffect(() => {
-    setCurrentScreen("ProfileScreen");
-  }, []);
+    setCurrentScreen('ProfileScreen');
+  });
 
 
   const updateProfile = async () => {
@@ -62,6 +65,30 @@ const ProfileScreen = () => {
     }
   };
 
+  const deleteProfile = async () => {
+    const response = await fetch(dbURI + 'profile/deleteProfile/' +
+                    userData.email + '/' + currentProfileID + '',
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      // Handle unsuccessful profile delete
+      Alert.alert(
+          'Profile delete failed',
+      );
+      return;
+    }
+
+    const data = await response.json();
+    setUserData({...data});
+    setCurrentProfileID(userData.personalProfile);
+    setUIColor(UI_COLOR[currentProfileData.type]);
+  };
+
   const handleEditPress = () => {
     if (editing) {
       // this code runs when the button is clicked to save profile information
@@ -69,7 +96,9 @@ const ProfileScreen = () => {
     }
     setEditing(!editing);
   };
-
+  const signout = () => {
+    navigation.navigate('Home');
+  };
 
   const handleImagePicker = () => {
     const options = {
@@ -120,6 +149,7 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     fetchPosts();
+    setEditing(route.params.editing);
   }, [currentProfileID]);
 
   useFocusEffect(
@@ -265,14 +295,25 @@ const ProfileScreen = () => {
           <FlatList
             data={posts}
             keyExtractor={(item) => item._id}
-            renderItem={({ item }) => <Post post={{ ...item, createdBy: currentProfileData.displayName }} />}
+            renderItem={({item}) => <Post post={{...item, createdBy: currentProfileData.displayName}} />}
           />
 
           <View style={styles.buttonContainer}>
             <Pressable style={styles.button} onPress={handleEditPress}>
               <Text style={styles.buttonText}>{editing ? 'Save' : 'Edit'}</Text>
             </Pressable>
+            <Pressable style={styles.button} onPress={changeCurrentProfileID}>
+              <Text style={styles.buttonText}>Change Profile</Text>
+            </Pressable>
+            {/* Delete button only appears for public profiles */}
+            {currentProfileID !== userData.personalProfile &&
+                <DeleteConfirm buttonText={'Delete \'' + currentProfileData?.displayName + '\''} handleDelete={deleteProfile} canDelete={userData.publicProfiles.length > 1}/>
+            }
+            <Pressable style={styles.button} onPress={signout}>
+              <Text style={styles.buttonText}>Signout</Text>
+            </Pressable>
           </View>
+
         </>
       ) : null}
     </View>

@@ -2,6 +2,8 @@
 const mongoose = require("mongoose");
 const Post = require("../models/posts.js");
 const Profile = require("../models/profile.js");
+const Notification = require("../controllers/notifications.js");
+const Comment = require("../models/comments.js");
 
 /**
  * Given: JSON body
@@ -64,12 +66,18 @@ exports.deletePost = async (req, res, next) => {
  * @function Like Likes the post with the current user
  */
 exports.likePost = async (req, res, next) => {
+    console.log(req.params.currentid);
     try{
         // Find the post given the passed post ID
-        const post = Post.findById(req.params.postid);
-
+        const post = await Post.findById(req.params.postid);
+        // make notification for the liking of this post
+        // TODO: debug notification
+        // req.body.senderProfileID = req.params.currentid; 
+        // req.body.recipientProfileID = post.createdBy; 
+        // req.body.type = 'POST'; 
+        // await Notification.addNotification(req, res, next);
         // Check to make sure that we have not previously liked the post in the first place
-        if(!post.likes.includes(req.params.currentid)){
+        if(post && post.likes && !post.likes.includes(req.params.currentid)){
             await post.updateOne({
                 $push: {likes: req.params.currentid}
             });
@@ -93,10 +101,10 @@ exports.likePost = async (req, res, next) => {
 exports.unlikePost = async (req, res, next) => {
     try{
         // Find the post given the passed post ID
-        const post = Post.findById(req.params.postid);
+        const post = await Post.findById(req.params.postid);
 
         // Check to make sure we have liked the post in the first place
-        if(post.likes.includes(req.params.currentid)){
+        if (post && post.likes && post.likes.includes(req.params.currentid)){
             await post.updateOne({
                 $pull: {likes: req.params.currentid}
             });
@@ -130,6 +138,46 @@ exports.getPostsByCreatedBy = async (req, res, next) => {
     }
     catch(err){
         console.log("error");
+        next(err);
+    }
+};
+
+/*
+TODO: make a function/route for making comments and make sure to 
+create a notification in this function using the addNotification from the Notification controller
+you can see the likePost function to see how this is done.
+ * Given: JSON body
+*/
+exports.createComment = async (req, res, next) => {
+    try {
+        // Create a new post
+        // (We understand that there should be a size limit to the contents of the post itself
+        // however, it is most likely the better solution to check that on the frontend before
+        // posting)
+        const newComment = new Comment(
+            {
+                _id: new mongoose.Types.ObjectId(),
+                commenter: req.body.commenterID,
+                commentBody: req.body.content,
+                commentDate: new Date(),
+            }
+        );
+
+        // Save the new DB object into the collection
+        await newComment.save();
+
+        // get the post that the comment was made for
+        const post = Post.findById(req.body.postID);
+
+        // Update the post's comment list
+        await post.updateOne({
+            $push: { posts: newComment._id }
+        });
+
+        // Send the new post back to the user
+        res.status(200).json(newComment);
+    }
+    catch (err) {
         next(err);
     }
 };

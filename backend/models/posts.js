@@ -24,6 +24,7 @@
 
 // This is the post schema
 const mongoose = require("mongoose");
+const comments = require("./comments");
 
 // Here we are creating the schema for individual posts in our database
 // we hope that the field names are pretty self explanatory, but they will be elaborated on 
@@ -59,6 +60,7 @@ const postSchema = new mongoose.Schema({
         }
     ],
     likeCount: Number,
+    comments: [comments.schema]
     /** Convenience vars */
 }, {collection: "Posts"});
 
