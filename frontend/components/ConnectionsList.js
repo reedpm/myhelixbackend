@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 
 const ConnectionsList = ({users}) => {
+  // TO DO: Fill in logic for email press
   const handleEmailPress = (userId) => {
     console.log('Email Icon pressed for user:', userId);
   };

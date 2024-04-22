@@ -99,9 +99,7 @@ exports.getAllPrivateProfiles = async (req, res, next) => {
     const profile = await Profile.findById(req.params.profileID);
     if (!profile) {
       return res.status(409).send('Profile not found');
-    } else {
-      console.log("### profile following " + profile.following);
-    }
+    } 
 
 
     // get all outgoing requests 
@@ -137,7 +135,6 @@ exports.getAllPrivateProfiles = async (req, res, next) => {
             followingArr.push(personalProfiles[i]);
           }
         }
-        console.log("### this is outgoing requests: " + outgoingrequestArr);
         res.status(200).send({ data1: followingArr, data2: notFollowingArr, data3: outgoingrequestArr});
         // res.status(200).send({ data3: outgoingrequestArr});
     })
@@ -150,20 +147,6 @@ exports.getAllPrivateProfiles = async (req, res, next) => {
       next(err);
   }
 
-    // console.log("### this is the outgoing requests: " + outgoingrequestArr);
-
-    // var notFollowingArr = [];
-    // var followingArr = [];
-
-    // for (var i = 0; i < personalProfiles.length; i++) {
-    //   if (!(profile.following).includes(personalProfiles[i]._id)) {
-    //     notFollowingArr.push(personalProfiles[i]);
-    //   } else {
-    //     followingArr.push(personalProfiles[i]);
-    //   }
-    // }
-
-
   }
   catch(err){
       console.log("error");
@@ -173,7 +156,7 @@ exports.getAllPrivateProfiles = async (req, res, next) => {
 
 /**
  * Given: Profile ID
- * Returns: Profile object if it exists
+ * Returns: Profile all public profiles
  */
 exports.getAllPublicProfiles = async (req, res, next) => {
   try{
@@ -183,11 +166,9 @@ exports.getAllPublicProfiles = async (req, res, next) => {
     if (!profile) {
       return res.status(409).send('Profile not found');
     } 
-    console.log("### this is profile " + profile);
 
     var notFollowingArr = [];
     var followingArr = [];
-    console.log("### this is public following: " + profile.following);
     for (var i = 0; i < publicProfiles.length; i++) {
       if (!(profile.following).includes(publicProfiles[i]._id)) {
         notFollowingArr.push(publicProfiles[i]);
@@ -195,7 +176,6 @@ exports.getAllPublicProfiles = async (req, res, next) => {
         followingArr.push(publicProfiles[i]);
       }
     }
-    console.log("### following arr " + followingArr);
 
     res.status(200).send({ data1: followingArr, data2: notFollowingArr});
   }
@@ -373,7 +353,6 @@ exports.getAllFollowers = (req, res) => {
     Profile.findById(req.params.profileID).populate('followers').exec()
     .then(data => {
         // If data is found, send it back
-        // console.log(data);
         res.status(200).send({ data: data.followers});
     })
     .catch(err => {
@@ -484,14 +463,12 @@ exports.getIncomingRequests = async (req, res) => {
     })
     .exec()
     .then(data => {
-      console.log("### " + data);
       // If data is found, send it back
       var requestProfiles = []
       for (let i = 0; i < data.incomingRequests.length; i++) {
         requestProfiles.push({sender: data.incomingRequests[i].sender, requestId: data.incomingRequests[i]._id});
       }
       res.status(200).send({ data: requestProfiles});
-      console.log("*** " + requestProfiles);
   })
   .catch(err => {
       // If an error occurs, send an error response

@@ -27,66 +27,14 @@ const { profile } = require("console");
 
 // exports.fetchConnectionRequests = async(req)
 
-// exports.followPublicProfile = async (req, res, next) => {
-//     try {
-//         // Find profile to be followed
-//         const profileToBeFollowed = await Profile.findById(req.params.id);
-//         // Current Profile
-//         const currentProfile = await Profile.findById(req.params.profileID);
-
-//         if(profileToBeFollowed.type !== currentProfile.type || profileToBeFollowed.type === "PERSONAL") {
-//             return next(handleError(405, "Invalid profile types => No request sent"));
-//         }
-
-//         // Check to see if the profile that needs to be followed already has the sender profile id in its followers list
-//         // If currentProfile is not following the profile to be followed
-//         if(!profileToBeFollowed.followers.includes(currentProfile._id)){
-//             // Create a new request
-//             // const newFollowRequest = new Request(
-//             //     {
-//             //         _id: new mongoose.Types.ObjectId(),
-//             //         requestType: 'FOLLOW',
-//             //         sender: currentProfile._id,
-//             //         recipients: [profileToBeFollowed._id]
-//             //     }
-//             // );
-            
-//             // update follower list automatically if public profile
-//             profileToBeFollowed.followers.push(currentProfile._id);
-//             profileToBeFollowed.save();
-
-//             currentProfile.following.push(profileToBeFollowed._id);
-//             currentProfile.save();
-
-//             res.status(200).send("Successfully Followed");
-
-//             // await newFollowRequest.save();
-
-//             // // We add an incoming request to the recipient profile
-//             // profileToBeFollowed.incomingRequests.push(newFollowRequest);
-//             // await profileToBeFollowed.save();
-
-//             // // We also add the request to the outgoing requests of the current sender profile
-//             // currentProfile.outgoingRequests.push(newFollowRequest);
-//             // await currentProfile.save();
-//         }
-//         else{
-//             // Send back a Conflict response
-//             return next(handleError(403, "Error: Profile does not exist or no further action required"));
-//         }
-//     } catch(err){
-//         next(err);
-//     }
-// }
-// followPrivateProfile
+// Logic to follow a private profile
 exports.followPrivateProfile = async (req, res, next) => { // private profile follow
     try{
         // Find profile to be followed
         const profileToBeFollowed = await Profile.findById(req.params.id); 
-        console.log("### profile to be followed: " + profileToBeFollowed);
+
         // Current Profile
         const currentProfile = await Profile.findById(req.params.profileID);
-        console.log("### current profile " + currentProfile);
 
         // Before we do anything, double check that the types are the same and are PERSONAL PROFILES
         if(profileToBeFollowed.type !== currentProfile.type || profileToBeFollowed.type === "PUBLIC"){
@@ -96,7 +44,6 @@ exports.followPrivateProfile = async (req, res, next) => { // private profile fo
         // Check to see if the profile that needs to be followed already has the sender profile id in its followers list
         // If currentProfile is not following the profile to be followed
         if(!profileToBeFollowed.followers.includes(currentProfile._id)){
-            console.log("### INSIDE TO BE FOLLOWED");
             // Create a new request
             const newFollowRequest = new Request(
                 {
@@ -135,6 +82,7 @@ exports.followPrivateProfile = async (req, res, next) => { // private profile fo
     }
 }
 
+// Logic to follow a public profile
 exports.followPublicProfile = async (req, res, next) => { // private profile follow
     try{
         // Find profile to be followed
@@ -171,23 +119,21 @@ exports.followPublicProfile = async (req, res, next) => { // private profile fol
 exports.unFollowPrivateProfile = async (req, res, next) => {
     try{
         // Find profile to be followed
-        const profileBeingFollowed = await Profile.findById(req.params.id);
+        const profileBeingUnFollowed = await Profile.findById(req.params.id);
         // Current Profile
         const currentProfile = await Profile.findById(req.params.profileID);
-        console.log("unfollow private profile");
         // Pull the current profile from the followers list of the profile to unfollow if 
         // currently not following
-        if(currentProfile.following.includes(profileBeingFollowed._id)){
-            console.log("inside the includes ");
+        if(currentProfile.following.includes(profileBeingUnFollowed._id)){
             // Pull the current profile from the list of followers of the profile being followed
-            profileBeingFollowed.following.pull(currentProfile._id);
-            await profileBeingFollowed.save();
-            profileBeingFollowed.followers.pull(currentProfile._id);
-            await profileBeingFollowed.save();
+            profileBeingUnFollowed.following.pull(currentProfile._id);
+            await profileBeingUnFollowed.save();
+            profileBeingUnFollowed.followers.pull(currentProfile._id);
+            await profileBeingUnFollowed.save();
 
-            currentProfile.following.pull(profileBeingFollowed._id);
+            currentProfile.following.pull(profileBeingUnFollowed._id);
             await currentProfile.save();
-            currentProfile.followers.pull(profileBeingFollowed._id);
+            currentProfile.followers.pull(profileBeingUnFollowed._id);
             await currentProfile.save();
         } else{
             return next(handleError(403, "Error: Profile does not exist or no further action required"));
@@ -202,23 +148,24 @@ exports.unFollowPrivateProfile = async (req, res, next) => {
 
 /**
  * Given: Profile IDs'
+ * Given: Profile to be unfollowed
  * Function: Removes the current user to the list of followers of the user being followed
  */
 exports.unFollowPublicProfile = async (req, res, next) => {
     try{
         // Find profile to be followed
-        const profileBeingFollowed = await Profile.findById(req.params.id);
+        const profileBeingUnFollowed = await Profile.findById(req.params.id);
         // Current Profile
         const currentProfile = await Profile.findById(req.params.profileID);
 
         // Pull the current profile from the followers list of the profile to unfollow if 
         // currently not following
-        if(currentProfile.following.includes(profileBeingFollowed._id)){
+        if(currentProfile.following.includes(profileBeingUnFollowed._id)){
             // Pull the current profile from the list of followers of the profile being followed
-            profileBeingFollowed.followers.pull(currentProfile._id);
-            await profileBeingFollowed.save();
+            profileBeingUnFollowed.followers.pull(currentProfile._id);
+            await profileBeingUnFollowed.save();
 
-            currentProfile.following.pull(profileBeingFollowed._id);
+            currentProfile.following.pull(profileBeingUnFollowed._id);
             await currentProfile.save();
         }
         else{
@@ -232,21 +179,24 @@ exports.unFollowPublicProfile = async (req, res, next) => {
     }
 }
 
+/**
+ * Given: profile to unrequest
+ * Given: current profile
+ * Given: Request ID
+ * Function: Delete a private request
+ */
 exports.deletePrivateRequest = async (req, res, next) => {
     try{
-        // delete from outgoing 
-        // delete from incoming 
-        // delete request in general from mongoDB
 
-        // Find profile to be followed
-        const profileBeingFollowed = await Profile.findById(req.params.id);
+        // Find profile to be unrequested
+        const profileBeingUnrequested = await Profile.findById(req.params.id);
         // Current Profile
         const currentProfile = await Profile.findById(req.params.profileID);
 
         const request = await Request.findById(req.params.reqID);
 
-        profileBeingFollowed.outgoingRequests.pull(request._id);
-        await profileBeingFollowed.save();
+        profileBeingUnrequested.outgoingRequests.pull(request._id);
+        await profileBeingUnrequested.save();
 
         currentProfile.incomingRequests.pull(request._id);
         await currentProfile.save();
@@ -339,11 +289,9 @@ exports.respondToFollow = async (req, res, next) => {
 
         // Get the original request via the request id from the parameters
         const request = await Request.findById(req.params.reqID);
-        // console.log("### here request: " + request);
 
         // Get the profile responding to the request
         const recipient = await Profile.findById(request.recipients[0]);
-        // console.log("### here recipient: " + recipient);
 
         // Make sure the profile that is handling the request is indeed the recipient
         if(recipient._id.toString() !== req.params.profileID){
