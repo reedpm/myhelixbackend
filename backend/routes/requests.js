@@ -10,10 +10,10 @@ const { verifyToken } = require("../extern/verifyToken.js");
 /* ========================================================
    = Start to the Follow/Unfollow routes
    ======================================================== */
-// Route to send follow request
+// Route to send follow request to a private account
 /**
  * @swagger
- * /api/requests/follow/{id}/{profileID}:
+ * /api/requests/followprivate/{id}/{profileID}:
  *   post:
  *     summary: Places a Follow request to the profile's incoming requests array
  *     tags:
@@ -36,12 +36,11 @@ const { verifyToken } = require("../extern/verifyToken.js");
  *         description: Successfully sent a follow request to the profile being followed
  */
 router.put("/followprivate/:id/:profileID", RequestController.followPrivateProfile);
-// `requests/followprivate/${followProfileId}/${currentProfileID}`
 
-// Route to send follow request
+// Route to send follow request to public account
 /**
  * @swagger
- * /api/requests/follow/{id}/{profileID}:
+ * /api/requests/followpublic/{id}/{profileID}:
  *   post:
  *     summary: Places a Follow request to the profile's incoming requests array
  *     tags:
@@ -65,10 +64,10 @@ router.put("/followprivate/:id/:profileID", RequestController.followPrivateProfi
  */
 router.put("/followpublic/:id/:profileID", RequestController.followPublicProfile);
 
-// Route to unfollow 
+// Route to unfollow a private user
 /**
  * @swagger
- * /api/requests/unfollow/{id}/{profileID}:
+ * /api/requests/unfollowprivate/{id}/{profileID}:
  *   put:
  *     summary: Unfollows a specific profile
  *     tags:
@@ -92,10 +91,10 @@ router.put("/followpublic/:id/:profileID", RequestController.followPublicProfile
  */
 router.put("/unfollowprivate/:id/:profileID", RequestController.unFollowPrivateProfile);
 
-// Route to unfollow 
+// Route to unfollow a public account
 /**
  * @swagger
- * /api/requests/unfollow/{id}/{profileID}:
+ * /api/requests/unfollowpublic/{id}/{profileID}:
  *   put:
  *     summary: Unfollows a specific profile
  *     tags:
@@ -122,7 +121,7 @@ router.put("/unfollowpublic/:id/:profileID",  RequestController.unFollowPublicPr
 //deletePrivateRequest
 /**
  * @swagger
- * /api/requests/unfollow/{id}/{profileID}:
+ * /api/requests/deleterequest/{id}/{profileID}/{reqId}
  *   put:
  *     summary: Unfollows a specific profile
  *     tags:
@@ -140,13 +139,19 @@ router.put("/unfollowpublic/:id/:profileID",  RequestController.unFollowPublicPr
  *           type: string
  *         required: true
  *         description: The ID of the current profile
+ *         - in: path
+ *         name: reqId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the request that will be deleted
  *     responses:
  *       '200':
  *         description: Successfully unfollowed a specific profile
  */
 router.put("/deleterequest/:id/:profileID/:reqID",  RequestController.deletePrivateRequest);
 
-// Route to handle a follow request
+// Route to handle a follow request for private account
 /**
  * @swagger
  * /api/requests/handlefollow/{response}/{reqID}/{profileID}:
@@ -179,7 +184,7 @@ router.put("/deleterequest/:id/:profileID/:reqID",  RequestController.deletePriv
  */
 router.put("/handlefollow/:response/:reqID/:profileID", RequestController.respondToFollow);
 
-// Route to handle a follow request
+// Route to handle a follow request in private account
 /**
  * @swagger
  * /api/requests/handlerequest/{response}/{reqID}/{profileID}:

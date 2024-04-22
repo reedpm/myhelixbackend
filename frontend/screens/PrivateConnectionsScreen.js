@@ -51,6 +51,7 @@ const PrivateConnectionsScreen = () => {
 
   } = useGlobalContext();
 
+  // fetches all private users in the database 
   useEffect(() => {
     const fetchAllPrivateUsers = async () => {
       try {
@@ -61,8 +62,8 @@ const PrivateConnectionsScreen = () => {
         if (!response.ok) {
           console.error('Failed to fetch conenction requests');
         }
-        console.log('SUCCESS??');
         const allPrivateUser = await response.json();
+        // categorizes the users into the following categories: following, outgoing requests, not following
         setFollowingPrivateUsers(allPrivateUser.data1);
         setFilteredFollowingPrivateUsers(allPrivateUser.data1);
 
@@ -78,8 +79,8 @@ const PrivateConnectionsScreen = () => {
     fetchAllPrivateUsers();
   }, []);
 
+  // load incoming request data for 'request' tab
   useEffect(() => {
-    console.log('HERE1??');
     const fetchIncomingRequestData = async () => {
       try {
         const response = await fetch(dbURI +
@@ -98,8 +99,8 @@ const PrivateConnectionsScreen = () => {
     fetchIncomingRequestData();
   }, []);
 
+  // load connection for 'connections' tab
   useEffect(() => {
-    console.log('HERE2??');
     const fetchConnectionsData = async () => {
       try {
         const connectionsResponse = await fetch(dbURI +
@@ -108,7 +109,6 @@ const PrivateConnectionsScreen = () => {
         if (!connectionsResponse.ok) {
           console.error('Failed to fetch connections');
         }
-        console.log(connectionsResponse.status);
         const connectionData = await connectionsResponse.json();
         setConnections(connectionData.data);
         setFilteredConnectionUsers(connectionData.data);
@@ -119,6 +119,7 @@ const PrivateConnectionsScreen = () => {
     fetchConnectionsData();
   }, []);
 
+  // Based on tab selected, render the respective users
   const renderContent = () => {
     if (activeTab === 'tab1') {
       return (
@@ -135,7 +136,7 @@ const PrivateConnectionsScreen = () => {
         </View>
       );
     } else {
-      // show all tabs
+      // show all users
       return (
         <View>
           <SearchUserList
@@ -186,7 +187,6 @@ const PrivateConnectionsScreen = () => {
       const filteredOutgoingRequest = outgoingRequests.filter((user) => {
         return user.recipients.displayName.toLowerCase().includes(formattedQuery);
       });
-      console.log("### HERE: " + filteredOutgoingRequest);
       setFilteredFollowingPrivateUsers(filteredDataF);
       setFilteredNotFollowingPrivateUsers(filteredDataNF);
       setFilteredOutgoingRequests(filteredOutgoingRequest);
