@@ -33,6 +33,8 @@ const HeaderButtons = () => {
     });
   };
 
+  //navigates to profile page and sets variable 'editing' to false
+  //so you are in view mode not edit mode
   const handlePrivateClick = () => {
     setCurrentProfileID(userData.personalProfile);
     setUIColor(UI_COLOR[currentProfileData.type]);

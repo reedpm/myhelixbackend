@@ -312,7 +312,7 @@ const ProfileScreen = ({route}) => {
             </Pressable>
             {/* Delete button only appears for public profiles */}
             {currentProfileID !== userData.personalProfile &&
-                <DeleteConfirm buttonText={"Delete \'" + currentProfileData?.displayName + "\'"} handleDelete={deleteProfile} canDelete={userData.publicProfiles.length > 1}/>
+                <DeleteConfirm buttonText={"Delete \'" + currentProfileData?.displayName + "\'"} handleDelete={deleteProfile} canDelete={userData && (userData.publicProfiles.length) > 1}/>
               }
           </View>
         </>
