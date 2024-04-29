@@ -71,16 +71,16 @@ exports.likePost = async (req, res, next) => {
         // Find the post given the passed post ID
         const post = await Post.findById(req.params.postid);
         // make notification for the liking of this post
-        // TODO: debug notification
-        // req.body.senderProfileID = req.params.currentid; 
-        // req.body.recipientProfileID = post.createdBy; 
-        // req.body.type = 'POST'; 
-        // await Notification.addNotification(req, res, next);
         // Check to make sure that we have not previously liked the post in the first place
         if (post && post.likes && !post.likes.includes(req.params.currentid)) {
             await post.updateOne({
                 $push: { likes: req.params.currentid }
             });
+
+            req.body.senderProfileID = req.params.currentid;
+            req.body.recipientProfileID = post.createdBy;
+            req.body.type = 'LIKE';
+            await Notification.addNotification(req, res, next);
 
             // We also need to update the like count
             let like_count = post.likeCount;
@@ -164,15 +164,18 @@ exports.createComment = async (req, res, next) => {
             }
         );
 
+        const commenterID = req.body.commenterID;
+
         // Save the new DB object into the collection
         await newComment.save();
 
         // get the post that the comment was made for
         console.log("Post id is", req.body.postID);
-        const post = Post.findById(req.body.postID);
-        // console.log(post);
+        const post = await Post.findById(req.body.postID);
+        console.log("Post createdby 175 post.js controller is ", post.createdBy);
 
         if (!post) {
+            console.log("line 178 post not found");
             return res.status(404).json({ message: "Post not found" });
         }
 
@@ -182,10 +185,17 @@ exports.createComment = async (req, res, next) => {
             $push: { comments: newComment._id },
         });
 
-        // console.log(post);
+        console.log("Post createdBy is", post.createdBy);
+
+        // send notification for comment 
+        // TODO: potentially debug header error 
+        req.body.senderProfileID = commenterID;
+        req.body.recipientProfileID = post.createdBy;
+        req.body.type = 'COMMENT';
+        await Notification.addNotification(req, res, next);
 
         // Send the new post back to the user
-        res.status(200).json(newComment);
+        await res.status(200).json(newComment);
     }
     catch (err) {
         next(err);
