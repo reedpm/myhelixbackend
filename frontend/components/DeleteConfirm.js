@@ -14,12 +14,18 @@ import { Card } from "@rneui/themed";
 import {fonts} from '../styles';
 import { UI_COLOR } from "../GlobalContext";
 
+// props required:
+// function handleDelete, that is triggered when delete is confirmed
+// string buttonText, to display on the delete confirmation button
+// bool canDelete, to determine if delete is even allowed (if not, an error message pops up)
 const DeleteConfirm = (props) => {
     const [show, setShow] = useState(false);
   
+    // Clicking anywhere other than the button closes the popup
+    // Clicking the Delete button opens the popup
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-  
+
     return (
       <Pressable
         onPress={handleShow}

@@ -24,7 +24,6 @@ const ConnectionsStack= () => {
       >
       <Stack.Screen name="ConnectionsPage" component={ConnectionsScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
-      {/* <Stack.Screen name="NewProfile" component={NewProfileScreen} /> */}
     </Stack.Navigator>
   );
 };
@@ -32,6 +31,7 @@ const ConnectionsStack= () => {
 const AppTabs = () => {
   const {UIColor, currentScreen } = useGlobalContext();
 
+  //tab icons
   const homeOutline = require('../assets/navbar/homeOutline.png');
   const homeFilled = require('../assets/navbar/homeFilled.png');
   const friendsOutline = require('../assets/navbar/friendsOutline.png');
