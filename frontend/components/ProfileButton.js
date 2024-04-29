@@ -25,6 +25,7 @@ const ProfileButton = () => {
     const navigation = useNavigation();
     const buttonWidth = 160;
 
+    //updates list of current profiles every re-render of the dropdown
     useEffect(() => {
         const fetchCurrProfiles = async () => {
           try {
@@ -50,6 +51,7 @@ const ProfileButton = () => {
         visible ? setVisible(false) : openDropdown()
     }
 
+    // determines initial name of public profile when "new page" is clicked
     const setInitialName = () => {
         if(userData) {
           return "Public Profile #" + (userData.publicProfiles.length + 1);
@@ -59,6 +61,7 @@ const ProfileButton = () => {
         }
     }
 
+    //navigates to ProfilePage
     const handleProfileClick = () => {
         navigation.navigate('AppTabs', {
           screen: 'ConnectionsStack', params: {
@@ -69,6 +72,8 @@ const ProfileButton = () => {
         });
     }
 
+    //creates and adds a new profile to the database when "new page" is clicked
+    //updates userData with new public profiles list
     const createNewProfile = async () => {
         const response = await fetch(dbURI + `user/addPublicProfile/${userData.email}`, 
         {
@@ -111,12 +116,6 @@ const ProfileButton = () => {
         createNewProfile();
     }
 
-    const handleProfileSelect = item => {
-        setCurrentProfileID(item._id);
-        handleProfileClick();
-        setUIColor(UI_COLOR[currentProfileData.type]);
-    }
-
     const openDropdown = () => {
         DropdownButton.current.measure((_fx, _fy, _w, h, _px, py) => {
             setDropdownTop(py)
@@ -125,11 +124,15 @@ const ProfileButton = () => {
         setVisible(true)
     }
 
+    //navigates to selected profile from dropdown menu
     const onItemPress = item => {
         setVisible(false);
-        handleProfileSelect(item);
+        setCurrentProfileID(item._id);
+        handleProfileClick();
+        setUIColor(UI_COLOR[currentProfileData.type]);
     }
 
+    // each FlatList item/dropdown item looks like this
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.item} onPress={() => onItemPress(item)}>
             <View style={item.type == "PERSONAL" ? styles.privateBorder : styles.publicBorder}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import {
   StyleSheet,
   TouchableOpacity,
@@ -21,6 +21,8 @@ const HeaderButtons = () => {
 
   const navigation = useNavigation();
 
+  //navigates to public profile page and sets variable 'editing' to false
+  //so you are in view mode not edit mode
   const handlePublicClick = () => {
     setCurrentProfileID(userData.publicProfiles[0]);
     setUIColor(UI_COLOR[currentProfileData.type]);
@@ -33,6 +35,8 @@ const HeaderButtons = () => {
     });
   };
 
+  //navigates to private profile page and sets variable 'editing' to false
+  //so you are in view mode not edit mode
   const handlePrivateClick = () => {
     setCurrentProfileID(userData.personalProfile);
     setUIColor(UI_COLOR[currentProfileData.type]);
