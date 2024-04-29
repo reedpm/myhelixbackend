@@ -7,7 +7,6 @@ import {
   TextInput,
   View,
   Image,
-  Modal,
 } from 'react-native';
 import {Divider} from '@rneui/themed';
 import Post from '../components/Post';
@@ -36,18 +35,11 @@ const ProfileScreen = ({route}) => {
     setCurrentScreen,
   } = useGlobalContext();
 
-  //this is to pass back to the Tab navigator which screen within the Connections Stack is currently focused
+  // this is to pass back to the Tab navigator which screen within the Connections Stack is currently focused
   useFocusEffect(() => {
-    setCurrentScreen("ProfileScreen");
+    setCurrentScreen('ProfileScreen');
   });
 
-  const changeCurrentProfileID = () => {
-    setCurrentProfileID(
-      currentProfileID === userData.personalProfile ?
-      userData.publicProfiles[0] : userData.personalProfile,
-    );
-    setUIColor(UI_COLOR[currentProfileData.type]);
-  };
 
   const updateProfile = async () => {
     const response = await fetch(dbURI + 'profile/updateProfile/' +
@@ -103,6 +95,9 @@ const ProfileScreen = ({route}) => {
       updateProfile();
     }
     setEditing(!editing);
+  };
+  const signout = () => {
+    navigation.navigate('Home');
   };
 
   const handleImagePicker = () => {
@@ -300,21 +295,22 @@ const ProfileScreen = ({route}) => {
           <FlatList
             data={posts}
             keyExtractor={(item) => item._id}
-            renderItem={({ item }) => <Post post={{ ...item, createdBy: currentProfileData.displayName }} />}
+            renderItem={({item}) => <Post post={{...item, createdBy: currentProfileData.displayName}} />}
           />
 
           <View style={styles.buttonContainer}>
             <Pressable style={styles.button} onPress={handleEditPress}>
               <Text style={styles.buttonText}>{editing ? 'Save' : 'Edit'}</Text>
             </Pressable>
-            <Pressable style={styles.button} onPress={changeCurrentProfileID}>
-              <Text style={styles.buttonText}>Change Profile</Text>
-            </Pressable>
             {/* Delete button only appears for public profiles */}
             {currentProfileID !== userData.personalProfile &&
-                <DeleteConfirm buttonText={"Delete \'" + currentProfileData?.displayName + "\'"} handleDelete={deleteProfile} canDelete={userData && (userData.publicProfiles.length) > 1}/>
-              }
+                <DeleteConfirm buttonText={'Delete \'' + currentProfileData?.displayName + '\''} handleDelete={deleteProfile} canDelete={userData && (userData.publicProfiles.length) > 1}/>
+            }
+            <Pressable style={styles.button} onPress={signout}>
+              <Text style={styles.buttonText}>Signout</Text>
+            </Pressable>
           </View>
+
         </>
       ) : null}
     </View>

@@ -13,7 +13,6 @@ const getRandomColor = () => {
 };
 
 const Connection = ({user, onEmailPress}) => {
-  console.log('### user profile: ' + user.profileImage);
   customFonts();
   const imageSource = user.profileImage ? {uri: user.profileImage} : null;
   const backgroundColor = imageSource ? null : getRandomColor();

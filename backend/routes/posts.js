@@ -138,5 +138,55 @@ router.post("/unlike/:postid/:currentid", PostController.unlikePost);
  */
 router.get("/getPostsByProfileID/:profileID", PostController.getPostsByCreatedBy);
 
+/**
+ * @swagger
+ * /api/posts/createComment/:
+ * post:
+ *     summary: Creates a post
+ *     tags:
+ *       - Comment
+ *     requestBody:
+ *       description: This JSON object should include all the necessary components to create a comment
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               commenter:
+ *                 type: string
+ *                 description: The ID of the profile creating the comment
+ *               content:
+ *                 type: string
+ *                 description: The contents of the comment
+ *             required:
+ *               - commenter
+ *               - commentBody
+ *     responses:
+ *       '200':
+ *         description: Successfully created a new Comment 
+ */
+router.post("/createComment/", PostController.createComment);
+
+/**
+ * @swagger
+ * /api/posts/getCommentsByPostID/{postid}:
+ *   get:
+ *     summary: Gets all comments that have been created for the given post id
+ *     tags:
+ *       - Comment
+ *     parameters:
+ *       - in: path
+ *         name: postid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the post whose comments are to be retrieved
+ *     responses:
+ *       '200':
+ *         description: Successfully retrieved all comments made for the given a post ID
+ */
+router.get("/getCommentsByPostID/:postid", PostController.getCommentsByPostID);
+
 // Export router for use in app.js
 module.exports = router;

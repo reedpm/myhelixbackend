@@ -10,42 +10,59 @@ const getRandomColor = () => {
 
 // private: isConnection (follow & follower = true)
 // public: isConnection (is a follower )
-const SearchUser = ({user, onFollow, onUnfollow, isConnection, isPrivate}) => {
+const SearchUser = ({user, onFollow, onUnfollow, onDeleteRequest, isConnection, isPrivate, isRequest}) => {
   const [followButtonText, setFollowButtonText] = useState('follow');
   const [unfollowButtonText, setUnfollowButtonText] = useState('unfollow');
+  const [requestButtonText, setRequestButtonText] = useState('requested');
 
   const changeUnfollowText = () => {
     if (isPrivate) {
       if (unfollowButtonText == 'unfollow') {
         setUnfollowButtonText('follow');
+        onUnfollow();
       } else {
         setUnfollowButtonText('requested');
+        onFollow();
       }
     } else {
       if (unfollowButtonText == 'unfollow') {
         setUnfollowButtonText('follow');
+        onUnfollow();
       } else {
         setUnfollowButtonText('unfollow');
+        onFollow();
       }
     }
-    onUnfollow();
+  }
+
+  const changeRequestText = () => {
+    if (requestButtonText=='requested') {
+      setRequestButtonText('follow');
+      onDeleteRequest();
+    } else {
+      setRequestButtonText('requested');
+      onFollow();
+    }
   }
 
   const changeFollowText = () => {
     if (isPrivate) {
       if (followButtonText == 'follow') {
         setFollowButtonText('requested');
+        onFollow();
       } else {
         setFollowButtonText('follow');
+        onUnfollow();
       }
     } else {
       if (followButtonText == 'unfollow') {
         setFollowButtonText('follow');
+        onFollow();
       } else {
         setFollowButtonText('unfollow');
+        onUnfollow();
       }
     }
-    onFollow();
   }
 
   const imageSource = user.profileImage ? {uri: user.profileImage} : null;
@@ -65,19 +82,31 @@ const SearchUser = ({user, onFollow, onUnfollow, isConnection, isPrivate}) => {
              source={user.profileImage}
              style={styles.profilePic} />}
         </View>
-        <Text style={styles.name}>{user.displayName}</Text>
+        {
+          isRequest ?
+          (
+            <Text style={styles.name}>{user.recipients.displayName}</Text>
+          ) : 
+          (
+            <Text style={styles.name}>{user.displayName}</Text>
+          )
+        }
       </View>
       <View style={styles.buttonContainer}>
-        { isConnection ?
+        { isRequest ? 
             (
-                <TouchableOpacity style={[styles.button, styles.followButton]} onPress={() => {changeUnfollowText()}}>
-                    <Text>{unfollowButtonText}</Text>
+                <TouchableOpacity style={[styles.button, styles.followButton]} onPress={() => {changeRequestText()}}>
+                    <Text>{requestButtonText}</Text>
                 </TouchableOpacity>
             ) :
             (
-                <TouchableOpacity style={[styles.button, {backgroundColor: buttonColor}]} onPress={() => {changeFollowText()}}>
+              isConnection ? 
+               ( <TouchableOpacity style={[styles.button, styles.followButton]} onPress={() => {changeUnfollowText()}}>
+                      <Text>{unfollowButtonText}</Text>
+                  </TouchableOpacity>) :
+                (<TouchableOpacity style={[styles.button, {backgroundColor: buttonColor}]} onPress={() => {changeFollowText()}}>
                     <Text>{followButtonText}</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>)
             )
         }
       </View>

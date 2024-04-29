@@ -38,6 +38,7 @@ const PublicConnectionsScreen = () => {
     currentProfileID,
   } = useGlobalContext();
 
+  // get all public users, and save into two separate categories: following, not following
   useEffect(() => {
     const fetchAllPublicUsers = async () => {
       try {
@@ -48,7 +49,6 @@ const PublicConnectionsScreen = () => {
         if (!response.ok) {
           console.error('Failed to fetch conenction requests');
         }
-        console.log('SUCCESS??');
         const allPublicUser = await response.json();
         setFollowingPublicUsers(allPublicUser.data1);
         setFilteredFollowingPublicUsers(allPublicUser.data1);
@@ -62,9 +62,8 @@ const PublicConnectionsScreen = () => {
     fetchAllPublicUsers();
   }, []);
 
-
+  // fetch all user's followers
   useEffect(() => {
-    console.log('HERE1??');
     const fetchFollowersData = async () => {
       try {
         const response = await fetch(dbURI +
@@ -83,8 +82,8 @@ const PublicConnectionsScreen = () => {
     fetchFollowersData();
   }, []);
 
+  // fethc all user's followings
   useEffect(() => {
-    console.log('HERE2??');
     const fetchFollowingData = async () => {
       try {
         const response = await fetch(dbURI +
@@ -94,7 +93,6 @@ const PublicConnectionsScreen = () => {
           console.error('Failed to fetch following');
         }
         const followingData = await response.json();
-        console.log('### following data?? ' + followingData);
         setFollowing(followingData.data);
         setFilteredFollowing(followingData.data);
       } catch (error) {
@@ -105,6 +103,7 @@ const PublicConnectionsScreen = () => {
   }, []);
 
   const renderContent = () => {
+    // render user's following
     if (activeTab === 'tab1') {
       return (
         <View>
@@ -112,7 +111,7 @@ const PublicConnectionsScreen = () => {
           <FollowingList users={filteredFollowing}/>
         </View>
       );
-    } else if (activeTab === 'tab2') {
+    } else if (activeTab === 'tab2') { // render user's followers
       return (
         <View>
           <Text style={styles.tabTitle}>Followers </Text>
@@ -120,23 +119,23 @@ const PublicConnectionsScreen = () => {
         </View>
       );
     } else {
-      console.log('### following: ' + filteredFollowingPublicUsers);
-      console.log('### not following: ' + filteredNotFollowingPublicUsers);
+      // render all public profiles
       return (
         <View>
           <SearchUserList
             users={filteredFollowingPublicUsers}
-            isConnection={true} isPrivate={false}
+            isConnection={true} isPrivate={false} isRequest={false}
           />
           <SearchUserList
             users={filteredNotFollowingPublicUsers}
-            isConnection={false} isPrivate={false}
+            isConnection={false} isPrivate={false} isRequest={false}
           />
         </View>
       );
     }
   };
-
+  
+  // filter users based on search
   const handleSearch = (text) => {
     setActiveTab('neither');
     setQuery(text);

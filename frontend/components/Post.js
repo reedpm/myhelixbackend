@@ -25,21 +25,19 @@ const Post = ({ post }) => {
 
   customFonts();
   const navigation = useNavigation();
-  const handlePress = () => {
+  const handlePostPress = () => {
     navigation.push('PostDetails', { post });
   };
 
   const handleLikePress = async () => {
-    // TODO: toggle between red and blank when clicked vs unlicked
-
     // increase like count 
     try {
-      // DEBUG: get stuck in fetching data
       // console.log("after try");
       setLiked(!liked);
       console.log(liked);
       setLikeCount(liked ? likeCount - 1 : likeCount + 1);
       console.log(likeCount);
+      console.log(currentProfileID);
       if (!liked) {
         const response = await fetch(dbURI + `posts/like/${post._id}/${currentProfileID}`, {
           method: 'POST',
@@ -64,11 +62,14 @@ const Post = ({ post }) => {
   };
 
   const handleCommentPress = async () => {
-    // TODO: when press, will bring to a new page to write comment. Also include a submit button to add comment to database under profile of commenter 
+    // TODO: when press, will bring to a new page to write comment. Also include a submit button to add comment to database under profile of commenter
+    navigation.navigate('NewComment', {
+      postID: post._id,
+    });
   };
 
   return (
-    <Pressable onPress={handlePress}>
+    <Pressable onPress={handlePostPress}>
       <View style={styles.container}>
         <Text style={styles.body}>{post.postBody}</Text>
         <Text style={styles.createdBy}>Created by: {post.createdBy}</Text>
