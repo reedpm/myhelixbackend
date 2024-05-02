@@ -50,17 +50,21 @@ const SearchUser = ({user, onFollow, onUnfollow, onDeleteRequest, isConnection, 
       if (followButtonText == 'follow') {
         setFollowButtonText('requested');
         onFollow();
+        console.log("### HERE FOLLOW PRIVATE 1");
       } else {
         setFollowButtonText('follow');
         onUnfollow();
+        console.log("### HERE UNFOLLOW PRIVATE 2?");
       }
     } else {
       if (followButtonText == 'unfollow') {
         setFollowButtonText('follow');
-        onFollow();
+        onUnfollow();
+        console.log("### HERE UNFOLLOW PRIVATE 3");
       } else {
         setFollowButtonText('unfollow');
-        onUnfollow();
+        onFollow();
+        console.log("### HERE FOLLOW PRIVATE 4");
       }
     }
   }
