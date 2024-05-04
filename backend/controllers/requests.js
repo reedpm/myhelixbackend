@@ -3,7 +3,7 @@ const { handleError } = require("../extern/error");
 const Profile = require("../models/profile.js");
 const Request = require("../models/requests.js");
 const Conversation = require("../models/conversations.js");
-const Notification = require("../models/notifications.js");
+const addNotification = require('./notifications').addNotification;
 const mongoose = require("mongoose");
 const { profile } = require("console");
 
@@ -58,10 +58,11 @@ exports.followPrivateProfile = async (req, res, next) => { // private profile fo
             await newFollowRequest.save();
 
             // make notification for the follow request
-            // req.body.senderProfileID = currentProfile; 
-            // req.body.recipientProfileID = profileToBeFollowed; 
-            // req.body.type = 'REQUEST'; 
-            // await Notification.addNotification(req, res, next);
+            req.body.senderProfileID = currentProfile; 
+            req.body.recipientProfileID = profileToBeFollowed; 
+            req.body.type = 'FOLLOW'; 
+            console.log(req);
+            await addNotification(req, res, next);
 
             // We add an incoming request to the recipient profile
             profileToBeFollowed.incomingRequests.push(newFollowRequest._id);

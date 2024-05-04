@@ -2,8 +2,9 @@
 const mongoose = require("mongoose");
 const Post = require("../models/posts.js");
 const Profile = require("../models/profile.js");
-const Notification = require("../controllers/notifications.js");
 const Comment = require("../models/comments.js");
+const addNotification = require('./notifications').addNotification;
+
 
 /**
  * Given: JSON body
@@ -70,17 +71,17 @@ exports.likePost = async (req, res, next) => {
     try {
         // Find the post given the passed post ID
         const post = await Post.findById(req.params.postid);
-        // make notification for the liking of this post
         // Check to make sure that we have not previously liked the post in the first place
         if (post && post.likes && !post.likes.includes(req.params.currentid)) {
             await post.updateOne({
                 $push: { likes: req.params.currentid }
             });
 
+            // make notification for the liking of this post
             req.body.senderProfileID = req.params.currentid;
             req.body.recipientProfileID = post.createdBy;
             req.body.type = 'LIKE';
-            await Notification.addNotification(req, res, next);
+            await addNotification(req, res, next);
 
             // We also need to update the like count
             let like_count = post.likeCount;
@@ -188,11 +189,10 @@ exports.createComment = async (req, res, next) => {
         console.log("Post createdBy is", post.createdBy);
 
         // send notification for comment 
-        // TODO: potentially debug header error 
         req.body.senderProfileID = commenterID;
         req.body.recipientProfileID = post.createdBy;
         req.body.type = 'COMMENT';
-        await Notification.addNotification(req, res, next);
+        await addNotification(req, res, next);
 
         // Send the new post back to the user
         await res.status(200).json(newComment);

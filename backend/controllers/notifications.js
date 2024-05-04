@@ -24,7 +24,7 @@ exports.addNotification = async (req, res, next) => {
         // Save the notification into the database
         await notification.save();
 
-        res.status(200).send("Succesfully created a new notification");
+        // res.status(200).send("Succesfully created a new notification");
     }
     catch(err){
         next(err);
