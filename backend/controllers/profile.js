@@ -56,12 +56,7 @@ exports.update = async (req, res, next) => {
       catch(err){
         next(err);
       }
-    // }
-    // else{
-    //   return next(handleError(403, "Invalid Profile update request"));
-    // }
   }
-// 
 
 /**
  * Given: profile's information
@@ -111,15 +106,14 @@ exports.getAllPrivateProfiles = async (req, res, next) => {
         populate: {
             path: 'recipients',
             model: 'Profiles'
-        }
+        },
       })
       .exec()
       .then(data => {
         var outgoingrequestArr = [];
         var outgoingProf = [];
         for (let i = 0; i < data.outgoingRequests.length; i++) {
-          outgoingProf.push(data.outgoingRequests[i].recipients[0]);
-          outgoingrequestArr.push({recipients: data.outgoingRequests[i].recipients[0], requestId: data.outgoingRequests[i]._id});
+          outgoingrequestArr.push({ recipients: data.outgoingRequests[i].recipients[0], requestId: data.outgoingRequests[i]._id});
         }
         var notFollowingArr = [];
         var followingArr = [];

@@ -72,6 +72,7 @@ const PrivateConnectionsScreen = () => {
 
         setOutgoingRequests(allPrivateUser.data3);
         setFilteredOutgoingRequests(allPrivateUser.data3);
+        
       } catch (error) {
         console.log('error message for all user: ', error);
       }
