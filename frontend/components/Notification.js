@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 
 const Notification = ({notification}) => {
   customFonts();
+  console.log(notification);
+  console.log(notification.sender);
   const notificationMessages = {
     'COMMENT': 'commented on your post.',
     'LIKE': 'liked your post.',
@@ -53,7 +55,7 @@ Notification.propTypes = {
       incomingRequests: PropTypes.array.isRequired,
       outgoingRequests: PropTypes.array.isRequired,
       __v: PropTypes.number.isRequired,
-    }).isRequired,
+    }),
     recipient: PropTypes.string.isRequired,
     read: PropTypes.bool.isRequired,
     __v: PropTypes.number.isRequired,

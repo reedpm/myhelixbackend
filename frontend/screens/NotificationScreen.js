@@ -10,6 +10,7 @@ import {fonts} from '../styles';
 import {useGlobalContext, dbURI} from '../GlobalContext';
 import Notification from '../components/Notification';
 
+
 const NotificationsScreen = () => {
   const [notifications, setNotifications] = useState([]);
   const [notificationSections, setNotificationSections] = useState([]);
@@ -64,6 +65,7 @@ const NotificationsScreen = () => {
       setNotifications(notificationsData.data);
       const sections = groupNotificationsByDate(notificationsData.data);
       setNotificationSections(sections);
+      console.log(notificationsData);
     } catch (error) {
       console.error('Error during notifications fetch:', error);
     }
@@ -86,11 +88,18 @@ const NotificationsScreen = () => {
       marginBottom: 5,
       paddingHorizontal: 16,
     },
+    title: {
+      fontFamily: fonts.bold,
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 16,
+      marginTop: 16,
+    },
   });
 
   return (
     <View style={styles.container}>
-      {notifications ? (
+      {notifications.length > 0 ? (
       <SectionList
         sections={
           notificationSections.filter((section) => section.data.length > 0)
@@ -103,7 +112,7 @@ const NotificationsScreen = () => {
         ItemSeparatorComponent={() => <Divider />}
       />
     ) : (
-      <Text>You have no notifications!</Text>
+      <Text style={styles.title}>You have no notifications!</Text>
     )}
     </View>
   );
