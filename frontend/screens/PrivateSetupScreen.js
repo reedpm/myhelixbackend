@@ -143,6 +143,7 @@ const PrivateSetupScreen = () => {
     <View style={styles.container}>
       {currentProfileData ? (
         <>
+          <Text style={styles.title}>Setup your private account</Text>
           <View style={styles.row}>
 
             <Pressable onPress={handleImagePicker}>

@@ -150,6 +150,7 @@ const PublicSetupScreen = () => {
     <View style={styles.container}>
       {currentProfileData ? (
         <>
+          <Text style={styles.title}>Setup your public account</Text>
           <View style={styles.row}>
 
             <Pressable onPress={handleImagePicker}>
